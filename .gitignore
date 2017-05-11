@@ -2,3 +2,6 @@
 build
 .gradle/
 out/
+packages/xroad-monitor-collector/redhat/BUILDROOT
+packages/xroad-monitor-collector/redhat/RPMS
+packages/xroad-monitor-collector/redhat/SRPMS
