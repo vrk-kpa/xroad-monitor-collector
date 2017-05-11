@@ -1,0 +1,12 @@
+[Unit]
+Description=X-Road Monitor Collector
+
+[Service]
+PermissionsStartOnly=true
+User=xroad-monitor-collector
+Group=xroad-monitor-collector
+ExecStart=/usr/share/xroad/bin/xroad-monitor-collector
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

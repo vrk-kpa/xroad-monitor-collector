@@ -3,7 +3,7 @@ package fi.vrk.xroad.monitor;
 /**
  * Main class of the application
  */
-public class MonitorApplication {
+public class MonitorCollectorApplication {
 
     /**
      * Entry point
