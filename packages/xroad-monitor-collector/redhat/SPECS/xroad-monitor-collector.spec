@@ -9,7 +9,7 @@ Release:            %{rel}%{?snapshot}%{?dist}
 Summary:            X-Road Monitoring Data Collector
 Group:              Applications/Internet
 License:            MIT
-Requires:           systemd, java-1.8.0-openjdk
+Requires:           systemd, java-1.8.0-openjdk, xroad-common
 Requires(post):     systemd
 Requires(preun):    systemd
 Requires(postun):   systemd
