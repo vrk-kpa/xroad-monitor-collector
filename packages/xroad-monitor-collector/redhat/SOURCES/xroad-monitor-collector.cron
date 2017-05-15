@@ -1,0 +1,3 @@
+#!/bin/sh
+HOME=/tmp
+* * * * * root systemctl start xroad-monitor-collector 2>&1 > /tmp/confproxy.last;

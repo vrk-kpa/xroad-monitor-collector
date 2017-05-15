@@ -30,17 +30,19 @@ mkdir -p %{buildroot}%{jlib}
 mkdir -p %{buildroot}%{conf}
 mkdir -p %{buildroot}%{_unitdir}
 mkdir -p %{buildroot}/usr/share/xroad/bin
-mkdir -p %{buildroot}/var/log/xroad/
+mkdir -p %{buildroot}/var/log/xroad
+mkdir -p %{buildroot}/etc/cron.d
 cp -p %{src}/../../../build/libs/xroad-monitor-collector.jar %{buildroot}%{jlib}
 cp -p %{src}/SOURCES/%{name} %{buildroot}/usr/share/xroad/bin
 cp -p %{src}/SOURCES/%{name}.service %{buildroot}%{_unitdir}
+cp -p %{src}/SOURCES/%{name}.cron %{buildroot}/etc/cron.d
 
 %clean
 rm -rf %{buildroot}
 
 %files
-
 %attr(644,root,root) %{_unitdir}/%{name}.service
+%attr(644,root,root) /etc/cron.d/xroad-monitor-collector.cron
 %attr(744,xroad-monitor-collector,xroad-monitor-collector) %{jlib}/%{name}.jar
 %attr(744,xroad-monitor-collector,xroad-monitor-collector) /usr/share/xroad/bin/%{name}
 
