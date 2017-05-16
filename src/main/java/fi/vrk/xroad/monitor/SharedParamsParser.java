@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class SharedParamsParser {
 
     NodeList members = root.getElementsByTagName("member");
     NodeList securityServers = root.getElementsByTagName("securityServer");
-    List<SecurityServerInfo> securityServerInfoList = Collections.emptyList();
+    List<SecurityServerInfo> securityServerInfoList = new ArrayList<>();
 
     for (int i=0; i<securityServers.getLength(); i++) {
       Node securityServer = securityServers.item(i);
@@ -59,7 +60,7 @@ public class SharedParamsParser {
               String memberName = memberElement.getElementsByTagName("name").item(0).getTextContent();
               info = new SecurityServerInfo(serverCode, address, memberClass, memberCode, memberName);
               log.info("SecurityServerInfo: {}", info);
-              //securityServerInfoList.add(info);
+              securityServerInfoList.add(info);
             }
           }
         }
