@@ -10,9 +10,9 @@ import lombok.*;
 @EqualsAndHashCode
 @RequiredArgsConstructor
 public class SecurityServerInfo {
-  private String serverCode;
-  private String address;
-  private String memberClass;
-  private String memberCode;
-  private String memberName;
+  private final String serverCode;
+  private final String address;
+  private final String memberClass;
+  private final String memberCode;
+  private final String memberName;
 }

@@ -35,7 +35,6 @@ public class SharedParamsParser {
     document.setXmlVersion("1.0");
     document.getDocumentElement().normalize();
     Element root = document.getDocumentElement();
-    log.info("root: {}", root.getTagName());
 
     NodeList members = root.getElementsByTagName("member");
     NodeList securityServers = root.getElementsByTagName("securityServer");
@@ -54,8 +53,13 @@ public class SharedParamsParser {
           if (member.getNodeType() == Node.ELEMENT_NODE) {
             Element memberElement = (Element) member;
             if (memberElement.getAttribute("id").equals(owner)) {
-              Element memberClass = (Element) memberElement.getElementsByTagName("memberClass").item(0);
-              log.info("memberClass: {}", memberClass.getElementsByTagName("code").item(0).getTextContent());
+              Element memberClassElement = (Element) memberElement.getElementsByTagName("memberClass").item(0);
+              String memberClass = memberClassElement.getElementsByTagName("code").item(0).getTextContent();
+              String memberCode = memberElement.getElementsByTagName("memberCode").item(0).getTextContent();
+              String memberName = memberElement.getElementsByTagName("name").item(0).getTextContent();
+              info = new SecurityServerInfo(serverCode, address, memberClass, memberCode, memberName);
+              log.info("SecurityServerInfo: {}", info);
+              //securityServerInfoList.add(info);
             }
           }
         }
