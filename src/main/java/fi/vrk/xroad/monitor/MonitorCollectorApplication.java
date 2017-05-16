@@ -1,8 +1,11 @@
 package fi.vrk.xroad.monitor;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Main class of the application
  */
+@Slf4j
 public class MonitorCollectorApplication {
 
     /**
@@ -10,6 +13,6 @@ public class MonitorCollectorApplication {
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println("hellow");
+        log.info("xroad-monitor-collector started");
     }
 }
