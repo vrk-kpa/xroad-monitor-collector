@@ -66,7 +66,7 @@ public class SharedParamsParser {
         }
       }
     }
-    log.info(securityServerInfoList.toString());
+    log.info("Result list: {]", securityServerInfoList.toString());
     return securityServerInfoList;
   }
 }
