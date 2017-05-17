@@ -32,7 +32,7 @@ public class SharedParamsParser {
     File inputFile = new File(filename);
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-    Document document = documentBuilder.parse(inputFile);
+    Document document = documentBuilder.parse(inputFile); // This could throw IOException (missing file) or SAXException (can't parse filepath)
     document.setXmlVersion("1.0");
     document.getDocumentElement().normalize();
     Element root = document.getDocumentElement();
@@ -44,13 +44,12 @@ public class SharedParamsParser {
     for (int i=0; i<securityServers.getLength(); i++) {
       Node securityServer = securityServers.item(i);
       if (securityServer.getNodeType() == Node.ELEMENT_NODE) {
-        SecurityServerInfo info = null;
         Element securityServerElement = (Element) securityServer;
         String owner =  securityServerElement.getElementsByTagName("owner").item(0).getTextContent();
         String serverCode = securityServerElement.getElementsByTagName("serverCode").item(0).getTextContent();
         String address = securityServerElement.getElementsByTagName("address").item(0).getTextContent();
         for (int j=0; j<members.getLength(); j++) {
-          Node member = members.item(i);
+          Node member = members.item(j);
           if (member.getNodeType() == Node.ELEMENT_NODE) {
             Element memberElement = (Element) member;
             if (memberElement.getAttribute("id").equals(owner)) {
@@ -58,14 +57,16 @@ public class SharedParamsParser {
               String memberClass = memberClassElement.getElementsByTagName("code").item(0).getTextContent();
               String memberCode = memberElement.getElementsByTagName("memberCode").item(0).getTextContent();
               String memberName = memberElement.getElementsByTagName("name").item(0).getTextContent();
-              info = new SecurityServerInfo(serverCode, address, memberClass, memberCode, memberName);
+              SecurityServerInfo info = new SecurityServerInfo(serverCode, address, memberClass, memberCode, memberName);
               log.info("SecurityServerInfo: {}", info);
               securityServerInfoList.add(info);
+              break;
             }
           }
         }
       }
     }
+    log.info(securityServerInfoList.toString());
     return securityServerInfoList;
   }
 }
