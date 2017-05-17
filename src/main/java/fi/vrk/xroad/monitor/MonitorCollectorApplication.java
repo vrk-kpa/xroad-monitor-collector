@@ -46,7 +46,7 @@ public class MonitorCollectorApplication {
             log.info("parsed results: {}", securityServerInfos.toString());
             ActorRef supervisor = system.actorOf(ext.props("supervisor", securityServerInfos));
             log.info("supervisor {}", supervisor);
-            supervisor.tell(new Supervisor.StartCollectingMonitorDataCommand(), supervisor);
+            supervisor.tell(new Supervisor.StartCollectingMonitorDataCommand(), ActorRef.noSender());
         } catch (ParserConfigurationException | IOException | SAXException e) {
             log.error("failed parsing", e);
         }

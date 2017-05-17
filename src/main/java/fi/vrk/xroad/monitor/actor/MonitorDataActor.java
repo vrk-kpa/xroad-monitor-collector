@@ -22,12 +22,13 @@ public class MonitorDataActor extends AbstractActor {
   }
 
   private void handleMonitorDataRequest(MonitorDataRequest request) {
+    log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
     try {
       Thread.sleep(2000);
     } catch (InterruptedException e) {
       log.error("error occurred ", e);
     }
-    log.info("received request {}", request.getSecurityServerInfo().toString());
+    log.info("end handleMonitorDataRequest");
   }
 
   @Getter
