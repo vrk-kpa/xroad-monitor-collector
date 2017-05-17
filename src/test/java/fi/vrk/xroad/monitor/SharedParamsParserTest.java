@@ -1,5 +1,7 @@
 package fi.vrk.xroad.monitor;
 
+import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
+import fi.vrk.xroad.monitor.parser.SharedParamsParser;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 

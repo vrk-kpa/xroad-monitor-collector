@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fi.vrk.xroad.monitor;
+package fi.vrk.xroad.monitor.extensions;
 
 import akka.actor.Extension;
 import akka.actor.Props;

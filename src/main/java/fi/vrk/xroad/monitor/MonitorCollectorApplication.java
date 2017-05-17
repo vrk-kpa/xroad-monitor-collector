@@ -1,6 +1,7 @@
 package fi.vrk.xroad.monitor;
 
 import akka.actor.ActorSystem;
+import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -29,5 +30,6 @@ public class MonitorCollectorApplication {
         ActorSystem system = context.getBean(ActorSystem.class);
         SpringExtension ext = context.getBean(SpringExtension.class);
 
+        system.terminate();
     }
 }
