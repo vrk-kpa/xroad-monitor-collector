@@ -58,7 +58,7 @@ public class SharedParamsParser {
               String memberCode = memberElement.getElementsByTagName("memberCode").item(0).getTextContent();
               String memberName = memberElement.getElementsByTagName("name").item(0).getTextContent();
               SecurityServerInfo info = new SecurityServerInfo(serverCode, address, memberClass, memberCode, memberName);
-              log.info("SecurityServerInfo: {}", info);
+              log.debug("SecurityServerInfo: {}", info);
               securityServerInfoList.add(info);
               break;
             }
@@ -66,7 +66,7 @@ public class SharedParamsParser {
         }
       }
     }
-    log.info("Result list: {}", securityServerInfoList.toString());
+    log.debug("Result list: {}", securityServerInfoList.toString());
     return securityServerInfoList;
   }
 }
