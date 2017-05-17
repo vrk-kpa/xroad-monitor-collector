@@ -24,7 +24,7 @@ public class MonitorDataActor extends AbstractActor {
   private void handleMonitorDataRequest(MonitorDataRequest request) {
     log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
     try {
-      Thread.sleep(2000);
+      Thread.sleep(5000);
     } catch (InterruptedException e) {
       log.error("error occurred ", e);
     }

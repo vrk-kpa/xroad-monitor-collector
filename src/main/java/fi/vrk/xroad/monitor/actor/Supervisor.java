@@ -1,6 +1,7 @@
 package fi.vrk.xroad.monitor.actor;
 
 import akka.actor.*;
+import akka.dispatch.Futures;
 import akka.japi.pf.DeciderBuilder;
 import akka.pattern.Patterns;
 import akka.routing.SmallestMailboxPool;
@@ -15,6 +16,7 @@ import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -55,23 +57,25 @@ public class Supervisor extends AbstractActor {
   }
 
   private void handleMonitorDataRequest (StartCollectingMonitorDataCommand request) {
-    log.info("Starting handling");
+    log.info("Starting handling StartCollectingMonitorDataCommand");
+    List<Future<Object>> futures = new ArrayList<>();
+    final Timeout timeout = new Timeout(30, TimeUnit.SECONDS);
     for (int i=0; i<securityServerInfos.size(); i++) {
       SecurityServerInfo info = securityServerInfos.get(i);
-      final Timeout timeout = new Timeout(10, TimeUnit.SECONDS);
       log.info("Starting ask i={}", i);
-      final Future<Object> future = Patterns.ask(monitorDataRequestPoolRouter,
+      Future<Object> future = Patterns.ask(monitorDataRequestPoolRouter,
           new MonitorDataActor.MonitorDataRequest(info), timeout);
-      try {
-        log.info("Starting await i={}", i);
-        Object result = Await.result(future, timeout.duration());
-        log.info("result: {} i={}", result.toString(), i);
-        log.info("-----");
-      } catch (Exception e) {
-        log.error("error occurred", e);
-      }
+      futures.add(future);
     }
-    log.info("End handling");
+    Future<Iterable<Object>> sequence = Futures.sequence(futures, getContext().system().dispatcher());
+    try {
+      log.info("Starting await");
+      Await.result(sequence, timeout.duration());
+      log.info("Result sequence {}", sequence);
+    } catch (Exception e) {
+      log.error("error occurred", e);
+    }
+    log.info("End handling StartCollectingMonitorDataCommand");
     getContext().system().terminate();
   }
 
