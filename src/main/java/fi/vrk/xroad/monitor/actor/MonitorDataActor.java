@@ -28,6 +28,7 @@ public class MonitorDataActor extends AbstractActor {
     } catch (InterruptedException e) {
       log.error("error occurred ", e);
     }
+    getSender().tell(ResponseMessage.class, getSelf());
     log.info("end handleMonitorDataRequest");
   }
 

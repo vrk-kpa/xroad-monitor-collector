@@ -2,16 +2,21 @@ package fi.vrk.xroad.monitor.actor;
 
 import akka.actor.*;
 import akka.japi.pf.DeciderBuilder;
+import akka.pattern.Patterns;
 import akka.routing.SmallestMailboxPool;
+import akka.util.Timeout;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import scala.concurrent.Await;
+import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static akka.actor.SupervisorStrategy.*;
 
@@ -51,10 +56,23 @@ public class Supervisor extends AbstractActor {
 
   private void handleMonitorDataRequest (StartCollectingMonitorDataCommand request) {
     log.info("Starting handling");
-    for (SecurityServerInfo info : securityServerInfos) {
-      monitorDataRequestPoolRouter.tell(new MonitorDataActor.MonitorDataRequest(info), getSelf());
+    for (int i=0; i<securityServerInfos.size(); i++) {
+      SecurityServerInfo info = securityServerInfos.get(i);
+      final Timeout timeout = new Timeout(10, TimeUnit.SECONDS);
+      log.info("Starting ask i={}", i);
+      final Future<Object> future = Patterns.ask(monitorDataRequestPoolRouter,
+          new MonitorDataActor.MonitorDataRequest(info), timeout);
+      try {
+        log.info("Starting await i={}", i);
+        Object result = Await.result(future, timeout.duration());
+        log.info("result: {} i={}", result.toString(), i);
+        log.info("-----");
+      } catch (Exception e) {
+        log.error("error occurred", e);
+      }
     }
     log.info("End handling");
+    getContext().system().terminate();
   }
 
   public static class StartCollectingMonitorDataCommand {}
