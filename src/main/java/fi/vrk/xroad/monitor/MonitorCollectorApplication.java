@@ -1,7 +1,9 @@
 package fi.vrk.xroad.monitor;
 
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
+import fi.vrk.xroad.monitor.parser.SharedParamsParserActor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -29,7 +31,9 @@ public class MonitorCollectorApplication {
             SpringApplication.run(MonitorCollectorApplication.class, args);
         ActorSystem system = context.getBean(ActorSystem.class);
         SpringExtension ext = context.getBean(SpringExtension.class);
-
+        ActorRef sharedParamsParserActor = system.actorOf(ext.props("sharedParamsParserActor"));
+        log.info("actor: {}", sharedParamsParserActor);
+        sharedParamsParserActor.tell(new SharedParamsParserActor.ParseCommand(), sharedParamsParserActor);
         system.terminate();
     }
 }
