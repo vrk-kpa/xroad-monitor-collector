@@ -3,8 +3,8 @@ Description=X-Road Monitor Collector
 
 [Service]
 PermissionsStartOnly=true
-User=xroad-monitor-collector
-Group=xroad-monitor-collector
+User=xroad
+Group=xroad
 ExecStart=/usr/share/xroad/bin/xroad-monitor-collector
 Restart=on-failure
 

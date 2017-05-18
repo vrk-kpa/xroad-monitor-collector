@@ -43,14 +43,10 @@ rm -rf %{buildroot}
 %files
 %attr(644,root,root) %{_unitdir}/%{name}.service
 %attr(644,root,root) /etc/cron.d/xroad-monitor-collector.cron
-%attr(744,xroad-monitor-collector,xroad-monitor-collector) %{jlib}/%{name}.jar
-%attr(744,xroad-monitor-collector,xroad-monitor-collector) /usr/share/xroad/bin/%{name}
+%attr(744,xroad,xroad) %{jlib}/%{name}.jar
+%attr(744,xroad,xroad) /usr/share/xroad/bin/%{name}
 
 %pre
-
-if ! id xroad-monitor-collector > /dev/null 2>&1 ; then
-    adduser --system --no-create-home --shell /bin/false xroad-monitor-collector
-fi
 
 %post
 
