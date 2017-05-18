@@ -1,3 +1,3 @@
 #!/bin/sh
 HOME=/tmp
-* * * * * xroad /usr/share/xroad/bin/xroad-monitor-collector 2>&1 > /tmp/confproxy.last;
+* * * * * xroad /usr/share/xroad/bin/xroad-monitor-collector >> /var/log/xroad/xroad-monitor-collector.log
