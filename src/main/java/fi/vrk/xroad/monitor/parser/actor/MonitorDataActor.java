@@ -1,7 +1,7 @@
-package fi.vrk.xroad.monitor.actor;
+package fi.vrk.xroad.monitor.parser.actor;
 
 import akka.actor.AbstractActor;
-import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
+import fi.vrk.xroad.monitor.parser.parser.SecurityServerInfo;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
@@ -21,14 +21,14 @@ public class MonitorDataActor extends AbstractActor {
         .build();
   }
 
-  private void handleMonitorDataRequest(MonitorDataRequest request) {
+  protected void handleMonitorDataRequest(MonitorDataRequest request) {
     log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
     try {
       Thread.sleep(5000);
     } catch (InterruptedException e) {
       log.error("error occurred ", e);
     }
-    getSender().tell(ResponseMessage.class, getSelf());
+    getSender().tell(MonitorDataActorResponseMessage.class, getSelf());
     log.info("end handleMonitorDataRequest");
   }
 
@@ -42,5 +42,5 @@ public class MonitorDataActor extends AbstractActor {
     }
   }
 
-  public static class ResponseMessage {}
+  public static class MonitorDataActorResponseMessage {}
 }

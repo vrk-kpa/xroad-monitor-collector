@@ -1,6 +1,5 @@
-package fi.vrk.xroad.monitor.parser;
+package fi.vrk.xroad.monitor.parser.parser;
 
-import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

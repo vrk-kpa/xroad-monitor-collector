@@ -1,4 +1,4 @@
-package fi.vrk.xroad.monitor.actor;
+package fi.vrk.xroad.monitor.parser.actor;
 
 import akka.actor.*;
 import akka.dispatch.Futures;
@@ -6,8 +6,8 @@ import akka.japi.pf.DeciderBuilder;
 import akka.pattern.Patterns;
 import akka.routing.SmallestMailboxPool;
 import akka.util.Timeout;
-import fi.vrk.xroad.monitor.extensions.SpringExtension;
-import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
+import fi.vrk.xroad.monitor.parser.extensions.SpringExtension;
+import fi.vrk.xroad.monitor.parser.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -32,12 +32,14 @@ public class Supervisor extends AbstractActor {
 
   private final List<SecurityServerInfo> securityServerInfos;
   private ActorRef monitorDataRequestPoolRouter;
+  private String workerActorName;
 
   @Autowired
   private SpringExtension springExtension;
 
-  public Supervisor(List<SecurityServerInfo> securityServerInfos) {
+  public Supervisor(List<SecurityServerInfo> securityServerInfos, String workerActorName) {
     this.securityServerInfos = securityServerInfos;
+    this.workerActorName = workerActorName;
   }
 
   @Override
@@ -45,7 +47,7 @@ public class Supervisor extends AbstractActor {
     super.preStart();
     log.info("prestart");
     monitorDataRequestPoolRouter = getContext().actorOf(new SmallestMailboxPool(5)
-        .props(springExtension.props("monitorDataActor")));
+        .props(springExtension.props(workerActorName)));
   }
 
   @Override
@@ -75,11 +77,13 @@ public class Supervisor extends AbstractActor {
     } catch (Exception e) {
       log.error("error occurred", e);
     }
+    getSender().tell(SupervisorResponse.class, getSelf());
     log.info("End handling StartCollectingMonitorDataCommand");
-    getContext().system().terminate();
   }
 
   public static class StartCollectingMonitorDataCommand {}
+
+  public static class SupervisorResponse {}
 
   private static SupervisorStrategy strategy =
       new OneForOneStrategy(10, Duration.create("1 minute"), DeciderBuilder.
