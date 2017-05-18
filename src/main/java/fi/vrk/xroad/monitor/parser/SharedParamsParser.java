@@ -1,4 +1,4 @@
-package fi.vrk.xroad.monitor.parser.parser;
+package fi.vrk.xroad.monitor.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;

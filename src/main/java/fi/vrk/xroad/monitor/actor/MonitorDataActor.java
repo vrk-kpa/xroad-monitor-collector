@@ -1,7 +1,7 @@
-package fi.vrk.xroad.monitor.parser.actor;
+package fi.vrk.xroad.monitor.actor;
 
 import akka.actor.AbstractActor;
-import fi.vrk.xroad.monitor.parser.parser.SecurityServerInfo;
+import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;

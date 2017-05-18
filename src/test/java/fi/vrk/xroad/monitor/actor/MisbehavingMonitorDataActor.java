@@ -1,6 +1,5 @@
 package fi.vrk.xroad.monitor.actor;
 
-import fi.vrk.xroad.monitor.parser.actor.MonitorDataActor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

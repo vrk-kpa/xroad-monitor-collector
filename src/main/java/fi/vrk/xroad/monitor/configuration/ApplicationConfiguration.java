@@ -1,9 +1,9 @@
-package fi.vrk.xroad.monitor.parser.configuration;
+package fi.vrk.xroad.monitor.configuration;
 
 import akka.actor.ActorSystem;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import fi.vrk.xroad.monitor.parser.extensions.SpringExtension;
+import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;

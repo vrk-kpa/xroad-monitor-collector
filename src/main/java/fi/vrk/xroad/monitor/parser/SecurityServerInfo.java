@@ -1,4 +1,4 @@
-package fi.vrk.xroad.monitor.parser.parser;
+package fi.vrk.xroad.monitor.parser;
 
 import lombok.*;
 

@@ -1,13 +1,13 @@
-package fi.vrk.xroad.monitor.parser;
+package fi.vrk.xroad.monitor;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
-import fi.vrk.xroad.monitor.parser.actor.Supervisor;
-import fi.vrk.xroad.monitor.parser.extensions.SpringExtension;
-import fi.vrk.xroad.monitor.parser.parser.SecurityServerInfo;
-import fi.vrk.xroad.monitor.parser.parser.SharedParamsParser;
+import fi.vrk.xroad.monitor.actor.Supervisor;
+import fi.vrk.xroad.monitor.extensions.SpringExtension;
+import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
+import fi.vrk.xroad.monitor.parser.SharedParamsParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

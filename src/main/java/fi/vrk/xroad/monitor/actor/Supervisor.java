@@ -1,4 +1,4 @@
-package fi.vrk.xroad.monitor.parser.actor;
+package fi.vrk.xroad.monitor.actor;
 
 import akka.actor.*;
 import akka.dispatch.Futures;
@@ -6,8 +6,8 @@ import akka.japi.pf.DeciderBuilder;
 import akka.pattern.Patterns;
 import akka.routing.SmallestMailboxPool;
 import akka.util.Timeout;
-import fi.vrk.xroad.monitor.parser.extensions.SpringExtension;
-import fi.vrk.xroad.monitor.parser.parser.SecurityServerInfo;
+import fi.vrk.xroad.monitor.extensions.SpringExtension;
+import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
