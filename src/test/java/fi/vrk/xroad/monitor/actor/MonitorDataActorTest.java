@@ -1,60 +1,37 @@
 package fi.vrk.xroad.monitor.actor;
 
-import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.pattern.Patterns;
-import akka.util.Timeout;
-import fi.vrk.xroad.monitor.extensions.SpringExtension;
+import akka.actor.Props;
+import akka.testkit.TestActorRef;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.xml.sax.SAXException;
-import scala.concurrent.Await;
-import scala.concurrent.Future;
-import scala.concurrent.duration.Duration;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for {@link MonitorDataActor}
  */
-@RunWith(SpringRunner.class)
-@SpringBootApplication
 @Slf4j
-@ComponentScan(basePackages = {
-    "fi.vrk.xroad.monitor" })
 public class MonitorDataActorTest {
 
-  @Autowired
-  ActorSystem actorSystem;
-
-  @Autowired
-  SpringExtension springExtension;
-
   @Test
-  public void testMonitorDataActor() throws IOException, SAXException, ParserConfigurationException {
-    ActorRef monitorDataActor = actorSystem.actorOf(springExtension.props("monitorDataActor"));
-    final Timeout timeout = new Timeout(30, TimeUnit.SECONDS);
-    SecurityServerInfo info =
-        new SecurityServerInfo("", "", "", "", "");
-    Future<Object> ask = Patterns.ask(monitorDataActor, new MonitorDataActor.MonitorDataRequest(info), timeout);
-    try {
-      Object result = Await.result(ask, Duration.create(10, TimeUnit.SECONDS));
-      log.info("result {}", result);
-      assertNotNull(result);
-    } catch (Exception e) {
-      log.error("createError occurred", e);
-      fail("exception occurred awaiting result");
-    }
+  public void testResultCollectorActor() {
+    ActorSystem system = ActorSystem.create();
+
+    final Props resultCollectorActorProps = Props.create(ResultCollectorActor.class, 3);
+    final TestActorRef<ResultCollectorActor> resultCollectorRef = TestActorRef.create(system, resultCollectorActorProps, "testA");
+    ResultCollectorActor resultCollectorActor = resultCollectorRef.underlyingActor();
+
+    final Props monitorDataActorProps = Props.create(MonitorDataActor.class, resultCollectorRef);
+    final TestActorRef<MonitorDataActor> monitorDataRef = TestActorRef.create(system, monitorDataActorProps, "testB");
+    MonitorDataActor monitorDataActor = monitorDataRef.underlyingActor();
+
+    monitorDataRef.receive(new MonitorDataActor.MonitorDataRequest(
+        new SecurityServerInfo("", "", "", "", "")));
+    monitorDataRef.receive(new MonitorDataActor.MonitorDataRequest(
+        new SecurityServerInfo("", "", "", "", "")));
+    assertEquals(3, resultCollectorActor.getNumExpectedResults());
+    assertEquals(2, resultCollectorActor.getNumProcessedResults());
   }
 }

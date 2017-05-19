@@ -2,6 +2,7 @@ package fi.vrk.xroad.monitor;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.routing.SmallestMailboxPool;
 import fi.vrk.xroad.monitor.actor.Supervisor;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
@@ -17,6 +18,8 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.List;
+
+import static fi.vrk.xroad.monitor.util.MonitorCollectorConstants.SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE;
 
 /**
  * Main class of the application
@@ -41,8 +44,14 @@ public class MonitorCollectorApplication {
         try {
             List<SecurityServerInfo> securityServerInfos = parser.parse();
             log.info("Parsed results: {}", securityServerInfos.toString());
+
             ActorRef resultCollector = system.actorOf(ext.props("resultCollectorActor", securityServerInfos.size()));
-            ActorRef supervisor = system.actorOf(ext.props("supervisor", "monitorDataActor", resultCollector));
+
+            ActorRef monitorDataRequestPoolRouter =
+                system.actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
+                    .props(ext.props("monitorDataActor", resultCollector)));
+
+            ActorRef supervisor = system.actorOf(ext.props("supervisor", monitorDataRequestPoolRouter, "monitorDataActor"));
             supervisor.tell(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
         } catch (ParserConfigurationException | IOException | SAXException e) {
             log.error("Failed parsing", e);

@@ -2,7 +2,9 @@ package fi.vrk.xroad.monitor.actor;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.actor.Props;
 import akka.pattern.Patterns;
+import akka.testkit.TestActorRef;
 import akka.util.Timeout;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
@@ -29,18 +31,8 @@ import static org.junit.Assert.*;
 /**
  * Tests for {@link Supervisor}
  */
-@RunWith(SpringRunner.class)
-@SpringBootApplication
 @Slf4j
-@ComponentScan(basePackages = {
-    "fi.vrk.xroad.monitor" })
 public class SupervisorTest {
-
-  @Autowired
-  ActorSystem actorSystem;
-
-  @Autowired
-  SpringExtension springExtension;
 
   @Test
   public void testSupervisor() {
@@ -52,8 +44,23 @@ public class SupervisorTest {
       log.error("Failed parsing", e);
       fail("Failed parsing shared-params.xml");
     }
-    ActorRef supervisor = actorSystem.actorOf(
-        springExtension.props("supervisor", "misbehavingMonitorDataActor"));
-    supervisor.tell(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
+
+    ActorSystem system = ActorSystem.create();
+
+    final Props resultCollectorActorProps = Props.create(ResultCollectorActor.class, 3);
+    final TestActorRef<ResultCollectorActor> resultCollectorRef = TestActorRef.create(system, resultCollectorActorProps, "testA");
+    ResultCollectorActor resultCollectorActor = resultCollectorRef.underlyingActor();
+
+    assertEquals(0, resultCollectorActor.getNumProcessedResults());
+
+    final Props monitorDataActorProps = Props.create(MonitorDataActor.class, resultCollectorRef);
+    final TestActorRef<MonitorDataActor> monitorDataRef = TestActorRef.create(system, monitorDataActorProps, "testB");
+    MonitorDataActor monitorDataActor = monitorDataRef.underlyingActor();
+
+    final Props supervisorProps = Props.create(Supervisor.class, monitorDataRef, "monitorDataActor");
+    final TestActorRef<Supervisor> supervisorRef = TestActorRef.create(system, supervisorProps, "testC");
+    supervisorRef.receive(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
+
+    assertEquals(12, resultCollectorActor.getNumProcessedResults());
   }
 }

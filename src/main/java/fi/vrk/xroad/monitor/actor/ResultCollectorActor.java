@@ -40,14 +40,23 @@ public class ResultCollectorActor extends AbstractActor {
     }
   }
 
+  /**
+   * Indicates if all expected results have been received
+   */
   public boolean isDone() {
     return results.size() >= numExpectedResults;
   }
 
+  /**
+   * The number of expected results
+   */
   public int getNumExpectedResults() {
     return numExpectedResults;
   }
 
+  /**
+   * The number of processed results
+   */
   public int getNumProcessedResults() {
     return results.size();
   }
