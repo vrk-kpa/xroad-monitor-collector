@@ -86,6 +86,17 @@ public class Supervisor extends AbstractActor {
 
   public static class SupervisorResponse {}
 
+  //  Default Supervisor Strategy
+  //  Escalate is used if the defined strategy doesn't cover the exception that was thrown.
+  //
+  //  When the supervisor strategy is not defined for an actor the following exceptions are handled by default:
+  //
+  //  ActorInitializationException will stop the failing child actor
+  //  ActorKilledException will stop the failing child actor
+  //  DeathPactException will stop the failing child actor
+  //  Exception will restart the failing child actor
+  //  Other types of Throwable will be escalated to parent actor
+  //  If the exception escalate all the way up to the root guardian it will handle it in the same way as the default strategy defined above.`
   private static SupervisorStrategy strategy =
       new OneForOneStrategy(3, Duration.create("1 minute"), DeciderBuilder.
           match(TimeoutException.class, e -> stop()).
