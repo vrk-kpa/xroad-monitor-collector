@@ -53,7 +53,7 @@ public class MonitorDataActorTest {
       log.info("result {}", result);
       assertNotNull(result);
     } catch (Exception e) {
-      log.error("error occurred", e);
+      log.error("createError occurred", e);
       fail("exception occurred awaiting result");
     }
   }

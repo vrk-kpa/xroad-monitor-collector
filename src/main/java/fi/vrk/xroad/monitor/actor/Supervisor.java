@@ -8,6 +8,8 @@ import akka.routing.SmallestMailboxPool;
 import akka.util.Timeout;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -22,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static akka.actor.SupervisorStrategy.*;
+import static fi.vrk.xroad.monitor.util.MonitorCollectorConstants.SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE;
 
 /**
  * Supervisor for actors
@@ -31,24 +34,24 @@ import static akka.actor.SupervisorStrategy.*;
 @Slf4j
 public class Supervisor extends AbstractActor {
 
-  private final List<SecurityServerInfo> securityServerInfos;
   private ActorRef monitorDataRequestPoolRouter;
   private String workerActorName;
+  private final ActorRef resultCollectorActor;
 
   @Autowired
   private SpringExtension springExtension;
 
-  public Supervisor(List<SecurityServerInfo> securityServerInfos, String workerActorName) {
-    this.securityServerInfos = securityServerInfos;
+  public Supervisor(String workerActorName, ActorRef resultCollectorActor) {
     this.workerActorName = workerActorName;
+    this.resultCollectorActor = resultCollectorActor;
   }
 
   @Override
   public void preStart() throws Exception {
     super.preStart();
-    log.info("prestart");
-    monitorDataRequestPoolRouter = getContext().actorOf(new SmallestMailboxPool(5)
-        .props(springExtension.props(workerActorName)));
+    log.info("preStart");
+    monitorDataRequestPoolRouter = getContext().actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
+        .props(springExtension.props(workerActorName, resultCollectorActor)));
   }
 
   @Override
@@ -60,31 +63,21 @@ public class Supervisor extends AbstractActor {
   }
 
   private void handleMonitorDataRequest (StartCollectingMonitorDataCommand request) {
-    log.info("Starting handling StartCollectingMonitorDataCommand");
-    List<Future<Object>> futures = new ArrayList<>();
-    final Timeout timeout = new Timeout(30, TimeUnit.SECONDS);
-    for (int i=0; i<securityServerInfos.size(); i++) {
-      SecurityServerInfo info = securityServerInfos.get(i);
-      log.info("Starting ask i={}", i);
-      Future<Object> future = Patterns.ask(monitorDataRequestPoolRouter,
-          new MonitorDataActor.MonitorDataRequest(info), timeout);
-      futures.add(future);
+    for (int i=0; i<request.getSecurityServerInfos().size(); i++) {
+      SecurityServerInfo info = request.getSecurityServerInfos().get(i);
+      log.info("Process SecurityServerInfo i={}", i);
+      monitorDataRequestPoolRouter.tell(new MonitorDataActor.MonitorDataRequest(info), getSelf());
     }
-    Future<Iterable<Object>> sequence = Futures.sequence(futures, getContext().system().dispatcher());
-    try {
-      log.info("Starting await");
-      Await.result(sequence, timeout.duration());
-      log.info("Result sequence {}", sequence);
-    } catch (Exception e) {
-      log.error("error occurred", e);
-    }
-    getSender().tell(SupervisorResponse.class, getSelf());
-    log.info("End handling StartCollectingMonitorDataCommand");
   }
 
-  public static class StartCollectingMonitorDataCommand {}
-
-  public static class SupervisorResponse {}
+  /**
+   * Request for collecting monitoring data from security servers
+   */
+  @RequiredArgsConstructor
+  @Getter
+  public static class StartCollectingMonitorDataCommand {
+    private final List<SecurityServerInfo> securityServerInfos;
+  }
 
   //  Default Supervisor Strategy
   //  Escalate is used if the defined strategy doesn't cover the exception that was thrown.
@@ -99,8 +92,7 @@ public class Supervisor extends AbstractActor {
   //  If the exception escalate all the way up to the root guardian it will handle it in the same way as the default strategy defined above.`
   private static SupervisorStrategy strategy =
       new OneForOneStrategy(3, Duration.create("1 minute"), DeciderBuilder.
-          match(TimeoutException.class, e -> stop()).
-          matchAny(o -> escalate()).build());
+          matchAny(e -> resume()).build());
 
   @Override
   public SupervisorStrategy supervisorStrategy() {

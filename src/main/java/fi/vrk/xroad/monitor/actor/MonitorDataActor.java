@@ -1,8 +1,10 @@
 package fi.vrk.xroad.monitor.actor;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,13 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Slf4j
 public class MonitorDataActor extends AbstractActor {
+
+  protected final ActorRef resultCollectorActor;
+
+  public MonitorDataActor(ActorRef resultCollectorActor) {
+    this.resultCollectorActor = resultCollectorActor;
+  }
+
   @Override
   public Receive createReceive() {
     return receiveBuilder()
@@ -23,24 +32,16 @@ public class MonitorDataActor extends AbstractActor {
 
   protected void handleMonitorDataRequest(MonitorDataRequest request) {
     log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
-    try {
-      Thread.sleep(5000);
-    } catch (InterruptedException e) {
-      log.error("error occurred ", e);
-    }
-    getSender().tell(MonitorDataActorResponseMessage.class, getSelf());
+    resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(), getSelf());
     log.info("end handleMonitorDataRequest");
   }
 
+  /**
+   * Request for fetching monitoring data from single security server
+   */
+  @RequiredArgsConstructor
   @Getter
   public static class MonitorDataRequest {
-
     private final SecurityServerInfo securityServerInfo;
-
-    public MonitorDataRequest(SecurityServerInfo securityServerInfo) {
-      this.securityServerInfo = securityServerInfo;
-    }
   }
-
-  public static class MonitorDataActorResponseMessage {}
 }

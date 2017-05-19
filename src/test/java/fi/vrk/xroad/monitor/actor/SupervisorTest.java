@@ -49,20 +49,11 @@ public class SupervisorTest {
     try {
       securityServerInfos = parser.parse();
     } catch (ParserConfigurationException | IOException | SAXException e) {
-      log.error("failed parsing", e);
-      fail("failed parsing shared-params.xml");
+      log.error("Failed parsing", e);
+      fail("Failed parsing shared-params.xml");
     }
     ActorRef supervisor = actorSystem.actorOf(
-        springExtension.props("supervisor", securityServerInfos, "misbehavingMonitorDataActor"));
-    final Timeout timeout = new Timeout(60, TimeUnit.SECONDS);
-    Future<Object> ask = Patterns.ask(supervisor, new Supervisor.StartCollectingMonitorDataCommand(), timeout);
-    try {
-      Object result = Await.result(ask, Duration.create(60, TimeUnit.SECONDS));
-      log.info("result {}", result);
-      assertNotNull(result);
-    } catch (Exception e) {
-      log.error("error occurred", e);
-      fail("exception occurred awaiting result");
-    }
+        springExtension.props("supervisor", "misbehavingMonitorDataActor"));
+    supervisor.tell(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
   }
 }
