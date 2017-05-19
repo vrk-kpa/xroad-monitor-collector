@@ -54,10 +54,10 @@ public class SupervisorTest {
     }
     ActorRef supervisor = actorSystem.actorOf(
         springExtension.props("supervisor", securityServerInfos, "misbehavingMonitorDataActor"));
-    final Timeout timeout = new Timeout(300, TimeUnit.SECONDS);
+    final Timeout timeout = new Timeout(60, TimeUnit.SECONDS);
     Future<Object> ask = Patterns.ask(supervisor, new Supervisor.StartCollectingMonitorDataCommand(), timeout);
     try {
-      Object result = Await.result(ask, Duration.create(300, TimeUnit.SECONDS));
+      Object result = Await.result(ask, Duration.create(60, TimeUnit.SECONDS));
       log.info("result {}", result);
       assertNotNull(result);
     } catch (Exception e) {

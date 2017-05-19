@@ -19,6 +19,7 @@ import scala.concurrent.duration.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static akka.actor.SupervisorStrategy.*;
 
@@ -86,10 +87,8 @@ public class Supervisor extends AbstractActor {
   public static class SupervisorResponse {}
 
   private static SupervisorStrategy strategy =
-      new OneForOneStrategy(10, Duration.create("1 minute"), DeciderBuilder.
-          match(ArithmeticException.class, e -> resume()).
-          match(NullPointerException.class, e -> restart()).
-          match(IllegalArgumentException.class, e -> stop()).
+      new OneForOneStrategy(3, Duration.create("1 minute"), DeciderBuilder.
+          match(TimeoutException.class, e -> stop()).
           matchAny(o -> escalate()).build());
 
   @Override
