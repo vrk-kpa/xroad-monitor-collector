@@ -34,8 +34,13 @@ import static org.junit.Assert.*;
 @Slf4j
 public class SupervisorTest {
 
+  /**
+   * Tests the system logic so that when supervisor starts processing
+   * the collector receives the processing results.
+   */
   @Test
   public void testSupervisor() {
+    // parse global config to get security server information
     SharedParamsParser parser = new SharedParamsParser("src/test/resources/shared-params.xml");
     List<SecurityServerInfo> securityServerInfos = null;
     try {
@@ -47,20 +52,26 @@ public class SupervisorTest {
 
     ActorSystem system = ActorSystem.create();
 
+    // create result collector actor
     final Props resultCollectorActorProps = Props.create(ResultCollectorActor.class, securityServerInfos);
     final TestActorRef<ResultCollectorActor> resultCollectorRef = TestActorRef.create(system, resultCollectorActorProps, "testA");
     ResultCollectorActor resultCollectorActor = resultCollectorRef.underlyingActor();
 
-    assertEquals(0, resultCollectorActor.getNumProcessedResults());
-
+    // create monitor data actor
     final Props monitorDataActorProps = Props.create(MonitorDataActor.class, resultCollectorRef);
     final TestActorRef<MonitorDataActor> monitorDataRef = TestActorRef.create(system, monitorDataActorProps, "testB");
-    MonitorDataActor monitorDataActor = monitorDataRef.underlyingActor();
 
+    // create supervisor
     final Props supervisorProps = Props.create(Supervisor.class, monitorDataRef, "monitorDataActor");
     final TestActorRef<Supervisor> supervisorRef = TestActorRef.create(system, supervisorProps, "testC");
+
+    // assert that no results have been received yet
+    assertEquals(0, resultCollectorActor.getNumProcessedResults());
+
+    // send message to supervisor to start processing
     supervisorRef.receive(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
 
+    // assert that all the results have been received
     assertEquals(12, resultCollectorActor.getNumProcessedResults());
   }
 }

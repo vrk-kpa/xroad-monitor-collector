@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -50,11 +49,9 @@ public class ResultCollectorActor extends AbstractActor {
   @Override
   public void postStop() throws Exception {
     super.postStop();
-    Iterator it = trackResults.entrySet().iterator();
-    while (it.hasNext()) {
-      Map.Entry pair = (Map.Entry)it.next();
-      if (pair.getValue() == null) {
-        log.error("Result for {} has not been received", pair.getKey());
+    for(Map.Entry e: trackResults.entrySet()) {
+      if (e.getValue() == null) {
+        log.error("Result for {} has not been received", e.getKey());
       }
     }
   }
