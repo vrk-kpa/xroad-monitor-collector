@@ -32,7 +32,8 @@ public class MonitorDataActor extends AbstractActor {
 
   protected void handleMonitorDataRequest(MonitorDataRequest request) {
     log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
-    resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(), getSelf());
+    resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(request.getSecurityServerInfo()),
+        getSelf());
     log.info("end handleMonitorDataRequest");
   }
 

@@ -47,7 +47,7 @@ public class SupervisorTest {
 
     ActorSystem system = ActorSystem.create();
 
-    final Props resultCollectorActorProps = Props.create(ResultCollectorActor.class, 3);
+    final Props resultCollectorActorProps = Props.create(ResultCollectorActor.class, securityServerInfos);
     final TestActorRef<ResultCollectorActor> resultCollectorRef = TestActorRef.create(system, resultCollectorActorProps, "testA");
     ResultCollectorActor resultCollectorActor = resultCollectorRef.underlyingActor();
 

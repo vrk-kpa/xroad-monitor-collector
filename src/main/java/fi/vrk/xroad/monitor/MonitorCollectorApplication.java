@@ -42,10 +42,10 @@ public class MonitorCollectorApplication {
 
         SharedParamsParser parser = new SharedParamsParser("/etc/xroad/globalconf/FI/shared-params.xml");
         try {
-            List<SecurityServerInfo> securityServerInfos = parser.parse();
+            final List<SecurityServerInfo> securityServerInfos = parser.parse();
             log.info("Parsed results: {}", securityServerInfos.toString());
 
-            ActorRef resultCollector = system.actorOf(ext.props("resultCollectorActor", securityServerInfos.size()));
+            ActorRef resultCollector = system.actorOf(ext.props("resultCollectorActor", securityServerInfos));
 
             ActorRef monitorDataRequestPoolRouter =
                 system.actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
