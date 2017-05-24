@@ -34,6 +34,7 @@ public class ResultCollectorActor extends AbstractActor {
   public AbstractActor.Receive createReceive() {
     return receiveBuilder()
         .match(MonitorDataResult.class, this::handleMonitorDataResult)
+        .matchAny(obj -> log.error("Unhandled message: {}", obj))
         .build();
   }
 

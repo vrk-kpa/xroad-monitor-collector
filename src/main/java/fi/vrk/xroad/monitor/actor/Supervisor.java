@@ -42,6 +42,7 @@ public class Supervisor extends AbstractActor {
     log.info("createReceive");
     return receiveBuilder()
         .match(StartCollectingMonitorDataCommand.class, this::handleMonitorDataRequest)
+        .matchAny(obj -> log.error("Unhandled message: {}", obj))
         .build();
   }
 

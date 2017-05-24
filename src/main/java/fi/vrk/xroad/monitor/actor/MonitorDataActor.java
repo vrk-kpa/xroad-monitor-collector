@@ -27,6 +27,7 @@ public class MonitorDataActor extends AbstractActor {
   public Receive createReceive() {
     return receiveBuilder()
         .match(MonitorDataRequest.class, this::handleMonitorDataRequest)
+        .matchAny(obj -> log.error("Unhandled message: {}", obj))
         .build();
   }
 
