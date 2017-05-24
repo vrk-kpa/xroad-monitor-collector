@@ -23,10 +23,22 @@ public class SharedParamsParser {
 
   private final String filename;
 
+  /**
+   * Constructor
+   * @param filename
+   */
   public SharedParamsParser(String filename){
     this.filename = filename;
   }
 
+  /**
+   * Parses security server information from X-Road global configuration shared-params.xml.
+   * Matches member elements with securityServer elements to gather the information.
+   * @return list of {@link SecurityServerInfo} objects
+   * @throws ParserConfigurationException
+   * @throws IOException
+   * @throws SAXException
+   */
   public List<SecurityServerInfo> parse() throws ParserConfigurationException, IOException, SAXException {
     File inputFile = new File(filename);
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
