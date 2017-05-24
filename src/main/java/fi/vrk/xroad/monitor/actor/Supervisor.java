@@ -1,30 +1,21 @@
 package fi.vrk.xroad.monitor.actor;
 
-import akka.actor.*;
-import akka.dispatch.Futures;
+import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
+import akka.actor.OneForOneStrategy;
+import akka.actor.SupervisorStrategy;
 import akka.japi.pf.DeciderBuilder;
-import akka.pattern.Patterns;
-import akka.routing.SmallestMailboxPool;
-import akka.util.Timeout;
-import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import scala.concurrent.Await;
-import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
-import static akka.actor.SupervisorStrategy.*;
-import static fi.vrk.xroad.monitor.util.MonitorCollectorConstants.SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE;
+import static akka.actor.SupervisorStrategy.resume;
 
 /**
  * Supervisor for actors
@@ -35,14 +26,9 @@ import static fi.vrk.xroad.monitor.util.MonitorCollectorConstants.SUPERVISOR_MON
 public class Supervisor extends AbstractActor {
 
   private ActorRef monitorDataRequestPoolRouter;
-  private String workerActorName;
-
-  @Autowired
-  private SpringExtension springExtension;
 
   public Supervisor(ActorRef monitorDataRequestPoolRouter, String workerActorName) {
     this.monitorDataRequestPoolRouter = monitorDataRequestPoolRouter;
-    this.workerActorName = workerActorName;
   }
 
   @Override
