@@ -58,23 +58,26 @@ public class ResultCollectorActor extends AbstractActor {
   }
 
   /**
-   * Indicates if all expected results have been received
+   * For testing purposes.
+   * Indicates if all expected results have been received.
    */
-  public boolean isDone() {
+  boolean isDone() {
     return !trackResults.containsValue(null);
   }
 
   /**
-   * The number of expected results
+   * For testing purposes.
+   * The number of expected results.
    */
-  public int getNumExpectedResults() {
+  int getNumExpectedResults() {
     return trackResults.size();
   }
 
   /**
-   * The number of processed results
+   * For testing purposes.
+   * The number of processed results.
    */
-  public int getNumProcessedResults() {
+  int getNumProcessedResults() {
     int numProcessed = 0;
     for (MonitorDataResult result: trackResults.values()) {
       if (result != null) {
