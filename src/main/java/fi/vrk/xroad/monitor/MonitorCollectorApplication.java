@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import static fi.vrk.xroad.monitor.util.MonitorCollectorConstants.SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE;
@@ -35,26 +36,26 @@ public class MonitorCollectorApplication {
      */
     public static void main(String[] args) {
         log.info("X-Road Monitor Collector started");
-
         ApplicationContext context = SpringApplication.run(MonitorCollectorApplication.class, args);
         ActorSystem system = context.getBean(ActorSystem.class);
         SpringExtension ext = context.getBean(SpringExtension.class);
 
         SharedParamsParser parser = new SharedParamsParser("/etc/xroad/globalconf/FI/shared-params.xml");
+        List<SecurityServerInfo> securityServerInfos;
         try {
-            final List<SecurityServerInfo> securityServerInfos = parser.parse();
+            securityServerInfos = parser.parse();
             log.info("Parsed results: {}", securityServerInfos.toString());
-
-            ActorRef resultCollector = system.actorOf(ext.props("resultCollectorActor", securityServerInfos));
-
-            ActorRef monitorDataRequestPoolRouter =
-                system.actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
-                    .props(ext.props("monitorDataActor", resultCollector)));
-
-            ActorRef supervisor = system.actorOf(ext.props("supervisor", monitorDataRequestPoolRouter, "monitorDataActor"));
-            supervisor.tell(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
         } catch (ParserConfigurationException | IOException | SAXException e) {
             log.error("Failed parsing", e);
+            securityServerInfos = Collections.emptyList();
         }
+        ActorRef resultCollector = system.actorOf(ext.props("resultCollectorActor", securityServerInfos));
+
+        ActorRef monitorDataRequestPoolRouter =
+            system.actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
+                .props(ext.props("monitorDataActor", resultCollector)));
+
+        ActorRef supervisor = system.actorOf(ext.props("supervisor", monitorDataRequestPoolRouter, "monitorDataActor"));
+        supervisor.tell(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
     }
 }
