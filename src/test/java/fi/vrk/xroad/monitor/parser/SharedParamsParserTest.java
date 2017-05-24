@@ -23,8 +23,7 @@ public class SharedParamsParserTest {
           "gdev-ss1.i.palveluvayla.com",
           "gdev-ss1.i.palveluvayla.com",
           "GOV",
-          "1710128-9",
-          "Gofore");
+          "1710128-9");
 
   @Test
   public void testParse() throws IOException, SAXException, ParserConfigurationException {

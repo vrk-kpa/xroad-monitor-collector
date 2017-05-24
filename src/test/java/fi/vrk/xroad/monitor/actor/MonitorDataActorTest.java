@@ -51,9 +51,9 @@ public class MonitorDataActorTest {
 
     // process 2 requests
     monitorDataRef.receive(new MonitorDataActor.MonitorDataRequest(
-        new SecurityServerInfo("gdev-ss1.i.palveluvayla.com", "gdev-ss1.i.palveluvayla.com", "GOV", "1710128-9", "Gofore")));
+        new SecurityServerInfo("gdev-ss1.i.palveluvayla.com", "gdev-ss1.i.palveluvayla.com", "GOV", "1710128-9")));
     monitorDataRef.receive(new MonitorDataActor.MonitorDataRequest(
-        new SecurityServerInfo("gdev-ss2.i.palveluvayla.com", "gdev-ss2.i.palveluvayla.com", "GOV", "1710128-9", "Gofore")));
+        new SecurityServerInfo("gdev-ss2.i.palveluvayla.com", "gdev-ss2.i.palveluvayla.com", "GOV", "1710128-9")));
 
     // assert that result collector actor has received 2 results
     assertEquals(2, resultCollectorActor.getNumProcessedResults());

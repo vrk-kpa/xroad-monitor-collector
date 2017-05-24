@@ -14,5 +14,4 @@ public class SecurityServerInfo {
   private final String address;
   private final String memberClass;
   private final String memberCode;
-  private final String memberName;
 }
