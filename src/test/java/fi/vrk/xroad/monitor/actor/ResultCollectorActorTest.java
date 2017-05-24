@@ -11,7 +11,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -28,7 +28,7 @@ public class ResultCollectorActorTest {
 
     // parse global config to get security server information
     SharedParamsParser parser = new SharedParamsParser("src/test/resources/shared-params.xml");
-    List<SecurityServerInfo> securityServerInfos = null;
+    Set<SecurityServerInfo> securityServerInfos = null;
     try {
       securityServerInfos = parser.parse();
     } catch (ParserConfigurationException | IOException | SAXException e) {
@@ -51,10 +51,8 @@ public class ResultCollectorActorTest {
     assertEquals(false, actor.isDone());
 
     // send results
-    for (int i=0; i<securityServerInfos.size(); i++) {
-      ref.receive(ResultCollectorActor.MonitorDataResult.createSuccess(securityServerInfos.get(i)));
-      assertEquals(i+1, actor.getNumProcessedResults());
-    }
+    securityServerInfos.stream().forEach(info -> ref.receive(ResultCollectorActor.MonitorDataResult.createSuccess(info)));
+    assertEquals(securityServerInfos.size(), actor.getNumProcessedResults());
 
     // assert that all results have been received
     assertEquals(true, actor.isDone());

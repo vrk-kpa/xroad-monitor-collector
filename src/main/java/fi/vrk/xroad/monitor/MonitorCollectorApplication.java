@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 import static fi.vrk.xroad.monitor.util.MonitorCollectorConstants.SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE;
 
@@ -41,13 +41,13 @@ public class MonitorCollectorApplication {
         SpringExtension ext = context.getBean(SpringExtension.class);
 
         SharedParamsParser parser = new SharedParamsParser("/etc/xroad/globalconf/FI/shared-params.xml");
-        List<SecurityServerInfo> securityServerInfos;
+        Set<SecurityServerInfo> securityServerInfos;
         try {
             securityServerInfos = parser.parse();
             log.info("Parsed results: {}", securityServerInfos.toString());
         } catch (ParserConfigurationException | IOException | SAXException e) {
             log.error("Failed parsing", e);
-            securityServerInfos = Collections.emptyList();
+            securityServerInfos = Collections.emptySet();
         }
         ActorRef resultCollector = system.actorOf(ext.props("resultCollectorActor", securityServerInfos));
 

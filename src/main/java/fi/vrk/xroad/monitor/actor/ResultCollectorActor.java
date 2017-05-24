@@ -9,9 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Actor for collecting security server monitoring data processing results
@@ -21,13 +20,12 @@ import java.util.Map;
 @Slf4j
 public class ResultCollectorActor extends AbstractActor {
 
-  private Map<SecurityServerInfo, MonitorDataResult> trackResults;
+  private Set<SecurityServerInfo> awaitedResults;
+  private final int numAwaitedResults;
 
-  public ResultCollectorActor(List<SecurityServerInfo> expectedResults) {
-    trackResults = new HashMap<>();
-    for (SecurityServerInfo securityServerInfo: expectedResults) {
-      trackResults.put(securityServerInfo, null);
-    }
+  public ResultCollectorActor(Set<SecurityServerInfo> awaitedResults) {
+    this.awaitedResults = new HashSet<>(awaitedResults);
+    this.numAwaitedResults = awaitedResults.size();
   }
 
   @Override
@@ -39,7 +37,7 @@ public class ResultCollectorActor extends AbstractActor {
   }
 
   private void handleMonitorDataResult(MonitorDataResult result) {
-    trackResults.put(result.getSecurityServerInfo(), result);
+    awaitedResults.remove(result.getSecurityServerInfo());
     if (result.isSuccess()) {
       log.info("received success with data {}", result.toString());
     } else {
@@ -50,10 +48,8 @@ public class ResultCollectorActor extends AbstractActor {
   @Override
   public void postStop() throws Exception {
     super.postStop();
-    for(Map.Entry e: trackResults.entrySet()) {
-      if (e.getValue() == null) {
-        log.error("Result for {} has not been received", e.getKey());
-      }
+    for (SecurityServerInfo securityServerInfo: awaitedResults) {
+      log.error("Result for {} has not been received", securityServerInfo);
     }
   }
 
@@ -62,7 +58,7 @@ public class ResultCollectorActor extends AbstractActor {
    * Indicates if all expected results have been received.
    */
   boolean isDone() {
-    return !trackResults.containsValue(null);
+    return awaitedResults.isEmpty();
   }
 
   /**
@@ -70,7 +66,7 @@ public class ResultCollectorActor extends AbstractActor {
    * The number of expected results.
    */
   int getNumExpectedResults() {
-    return trackResults.size();
+    return this.numAwaitedResults;
   }
 
   /**
@@ -78,13 +74,7 @@ public class ResultCollectorActor extends AbstractActor {
    * The number of processed results.
    */
   int getNumProcessedResults() {
-    int numProcessed = 0;
-    for (MonitorDataResult result: trackResults.values()) {
-      if (result != null) {
-        numProcessed++;
-      }
-    }
-    return numProcessed;
+    return numAwaitedResults - awaitedResults.size();
   }
 
   /**

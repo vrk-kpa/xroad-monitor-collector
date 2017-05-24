@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import scala.concurrent.duration.Duration;
 
-import java.util.List;
+import java.util.Set;
 
 import static akka.actor.SupervisorStrategy.resume;
 
@@ -47,11 +47,11 @@ public class Supervisor extends AbstractActor {
   }
 
   private void handleMonitorDataRequest (StartCollectingMonitorDataCommand request) {
-    for (int i=0; i<request.getSecurityServerInfos().size(); i++) {
-      SecurityServerInfo info = request.getSecurityServerInfos().get(i);
-      log.info("Process SecurityServerInfo i={}", i);
-      monitorDataRequestPoolRouter.tell(new MonitorDataActor.MonitorDataRequest(info), getSelf());
-    }
+    request.getSecurityServerInfos().stream()
+        .forEach(info -> {
+          log.info("Process SecurityServerInfo {}", info);
+          monitorDataRequestPoolRouter.tell(new MonitorDataActor.MonitorDataRequest(info), getSelf());
+        });
   }
 
   /**
@@ -60,7 +60,7 @@ public class Supervisor extends AbstractActor {
   @RequiredArgsConstructor
   @Getter
   public static class StartCollectingMonitorDataCommand {
-    private final List<SecurityServerInfo> securityServerInfos;
+    private final Set<SecurityServerInfo> securityServerInfos;
   }
 
   //  Default Supervisor Strategy

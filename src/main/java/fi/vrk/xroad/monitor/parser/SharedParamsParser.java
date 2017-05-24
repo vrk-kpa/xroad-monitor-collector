@@ -12,8 +12,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class for parsing X-Road shared-params.xml
@@ -39,7 +39,7 @@ public class SharedParamsParser {
    * @throws IOException
    * @throws SAXException
    */
-  public List<SecurityServerInfo> parse() throws ParserConfigurationException, IOException, SAXException {
+  public Set<SecurityServerInfo> parse() throws ParserConfigurationException, IOException, SAXException {
     File inputFile = new File(filename);
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -50,7 +50,7 @@ public class SharedParamsParser {
 
     NodeList members = root.getElementsByTagName("member");
     NodeList securityServers = root.getElementsByTagName("securityServer");
-    List<SecurityServerInfo> securityServerInfoList = new ArrayList<>();
+    Set<SecurityServerInfo> securityServerInfos = new HashSet<>();
 
     for (int i=0; i<securityServers.getLength(); i++) {
       Node securityServer = securityServers.item(i);
@@ -70,14 +70,14 @@ public class SharedParamsParser {
               String memberName = memberElement.getElementsByTagName("name").item(0).getTextContent();
               SecurityServerInfo info = new SecurityServerInfo(serverCode, address, memberClass, memberCode);
               log.debug("SecurityServerInfo: {}", info);
-              securityServerInfoList.add(info);
+              securityServerInfos.add(info);
               break;
             }
           }
         }
       }
     }
-    log.debug("Result list: {}", securityServerInfoList.toString());
-    return securityServerInfoList;
+    log.debug("Result set: {}", securityServerInfos.toString());
+    return securityServerInfos;
   }
 }

@@ -1,6 +1,9 @@
 package fi.vrk.xroad.monitor.parser;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 /**
  * Data structure for holding security server information

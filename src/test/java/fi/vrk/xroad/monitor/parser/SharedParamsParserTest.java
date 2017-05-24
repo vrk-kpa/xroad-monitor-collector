@@ -5,13 +5,11 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link SharedParamsParser}
@@ -27,7 +25,7 @@ public class SharedParamsParserTest {
 
   @Test
   public void testParse() throws IOException, SAXException, ParserConfigurationException {
-    List<SecurityServerInfo> resultList = parser.parse();
+    Set<SecurityServerInfo> resultList = parser.parse();
     assertNotNull(resultList);
     assertThat(resultList.size(), not(is(0)));
     assertTrue(resultList.contains(exampleInfo));

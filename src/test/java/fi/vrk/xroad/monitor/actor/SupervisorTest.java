@@ -3,30 +3,19 @@ package fi.vrk.xroad.monitor.actor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.pattern.Patterns;
 import akka.testkit.TestActorRef;
-import akka.util.Timeout;
-import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import fi.vrk.xroad.monitor.parser.SharedParamsParser;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.xml.sax.SAXException;
-import scala.concurrent.Await;
-import scala.concurrent.Future;
-import scala.concurrent.duration.Duration;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Tests for {@link Supervisor}
@@ -42,7 +31,7 @@ public class SupervisorTest {
   public void testSupervisor() {
     // parse global config to get security server information
     SharedParamsParser parser = new SharedParamsParser("src/test/resources/shared-params.xml");
-    List<SecurityServerInfo> securityServerInfos = null;
+    Set<SecurityServerInfo> securityServerInfos = null;
     try {
       securityServerInfos = parser.parse();
     } catch (ParserConfigurationException | IOException | SAXException e) {

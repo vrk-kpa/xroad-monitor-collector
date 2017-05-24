@@ -11,7 +11,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -31,7 +31,7 @@ public class MonitorDataActorTest {
 
     // parse global config to get security server information
     SharedParamsParser parser = new SharedParamsParser("src/test/resources/shared-params.xml");
-    List<SecurityServerInfo> securityServerInfos = null;
+    Set<SecurityServerInfo> securityServerInfos = null;
     try {
       securityServerInfos = parser.parse();
     } catch (ParserConfigurationException | IOException | SAXException e) {
