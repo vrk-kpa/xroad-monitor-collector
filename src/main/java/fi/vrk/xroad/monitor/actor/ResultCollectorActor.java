@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.Set;
 
+import static akka.japi.pf.UnitMatch.match;
+
 /**
  * Actor for collecting security server monitoring data processing results
  */
@@ -21,19 +23,23 @@ import java.util.Set;
 public class ResultCollectorActor extends AbstractActor {
 
   private Set<SecurityServerInfo> awaitedResults;
-  private final int numAwaitedResults;
-
-  public ResultCollectorActor(Set<SecurityServerInfo> awaitedResults) {
-    this.awaitedResults = new HashSet<>(awaitedResults);
-    this.numAwaitedResults = awaitedResults.size();
-  }
+  private int numAwaitedResults;
 
   @Override
-  public AbstractActor.Receive createReceive() {
+  public Receive createReceive() {
     return receiveBuilder()
+        .match(Set.class, this::handleInitialization)
         .match(MonitorDataResult.class, this::handleMonitorDataResult)
         .matchAny(obj -> log.error("Unhandled message: {}", obj))
         .build();
+  }
+
+  // TODO this should be tested!!! Or Try-Catch or somethink
+  private void handleInitialization(Set<SecurityServerInfo> infos) {
+    log.info("Initializing resultCollerActor: {}", infos);
+    this.awaitedResults = new HashSet<>(infos);
+    this.numAwaitedResults = infos.size();
+    getSender().tell("Initializing done", getSelf());
   }
 
   private void handleMonitorDataResult(MonitorDataResult result) {

@@ -40,7 +40,7 @@ public class MonitorCollectorApplication {
         ActorSystem system = context.getBean(ActorSystem.class);
         SpringExtension ext = context.getBean(SpringExtension.class);
 
-        SharedParamsParser parser = new SharedParamsParser("/etc/xroad/globalconf/FI/shared-params.xml");
+        SharedParamsParser parser = new SharedParamsParser("src/test/resources/shared-params.xml");
         Set<SecurityServerInfo> securityServerInfos;
         try {
             securityServerInfos = parser.parse();
@@ -49,13 +49,8 @@ public class MonitorCollectorApplication {
             log.error("Failed parsing", e);
             securityServerInfos = Collections.emptySet();
         }
-        ActorRef resultCollector = system.actorOf(ext.props("resultCollectorActor", securityServerInfos));
 
-        ActorRef monitorDataRequestPoolRouter =
-            system.actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
-                .props(ext.props("monitorDataActor", resultCollector)));
-
-        ActorRef supervisor = system.actorOf(ext.props("supervisor", monitorDataRequestPoolRouter, "monitorDataActor"));
+        ActorRef supervisor = system.actorOf(ext.props("supervisor"));
         supervisor.tell(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
     }
 }

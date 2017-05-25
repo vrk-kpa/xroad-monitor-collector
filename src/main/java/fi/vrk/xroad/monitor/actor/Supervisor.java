@@ -5,17 +5,26 @@ import akka.actor.ActorRef;
 import akka.actor.OneForOneStrategy;
 import akka.actor.SupervisorStrategy;
 import akka.japi.pf.DeciderBuilder;
+import akka.pattern.Patterns;
+import akka.routing.SmallestMailboxPool;
+import akka.util.Timeout;
+import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import scala.concurrent.Await;
 import scala.concurrent.duration.Duration;
 
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static akka.actor.SupervisorStrategy.resume;
+import static fi.vrk.xroad.monitor.util.MonitorCollectorConstants.SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE;
 
 /**
  * Supervisor for actors
@@ -25,16 +34,23 @@ import static akka.actor.SupervisorStrategy.resume;
 @Slf4j
 public class Supervisor extends AbstractActor {
 
+  private ActorRef resultCollectorActor;
   private ActorRef monitorDataRequestPoolRouter;
 
-  public Supervisor(ActorRef monitorDataRequestPoolRouter, String workerActorName) {
-    this.monitorDataRequestPoolRouter = monitorDataRequestPoolRouter;
-  }
+  @Autowired
+  SpringExtension ext;
 
   @Override
   public void preStart() throws Exception {
-    super.preStart();
     log.info("preStart");
+
+    resultCollectorActor = getContext().actorOf(ext.props("resultCollectorActor"));
+
+    monitorDataRequestPoolRouter = getContext()
+            .actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
+                    .props(ext.props("monitorDataActor", resultCollectorActor)));
+
+    super.preStart();
   }
 
   @Override
@@ -47,6 +63,14 @@ public class Supervisor extends AbstractActor {
   }
 
   private void handleMonitorDataRequest (StartCollectingMonitorDataCommand request) {
+    Timeout timeout = new Timeout(1, TimeUnit.MINUTES);
+
+    try {
+      Await.ready(Patterns.ask(resultCollectorActor, request.getSecurityServerInfos(), timeout), timeout.duration());
+    } catch (TimeoutException | InterruptedException e) {
+      log.error("Failed to initialize the ResultCollectorActor, {}", e);
+    }
+
     request.getSecurityServerInfos().stream()
         .forEach(info -> {
           log.info("Process SecurityServerInfo {}", info);
