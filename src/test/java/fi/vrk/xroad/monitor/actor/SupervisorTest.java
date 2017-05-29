@@ -3,6 +3,7 @@ package fi.vrk.xroad.monitor.actor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import akka.routing.SmallestMailboxPool;
 import akka.testkit.TestActorRef;
 import fi.vrk.xroad.monitor.MonitorCollectorApplication;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import static fi.vrk.xroad.monitor.util.MonitorCollectorConstants.SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -63,22 +65,16 @@ public class SupervisorTest {
     final TestActorRef<ResultCollectorActor> resultCollectorActor = TestActorRef.create(
             system, Props.create(ResultCollectorActor.class));
 
-    // create supervisor
-    final Props supervisorProps = ext.props("supervisor", resultCollectorActor);
-    final TestActorRef<Supervisor> supervisorRef = TestActorRef.create(system, supervisorProps, "supervisor");
+    final TestActorRef<MonitorDataActor> monitorDataRequestPoolRouter =
+            TestActorRef.create(system, Props.create(MonitorDataActor.class, resultCollectorActor));
 
-    resultCollectorActor.receive(securityServerInfos, ActorRef.noSender());
-    // assert that no results have been received yet
-    assertEquals(0, resultCollectorActor.underlyingActor().getNumProcessedResults());
+    // create supervisor
+    final Props supervisorProps = ext.props("supervisor", resultCollectorActor, monitorDataRequestPoolRouter);
+    final TestActorRef<Supervisor> supervisorRef = TestActorRef.create(system, supervisorProps, "supervisor");
 
     // send message to supervisor to start processing
     supervisorRef.receive(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
 
-    try {
-      Thread.sleep(5000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
     // assert that all the results have been received
     assertEquals(securityServerInfos.size(), resultCollectorActor.underlyingActor().getNumProcessedResults());
 

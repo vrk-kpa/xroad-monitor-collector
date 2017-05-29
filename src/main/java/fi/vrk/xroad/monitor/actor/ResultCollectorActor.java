@@ -34,9 +34,10 @@ public class ResultCollectorActor extends AbstractActor {
         .build();
   }
 
-  // TODO this should be tested!!! Or Try-Catch or somethink
+  // TODO this should be tested!!! Or Try-Catch or something
   private void handleInitialization(Set<SecurityServerInfo> infos) {
     log.info("Initializing resultCollerActor: {}", infos);
+
     this.awaitedResults = new HashSet<>(infos);
     this.numAwaitedResults = infos.size();
     getSender().tell("Initializing done", getSelf());
@@ -46,7 +47,6 @@ public class ResultCollectorActor extends AbstractActor {
     awaitedResults.remove(result.getSecurityServerInfo());
     if (result.isSuccess()) {
       log.info("received success with data {}", result.toString());
-      log.info("Left {}:{}", getNumProcessedResults(), getNumExpectedResults());
     } else {
       log.error("received error with data {}", result.toString());
     }

@@ -41,8 +41,9 @@ public class Supervisor extends AbstractActor {
   @Autowired
   SpringExtension ext;
 
-  public Supervisor (ActorRef resultCollectorActor) {
+  public Supervisor (ActorRef resultCollectorActor, ActorRef monitorDataRequestPoolRouter) {
     this.resultCollectorActor = resultCollectorActor;
+    this.monitorDataRequestPoolRouter = monitorDataRequestPoolRouter;
   }
 
   @Override
@@ -53,9 +54,11 @@ public class Supervisor extends AbstractActor {
       resultCollectorActor = getContext().actorOf(ext.props("resultCollectorActor"));
     }
 
-    monitorDataRequestPoolRouter = getContext()
-            .actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
-                    .props(ext.props("monitorDataActor", resultCollectorActor)));
+    if (monitorDataRequestPoolRouter == null) {
+      monitorDataRequestPoolRouter = getContext()
+              .actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
+                      .props(ext.props("monitorDataActor", resultCollectorActor)));
+    }
 
     super.preStart();
   }
