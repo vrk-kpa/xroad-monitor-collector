@@ -46,6 +46,7 @@ public class ResultCollectorActor extends AbstractActor {
     awaitedResults.remove(result.getSecurityServerInfo());
     if (result.isSuccess()) {
       log.info("received success with data {}", result.toString());
+      log.info("Left {}:{}", getNumProcessedResults(), getNumExpectedResults());
     } else {
       log.error("received error with data {}", result.toString());
     }

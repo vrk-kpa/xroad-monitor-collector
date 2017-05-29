@@ -34,17 +34,24 @@ import static fi.vrk.xroad.monitor.util.MonitorCollectorConstants.SUPERVISOR_MON
 @Slf4j
 public class Supervisor extends AbstractActor {
 
+  @Getter
   private ActorRef resultCollectorActor;
   private ActorRef monitorDataRequestPoolRouter;
 
   @Autowired
   SpringExtension ext;
 
+  public Supervisor (ActorRef resultCollectorActor) {
+    this.resultCollectorActor = resultCollectorActor;
+  }
+
   @Override
   public void preStart() throws Exception {
     log.info("preStart");
 
-    resultCollectorActor = getContext().actorOf(ext.props("resultCollectorActor"));
+    if (resultCollectorActor == null) {
+      resultCollectorActor = getContext().actorOf(ext.props("resultCollectorActor"));
+    }
 
     monitorDataRequestPoolRouter = getContext()
             .actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
@@ -99,8 +106,9 @@ public class Supervisor extends AbstractActor {
   //  Other types of Throwable will be escalated to parent actor
   //  If the exception escalate all the way up to the root guardian it will handle it in the same way as the default strategy defined above.`
   private static SupervisorStrategy strategy =
-      new OneForOneStrategy(3, Duration.create("1 minute"), DeciderBuilder.
-          matchAny(e -> resume()).build());
+      new OneForOneStrategy(3, Duration.create("1 minute"), DeciderBuilder
+          .match(NullPointerException.class, e -> { log.info("NullPointer!!"); return resume(); })
+          .matchAny(e -> resume()).build());
 
   @Override
   public SupervisorStrategy supervisorStrategy() {

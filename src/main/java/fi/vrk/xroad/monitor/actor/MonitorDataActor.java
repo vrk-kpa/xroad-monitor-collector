@@ -32,6 +32,10 @@ public class MonitorDataActor extends AbstractActor {
   }
 
   protected void handleMonitorDataRequest(MonitorDataRequest request) {
+    if (request.getSecurityServerInfo().getServerCode() == "") {
+      resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createError(request.getSecurityServerInfo(), "NullPointer"), getSelf());
+      throw new NullPointerException();
+    }
     log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
     resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(request.getSecurityServerInfo()),
         getSelf());
