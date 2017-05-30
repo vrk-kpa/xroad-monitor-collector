@@ -46,7 +46,7 @@ public class MonitorDataActorTest {
 
     // Initialize resultcollertor
     resultCollectorRef.receive(infos);
-    
+
     // process all requests
     for(SecurityServerInfo info : infos ){
       monitorDataRef.receive(new MonitorDataActor.MonitorDataRequest(info));

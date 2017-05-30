@@ -46,6 +46,8 @@ public class Supervisor extends AbstractActor {
     this.monitorDataRequestPoolRouter = monitorDataRequestPoolRouter;
   }
 
+  public Supervisor () {}
+
   @Override
   public void preStart() throws Exception {
     log.info("preStart");
