@@ -11,6 +11,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -26,21 +27,11 @@ public class MonitorDataActorTest {
    * Tests that the monitor data actor sends processing results to result collector actor.
    */
   @Test
-  public void testResultCollectorActor() {
+  public void testMonitorDataActor() {
     ActorSystem system = ActorSystem.create();
 
-    // parse global config to get security server information
-    SharedParamsParser parser = new SharedParamsParser("src/test/resources/shared-params.xml");
-    Set<SecurityServerInfo> securityServerInfos = null;
-    try {
-      securityServerInfos = parser.parse();
-    } catch (ParserConfigurationException | IOException | SAXException e) {
-      log.error("Failed parsing", e);
-      fail("Failed parsing shared-params.xml");
-    }
-
     // create result collector actor
-    final Props resultCollectorActorProps = Props.create(ResultCollectorActor.class, securityServerInfos);
+    final Props resultCollectorActorProps = Props.create(ResultCollectorActor.class);
     final TestActorRef<ResultCollectorActor> resultCollectorRef = TestActorRef.create(system, resultCollectorActorProps, "testA");
     ResultCollectorActor resultCollectorActor = resultCollectorRef.underlyingActor();
 
@@ -49,11 +40,19 @@ public class MonitorDataActorTest {
     final TestActorRef<MonitorDataActor> monitorDataRef = TestActorRef.create(system, monitorDataActorProps, "testB");
     MonitorDataActor monitorDataActor = monitorDataRef.underlyingActor();
 
-    // process 2 requests
-    monitorDataRef.receive(new MonitorDataActor.MonitorDataRequest(
-        new SecurityServerInfo("gdev-ss1.i.palveluvayla.com", "gdev-ss1.i.palveluvayla.com", "GOV", "1710128-9")));
-    monitorDataRef.receive(new MonitorDataActor.MonitorDataRequest(
-        new SecurityServerInfo("gdev-ss2.i.palveluvayla.com", "gdev-ss2.i.palveluvayla.com", "GOV", "1710128-9")));
+    Set<SecurityServerInfo> infos = new HashSet<>();
+    infos.add(new SecurityServerInfo("gdev-ss1.i.palveluvayla.com", "gdev-ss1.i.palveluvayla.com", "GOV", "1710128-9"));
+    infos.add(new SecurityServerInfo("gdev-ss2.i.palveluvayla.com", "gdev-ss2.i.palveluvayla.com", "GOV", "1710128-9"));
+
+    // Initialize resultcollertor
+    resultCollectorRef.receive(infos);
+    
+    // process all requests
+    for(SecurityServerInfo info : infos ){
+      monitorDataRef.receive(new MonitorDataActor.MonitorDataRequest(info));
+
+    }
+
 
     // assert that result collector actor has received 2 results
     assertEquals(2, resultCollectorActor.getNumProcessedResults());

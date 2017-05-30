@@ -47,15 +47,6 @@ public class SupervisorTest {
    */
   @Test
   public void testSupervisor() {
-    // parse global config to get security server information
-    /*SharedParamsParser parser = new SharedParamsParser("src/test/resources/shared-params.xml");
-    Set<SecurityServerInfo> securityServerInfos = null;
-    try {
-      securityServerInfos = parser.parse();
-    } catch (ParserConfigurationException | IOException | SAXException e) {
-      log.error("Failed parsing", e);
-      fail("Failed parsing shared-params.xml");
-    }*/
 
     Set<SecurityServerInfo> securityServerInfos = new HashSet<>();
     securityServerInfos.add(new SecurityServerInfo("Eka", "Osoite", "memberClass", "memberCode"));

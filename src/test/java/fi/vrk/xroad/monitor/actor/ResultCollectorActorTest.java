@@ -1,5 +1,6 @@
 package fi.vrk.xroad.monitor.actor;
 
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.testkit.TestActorRef;
@@ -37,9 +38,11 @@ public class ResultCollectorActorTest {
     }
 
     // create result collector actor
-    final Props props = Props.create(ResultCollectorActor.class, securityServerInfos);
-    final TestActorRef<ResultCollectorActor> ref = TestActorRef.create(system, props, "testA");
+    final Props props = Props.create(ResultCollectorActor.class);
+    final TestActorRef<ResultCollectorActor> ref = TestActorRef.create(system, props);
     final ResultCollectorActor actor = ref.underlyingActor();
+
+    ref.receive(securityServerInfos, ActorRef.noSender());
 
     // assert that we expect as many results as given in the actor constructor
     assertEquals(securityServerInfos.size(), actor.getNumExpectedResults());
