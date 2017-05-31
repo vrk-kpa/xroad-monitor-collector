@@ -55,8 +55,10 @@ public class ResultCollectorActor extends AbstractActor {
   @Override
   public void postStop() throws Exception {
     super.postStop();
-    for (SecurityServerInfo securityServerInfo: awaitedResults) {
-      log.error("Result for {} has not been received", securityServerInfo);
+    if (awaitedResults != null) { // may be null if never initialized (tests)
+      for (SecurityServerInfo securityServerInfo : awaitedResults) {
+        log.error("Result for {} has not been received", securityServerInfo);
+      }
     }
   }
 

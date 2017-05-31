@@ -53,8 +53,11 @@ public class SupervisorTest {
             TestActorRef.create(system, new SmallestMailboxPool(2).props(Props.create(MonitorDataActor.class, resultCollectorActor)));
 
     // create supervisor
-    final Props supervisorProps = ext.props("supervisor", resultCollectorActor, monitorDataRequestPoolRouter);
+    final Props supervisorProps = ext.props("supervisor");
     final TestActorRef<Supervisor> supervisorRef = TestActorRef.create(system, supervisorProps, "supervisor");
+    Supervisor underlying = supervisorRef.underlyingActor();
+    underlying.overrideResultCollectorActor(resultCollectorActor);
+    underlying.overrideMonitorDataRequestPoolRouter(monitorDataRequestPoolRouter);
 
     // send message to supervisor to start processing
     supervisorRef.receive(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
@@ -63,4 +66,5 @@ public class SupervisorTest {
     assertEquals(securityServerInfos.size(), resultCollectorActor.underlyingActor().getNumProcessedResults());
 
   }
+
 }
