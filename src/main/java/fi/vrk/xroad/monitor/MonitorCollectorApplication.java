@@ -47,7 +47,7 @@ public class MonitorCollectorApplication {
             log.info("Parsed results: {}", securityServerInfos.toString());
         } catch (ParserConfigurationException | IOException | SAXException e) {
             log.error("Failed parsing", e);
-            securityServerInfos = Collections.emptySet();
+            throw new RuntimeException(e);
         }
 
         ActorRef supervisor = system.actorOf(ext.props("supervisor"));
