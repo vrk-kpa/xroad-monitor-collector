@@ -4,89 +4,14 @@
     <approvedCA>
         <name>X-Road-6_Server_CA</name>
         <topCA>
-            <cert>MIID2DCCAsCgAwIBAgIIUoBJ0J1Ef9QwDQYJKoZIhvcNAQELBQAwOTEZMBcGA1UEAwwQWC1Sb2FkLTZfUm9vdF9DQTEPMA0GA1UECgwGY3NjLmZpMQswCQYDVQQGEwJSUzAeFw0xNTAyMTcwNzQyMzlaFw0zMDAyMTcwNzQyMzlaMD0xGzAZBgNVBAMMElgtUm9hZC02X1NlcnZlcl9DQTEMMAoGA1UECgwDQ1NDMRAwDgYDVQQGEwdGSS10ZXN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvUM+CQmwfhprjoMR6rXWUL7qs/jEJM+JwafcndlDeOGOJMonmvuaWs1wZdhG5XTMqyBnsZcm1/8lIGjVz1i+ZVNQl6WZO6o+YZc9eUnEhVS1Q8Q6ZhB/+QahQXlo8E85MfX7XNZtetC6JGoWgDPl68tj+aSCxEAIJJmlJxMeSpFeIxOZU334FJYbE27QSNtw37okCkfBM0YpB1ykOxgCkwQnhkk1DMLYrvfRXThsovY02lKO0OZ2+o+sb8gkVSMLv6g2sqAqdA1dcF9TbEzXcvv7T3RkT4zFmSiFETqiJ2yEgWGGlx8ON4vIfJcp3bblxj3Y2hqhdZTsotEB2zw/KQIDAQABo4HfMIHcMB0GA1UdDgQWBBT8vu0YW+2ztK9xer5qD3WP6kEqITAPBgNVHRMBAf8EBTADAQH/MB8GA1UdIwQYMBaAFAqCfSp13g2H09OrZptYEi2sKGvpMHkGA1UdHwRyMHAwbqBsoGqGaGh0dHA6Ly9wdjZ0Y2EwMS5jc2MuZmkvZWpiY2EvcHVibGljd2ViL3dlYmRpc3QvY2VydGRpc3Q/Y21kPWNybCZpc3N1ZXI9Q049WC1Sb2FkLTZfUm9vdF9DQSxPPWNzYy5maSxDPVJTMA4GA1UdDwEB/wQEAwIBhjANBgkqhkiG9w0BAQsFAAOCAQEAQdEHLY1FrH8OMrAOEEPkNG4q0rDxbNk4M4X5535hhDx5k+HFKK9cc9HDb2Rs5SW42+iDVD77JEQVWiTeihSVwZe/knoxX+CVxipq4rW/aYA9rxbjp0Bw+tqDlCw8KhEr4fuAucL1pqh8lPKjdmbuTUu3rZy3Eexl/5UFN83nxnUwGptCqzodZoCDCHKT9AiFStBfvWeqN3VQLzS2p38QjuAf+HiwvJCYcWvsGKmgZ/1mt45jH5pq/tlJz+cSzEMF/Uj3pNs7bfTsCprY5EtusQIkp5wEsAHuFkv0FDrimIvBq7OP1ytq2PLkVS1CRry5DspPaIRPjoC8CTQQbVB0xQ==</cert>
+            <cert>ThisIsCACertHashBeliveIt</cert>
         </topCA>
         <certificateProfileInfo>ee.ria.xroad.common.certificateprofile.impl.FiVRKCertificateProfileInfoProvider</certificateProfileInfo>
     </approvedCA>
-    <approvedCA>
-        <name>VRK CA for Test Purposes - G2</name>
-        <topCA>
-            <cert>MIIGTzCCBTegAwIBAgIDAfKxMA0GCSqGSIb3DQEBBQUAMIGlMQswCQYDVQQGEwJGSTEQMA4GA1UECBMHRmlubGFuZDEjMCEGA1UEChMaVmFlc3RvcmVraXN0ZXJpa2Vza3VzIFRFU1QxKTAnBgNVBAsTIENlcnRpZmljYXRpb24gQXV0aG9yaXR5IFNlcnZpY2VzMRkwFwYDVQQLExBWYXJtZW5uZXBhbHZlbHV0MRkwFwYDVQQDExBWUksgVEVTVCBSb290IENBMB4XDTEzMTEwODA4MzUxMFoXDTIzMTIxNjIxNTk1OVowdDELMAkGA1UEBhMCRkkxIzAhBgNVBAoTGlZhZXN0b3Jla2lzdGVyaWtlc2t1cyBURVNUMRgwFgYDVQQLEw9UZXN0aXZhcm1lbnRlZXQxJjAkBgNVBAMTHVZSSyBDQSBmb3IgVGVzdCBQdXJwb3NlcyAtIEcyMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA0AQSgL6CxC7DgrgMwQiE7nxb6okBepIDTWDKhcdDun9cLT7ctIkOQZ005rPZGjlVhGYEsZn5EYJmGaN/t9L7KCtJfZTD+RvMlxavrRTmxsHOWPRCnn1x6er2DtjFluZVoSj3cfukBrgsVlBYnInuWTCP7NL7svTB4D0WJEu8egcCY9spRntDyML8LIiY03ikEx7iqUCoP7k4Bq5SYfS1hazkizS4iTo4p2I+azyCCYoV0r3yrKBB8hOUL/jUCwdKDSCgHEsdT4ktG9KqwCPCR9nWYQw6TGfrft2EIx3Aan0NGbQY30AhTo8+yYC/RjkhI9V6yUPz02NL/svQ8guB73faXPPvTxoLYPSM/FBehJRUb+uksPfM9N3CZTgM2yXiu15/PIfsaGHIH+rkDsJ+b76/cjwxFO0690AT7JJuZzv0LSDpnVoVOab3nnHrNQEIQK9YXReNmpSxraBtp6mqr1thXqArX32Fsu02ML0y3Tz+/JNMml0hVitbmGB2XFWVggjGQ1cHxxPLlZYXx3asvVzRQQ3QkwxgMie9IMPurFv2QrhqCq68Xy0oZAjYqnqU67aI3MeEBp0LUBZ8WuDLKQpiMfoZj9wcUSB31i0y7dwDtMuFngBYXxTBdSmRpPu+0VFhaIXkqKvUiVkVzYMiuveDV/D4Hk70mNzoHDclC80CAwEAAaOCAbYwggGyMBIGA1UdEwEB/wQIMAYBAf8CAQAwQgYIKwYBBQUHAQEENjA0MDIGCCsGAQUFBzAChiZodHRwOi8vcHJveHkuZmluZWlkLmZpL2NhL3Zya3Rlc3RjLmNydDCBzQYDVR0gBIHFMIHCMIG/BgkqgXaEBWMKFQEwgbEwgYUGCCsGAQUFBwICMHkad1Zhcm1lbm5lcG9saXRpaWtrYSBvbiBzYWF0YXZpbGxhIC0gQ2VydGlmaWthdCBwb2xpY3kgZmlubnMgLSBDZXJ0aWZpY2F0ZSBwb2xpY3kgaXMgYXZhaWxhYmxlIGh0dHA6Ly93d3cuZmluZWlkLmZpL2Nwczk5MCcGCCsGAQUFBwIBFhtodHRwOi8vd3d3LmZpbmVpZC5maS9jcHM5OS8wDgYDVR0PAQH/BAQDAgHGMB8GA1UdIwQYMBaAFN7eUAsXZ8M3qcmYiDRIyTF5622hMDgGA1UdHwQxMC8wLaAroCmGJ2h0dHA6Ly9wcm94eS5maW5laWQuZmkvYXJsL3Zya3Rlc3RhLmNybDAdBgNVHQ4EFgQUY/5oEDHqlV4nqz5hSV8foSP2iXIwDQYJKoZIhvcNAQEFBQADggEBAFn+cztu0BHlFSdL7hCDBAyUUwJWNdqWe8/lBotSiMQxjHzvJD0rjwVZd1GZiBFsnfdZtAxrV2JEELwdMKtFJWMe/AKXJA/pEl65EO7dGtbeR8/Jnlw2j2CxrMI4/NeQ2tS6CXTz201UqFXoKAjtpN39HvyJkmIgEt1mmn55NK0jxK4jkGWBCB5U+qSkPNhykTchkcug/usMCUmvJk3jh5qJ7Id2IxSyzsLLw1UbYlrtXKoUpQ9WYIiknJo9mvTaLUYQk0xSJFUmRiFDshBI4SXfeCw5FqkN4EhX4629n+qsU9TChMU9gvTAlLKjvERiUgQ+8dITW9luaIGFAZcR7fk=</cert>
-            <ocsp>
-                <url>http://ocsptest.fineid.fi/vrktp2</url>
-            </ocsp>
-        </topCA>
-        <certificateProfileInfo>ee.ria.xroad.common.certificateprofile.impl.FiVRKCertificateProfileInfoProvider</certificateProfileInfo>
-    </approvedCA>
-    <approvedCA>
-        <name>Palveluvayla Test CA</name>
-        <topCA>
-            <cert>MIIFdjCCA16gAwIBAgIJANBRKq8ZR8CQMA0GCSqGSIb3DQEBCwUAMEgxCzAJBgNVBAYTAkZJMRowGAYDVQQKDBFQYWx2ZWx5dmF5bGEgVGVzdDEdMBsGA1UEAwwUUGFsdmVsdXZheWxhIFRlc3QgQ0EwHhcNMTUwODA1MDYxNDA4WhcNMzUwNzMxMDYxNDA4WjBIMQswCQYDVQQGEwJGSTEaMBgGA1UECgwRUGFsdmVseXZheWxhIFRlc3QxHTAbBgNVBAMMFFBhbHZlbHV2YXlsYSBUZXN0IENBMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAu8KjEcmJNm/GL4JWWR6hxGrVgCRqpCoG/9FbI4wbJL/PCeaCMxiIEYzOIGwRXF+oKWAJVXxmGvOkIUAKgZtDmBmyPGFV+dktYWADPIfH/TYgldb8kQFHojxaHYl4hzTnJdvpENAH1yYp3Nwd6m2Sy4zJzohGnN2DFqbkBCKqgKEpfmjK+CNKDb0RQTIgTea/JruGuo96ojr2ulgQBzD5roOruvHrhuZC3SDus8kTuuKu/Lv8FQAZSI0lJ3Pvcl88l7rjk4WmHSEYhs680UwDE+i5qfgDoPaahruzU+mwGzTYUsxjyIufs+is4DPDsa0bW5PwRdafF3fh5tcIJWaVSaUZTAWswV996AJ/uDjkY7U5lN8oEg5fqFuRQqs8mkCfyi/4lBFE9rOn3+1D8ulOQ9xPaarn5ws/NzVqoLEueyU3xK5fYSFzy1YNhKbfTg4xAy+ue08i4yaJMMqLKq+oCthjN9UmiubdgiJ+1R0XqSseurtWBsrzoMJS8VMIJrUwut9TV+qxcKxwGmkA62zaU+ShvMrXBixlPwv1HxvWRPeMcoqJmO2Rv3d1vcnfUD779Iwfp6qo6yrmqWu+yjkcgJQAe7tvbEY+4QWUCkznYhmmeSOZkbQKGOmAarfP91fOaq/nJx/U41tGoUNbnLWp+alQMh9N/TczuyRl3NjWRuUCAwEAAaNjMGEwHQYDVR0OBBYEFKB3ySRs0WRzonKRpeibPw4Zr4YRMB8GA1UdIwQYMBaAFKB3ySRs0WRzonKRpeibPw4Zr4YRMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGGMA0GCSqGSIb3DQEBCwUAA4ICAQCkde1kTkRxC3/EqxjTLQthbEYlnqZK/wY66T463EPMbg0x8FXiP3GFeTx5a0mFbNUQStcyzzwqpyqYTIOLdfRX3PCMOlAUvZouKtt+HPLII0eeO8uH9ScyR6jTG3BF9sbvjFvQJ6RMo5zGuz2HnkdU/nlOPO07J27gO2QBbOyQrYSRknJf/ZRElfAOOSU1anuMkBR2nYize8od/R8LBc+lOSUD98PE5ji9/boF3BxwQRzG3GAkzSKem8OiviQhT5zdS6Y+DAYT3jtzQOZloKwmTgE2KfELNzIr2HzcueXMv1DAzrDXVDBlRl9Ojp/hcOSDJEk9tUTtyEw0o5UzKPQGaDfPtN/Txl1uZOYNsHOiSzIVe3n/3vFxH4ty47za1esaK60AWHKlMLWXMLKnozGDUofKhAYj7J+PGqsMhL3mLqCXPREdSED0IrfNdbHxAHCDCjysD0dmDqc+ICVhXNInjM2B3WO472bDtNHpsdAf2YRrVOIhYH9p333RplfZ/ffQe59xmrL/NmNxyXnBgXkoQGP+nhQkTKqcvfhEHyy53zS4O9dDB3GNi1nw2PL+jGSkiR8qmeKeC8GuTuJo0i0QJ8IAIc63ndOGsswkZR7Om1+nBeDjLXKDS/wc5aZJgohFxxMTqT38IPw9MtFIPhmar39ET125rlMlYZwAEo27Wg==</cert>
-            <ocsp>
-                <url>http://dev-is.palveluvayla.com:8888</url>
-            </ocsp>
-        </topCA>
-        <intermediateCA>
-            <cert>MIIFYTCCA0mgAwIBAgICAlkwDQYJKoZIhvcNAQELBQAwSDELMAkGA1UEBhMCRkkxGjAYBgNVBAoMEVBhbHZlbHl2YXlsYSBUZXN0MR0wGwYDVQQDDBRQYWx2ZWx1dmF5bGEgVGVzdCBDQTAeFw0xNjA1MTIxMjUzNTRaFw0zNjA1MDcxMjUzNTRaMDcxCzAJBgNVBAYTAkZJMRowGAYDVQQKDBFQYWx2ZWx1dmF5bGEgVGVzdDEMMAoGA1UEAwwDQ0ExMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAn9woUtgDcVp1PMTU/PdclIJOHuDHMDXcUKz7W73m0qHY0xxF2TvxoNKTQHeFJfgb60Pw3Bs23kxOt7f2h1+xkzHzdWd+H7YxGyIX3joLlI7NFFy90oeTwpEVx0gCrcPd6mzM6gIr3xPaotOYQmmpgvxe7IFKLnGOr9ymeTnU5bS+5KJ8e3z5uWO4SswHsmsXHm0Y/WIPa+r7fye0P575xE8PMdVNHLP8rSd3qmVcl40UzKGPUEAU4HxaK92I/PBPk6/Xo5dmm/yVnvV6HnLEMw0fXCEK045k4BGIL3XryJIQKfSKCWaGVUXWVM0sYWAN4dzqVlltYeXcQvCwtBa9wde+UErS+F9WZcLTyvjqVmw4atLOPyg5c8v+xDC8h/vdSEFQd3ajLKcFQybJmlyMw7tQDkJOPsKB2hZkY/jCZyZdBmKuEaj97KVsIqpokkzwsikdqove2p+ss7nsqOZStGKdNsIPwGnygvNns5yBa/pq1c8DhsDEJA5kvm6TFzIHnfLv969IGDUOjllRQ/a2s1l6BawwP6hdo5P3OY2+9t7OTSyaD6RehB4Mn2dC7CvQ6wqVWNAZN1e7hi5JZ0h0IsbwXYyGU4iOYnh/a8ej5rtBr4cHR8wDbSHImc2iDk8lXLMQKOkzi3e8PNRRMZd9uaX1LiVIci8iefSyf/Bg5tUCAwEAAaNmMGQwHQYDVR0OBBYEFMMxqBcFl9qhUhnp3NCi7DNWz2UoMB8GA1UdIwQYMBaAFKB3ySRs0WRzonKRpeibPw4Zr4YRMBIGA1UdEwEB/wQIMAYBAf8CAQAwDgYDVR0PAQH/BAQDAgGGMA0GCSqGSIb3DQEBCwUAA4ICAQALQwkqSa3rJEJOjwUVREFPlkEDumz/wilmdA9KI6xPCwZYs55e/3imFiHjCFVw5OIasWpi/AvGfk0Hsq+Zw9JBr+TBnVZC5D6mjOMjsPD5PhlgpVDL14AZUrxZEULjhGOby+Syt6m8FV2zwItvL+CzeYGEqrsh2RmOYZ8WIwzg0HgaOtILfFIQqZGTcWDkAEY133tnehCCLoKS3hddJXAcY8iweN4hqpgjKHd3tMOZfEKf50CvtWTANf8sK1CPsZPGI/Otn2B3G9OY2paaDxN+BL/NkrBJ/wBJgjF2767zjmDAx09kFXABszt19uiRfZRmWNAdjvJQmdzp228uQF/rQfE2auMl/xaopktyHsK8EPR/D4GcUg6WRcLPodlElO5V3HY+Pg5PsJ9GiWyIHPDOdtn64NxEQSSwG3Hj4xjyM3PtFSkcWod6Ou7z/MqATcfJAnQDk+ZtUVAt4Yw+wtNrGgo9TLJSmwWP6W35xqX+MTr12/FIDzbRWsdNIWF/Rq92jgGtkIIq9Qd/R2kTLphTkspwV3AQYkWSzXjDxunMt39oJAiGN4eRAQd5kksfz7fmwnYviNiXW9MSOAxRXYd3ztBvfsrS1UnJWYz8WBIhZZpULDhUid1guvAPHtLQm7MZ/8AMmFR7FlxtaM3G1kX00soJxEBEu/l8bV3cL0iOrg==</cert>
-            <ocsp>
-                <url>http://dev-is.palveluvayla.com:8888/CA1/</url>
-            </ocsp>
-        </intermediateCA>
-        <certificateProfileInfo>ee.ria.xroad.common.certificateprofile.impl.FiVRKCertificateProfileInfoProvider</certificateProfileInfo>
-    </approvedCA>
-    <approvedCA>
-        <name>CA</name>
-        <topCA>
-            <cert>MIIDTTCCAjWgAwIBAgIJAIgV3J7s6XiCMA0GCSqGSIb3DQEBCwUAMD0xCzAJBgNVBAYTAkZJMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxCzAJBgNVBAMMAkNBMB4XDTE2MDQyOTEwNDk0OVoXDTI2MDQyNzEwNDk0OVowPTELMAkGA1UEBhMCRkkxITAfBgNVBAoMGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDELMAkGA1UEAwwCQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDg4behnnuuXCzzddnadDlP88iW+rXdawCzpsDSjGf9oJbNUMLMM2KbGexwwQ9UsC5fQLwB2E1muI3NPj5mab8Otj/PNUK8rl+39kxg1doYN/xOFYTJjv4EV+OO9zs3ue+AGG0L9iALObyzhdlguBlDsdAdUX/JstdIpWbWCPdzmsQm5uDUCvXfi/U1BzdpV0LScjEUgvIjXKipCr/N1m7gvVLuIHfeHgQdyaHCRnWTEQHl/sOxbvfNV9fVvIbdZNxHS83+04YjwRSvE90ysvUE/HJNpEUvKLzm1/pHIntOlUSYOxjgX+Vmo3SeezMbHU8idgutxdXnb0e9IZ2ZVkqDAgMBAAGjUDBOMB0GA1UdDgQWBBS+lXlTNmWhUyodFictR+RXdl/BUDAfBgNVHSMEGDAWgBS+lXlTNmWhUyodFictR+RXdl/BUDAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQA61Vxbuj9/tUkhg3iUHmDrkk6Cz0mAnhekVUgnHdbF0Z1kBQvhDTOEKAwj7pzH730af79IFwkCWQG0xl7C1VqGhdIM2KUVFbcS3f4mqtHWhVNkqJx1kidHFwEL/1TpLgSx8QtqOGWUsOKz76+Bg1yl4lHuOsfC7582GTP5luhpGxp+VcTK5Nwn33LNOoBg4ETA4LddnwAZt8p7OzTpO+HYeLlQUpMU93E0uewiUME7NIthBBx4Fb96T3ZlQV1NNaFf8+KNY5Sf2TP6+h2Z8BnRE2ysEobgzu7XbZH08FvAwMq+g3COdSOVMAZm0Xh5LwALKozNG6NUUweVr8DJiUk/</cert>
-        </topCA>
-        <intermediateCA>
-            <cert>MIIDAzCCAesCCQCS3LjF+guggTANBgkqhkiG9w0BAQsFADA9MQswCQYDVQQGEwJGSTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMQswCQYDVQQDDAJDQTAeFw0xNjA0MjkxMDUzMjNaFw0xNzA0MjQxMDUzMjNaMEoxCzAJBgNVBAYTAkZJMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxGDAWBgNVBAMMD0ludGVybWVkaWF0ZSBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL8e3/ut1Kby0Z9X4/5bY+IG14dnDYYRx+7US2MTOSaDSLyxQ3wrsr1Ncprz1MzhZqSqwzumvXWUxjLiRV3srifkEuBrirSUfNvurXUkvNuUlEGlvbeoBltWH7bbB5ZOqtf/44nWqWRBUSJTcf1gymhoKCvLRuRoJGU+BdO0GSI8QbyBuInCYJ20yCrtr16S+KySQt7K4KT8zxf2qXvb2cC6RmgzJPwPvYPKqjyoFuH+NXK51/iZXTLkv9WMyPiMvB1qCcwwNp4lkv9+Gt+esM2kZsBTXl1h3nHGFnR599LxoSS8YY5Ix5tlLdSJ0FpD0YTEQkbcubiT1OV+EBrQZEMCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAQViatgGyNHXxrw317C0H026/8/cxInIMrFAzWH7hR166w0J0EBgvjYFNr/c/oHlti0XiMdwfh5joTC/w4nlhRATZ9f9FmiQVCwVQGt3b1nMIrHeQSSmu40xSZmAjKNGJy/tGrv7jCu/yq+E6L3c/q/jtJN6chQTI85i3HYQuh2sTNNB/86gD8o4vrHxlje1DcgN7ofhV70pPn4iA4bG5R8spXmiqvIjwgAjiM0U/kYFr23KTmSUwRg39oRUNJGh8Pv15a5ol51u5B1AncGfEuDBV78CZYI67H7y1l8SEN6Ltr77sC29mw7iVMXzrYoO41CWt3usMUGt4siUWYE8ZsQ==</cert>
-        </intermediateCA>
-        <certificateProfileInfo>ee.ria.xroad.common.certificateprofile.impl.FiVRKCertificateProfileInfoProvider</certificateProfileInfo>
-    </approvedCA>
-    <approvedCA>
-        <name>CA2</name>
-        <topCA>
-            <cert>MIIFYTCCA0mgAwIBAgICAlowDQYJKoZIhvcNAQELBQAwSDELMAkGA1UEBhMCRkkxGjAYBgNVBAoMEVBhbHZlbHl2YXlsYSBUZXN0MR0wGwYDVQQDDBRQYWx2ZWx1dmF5bGEgVGVzdCBDQTAeFw0xNjA1MTIxMjU2MTlaFw0zNjA1MDcxMjU2MTlaMDcxCzAJBgNVBAYTAkZJMRowGAYDVQQKDBFQYWx2ZWx1dmF5bGEgVGVzdDEMMAoGA1UEAwwDQ0EyMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA1sM6tECOilUZA8AF1Vf9PpoTJxWwSdA9jVSzpPVBH4m5WQurDKc28pJIJ5m3/wTOm5l3bVdho0gt3zYj2CrEMBY0RSr3rH++7r2lToyn0Mnfufh3R1iXIBd6ftN9/KZzwSDo90j367kSu2CQO7g9cGD6xQJy7RKImMdbHXXmAc0uldYJJMs6YR3S+RnH4NeM+dxg96+rfbM+smS+X3OSQI1Z6wfbmvLfXMvjI/XdCscXpfwXOHU0DA5Ks0v6NHMdru87rczMnImPi0cnY5xSL13+rV3swbTRZNpYU/NQTZMpjxSfX7/wmZWeW09D24woYkeVQs4yOh8c+Jc688FYScr1gZY4Wx9ZeXkS+Chj6tZXOUCOw9Fye7SICVZqmVzI4iQ2ocbgUW1IbF+3pFeo9Wez35xbXtb9mVeGxSF2yfy7Ifbdg8uZTjLkSDV6IwG0TjxqDH9gLQGoCREp1eURQYzSIINjTpW+DtlrqE745XX7NsRsDRapFd26SA0rmxw2PvSZMWlQidGL+caHz//7z87+W4pWAfoUlmlGroPGgekPohe7X+0B3jQ2x2Jzz8WhbB4S9o0muw+b3lfX8OufTqp7OVM/M8R1JBcvg2e0KCaxcKlb3WAouS7vvrXFoBDx3iEdlZWcC/8JohXHaXxHwjIjQ4reNJA5b0ZA1Nv9LCECAwEAAaNmMGQwHQYDVR0OBBYEFJQIavR00XxfYsFPo3gHPEKymxaCMB8GA1UdIwQYMBaAFKB3ySRs0WRzonKRpeibPw4Zr4YRMBIGA1UdEwEB/wQIMAYBAf8CAQAwDgYDVR0PAQH/BAQDAgGGMA0GCSqGSIb3DQEBCwUAA4ICAQAD10isX8W59g9i2mxJoGa5rRh9W8j/9PRKwXtQSnh/C28fihvRkQnZe8C44mZocnTGrUVz5BuosghUJ3/Blg2EKFHbG9UZJLBEOJ4wRPDkh4+kIMcQEUfiiZyGPY+iMTDIHOGh18PpPf/EIr6x6JGJMq4WdkUnKkMCCGMKZkW/lenOA+6ULxzHIlCgYWQSCf4fDnMBE27KHmK0driAjF/7R/1KhXZl/2XtP5H6oZ2S/kmn/STBuhJFiyIyixItox9WFpfb3/+rxALXUoUqvsqrYwPOjOSDM7phipFONLCoMjsosWGcdq4fN6osZy6bsyjTqbj7185VKvpqdawSycA+2XDRwnIIinTRiuuh2RUHchXcoohqAnHwUjrNUhb4O2nhaU6YP/nQ+nqPlStlN5hZi/wLVsiLBOO4es+OeQc4/IUZGnQ7T3WHtOgL/xP6+A70wIl7546QeTEu6j6sfhHJbVlUJmO0HiC+oQUKaXHYn2MGsO2Ij0ObruYg2FyGFWQc4EKw6dF/g/uMBXzvgL7glmAAqVRQnHCeUcCmOvIkXhW/vwjhwN5zk+IXrtFYTf39m8yx/HJYVYfekSGwQ1sxTVKZxEl3duHKNdROSrXV9Ag8BXjJ2SQj85N9M0r1SI+CtHjhahuX6qMHTlJ9+MQJOaPmX0k5KXHm7qPAk02fow==</cert>
-            <ocsp>
-                <url>http://dev-is.palveluvayla.com:8888/CA2/</url>
-            </ocsp>
-        </topCA>
-        <certificateProfileInfo>ee.ria.xroad.common.certificateprofile.impl.FiVRKCertificateProfileInfoProvider</certificateProfileInfo>
-    </approvedCA>
-    <approvedCA>
-        <name>RootCA</name>
-        <topCA>
-            <cert>MIIFdDCCA1ygAwIBAgIJAJnF7Au1FsFZMA0GCSqGSIb3DQEBCwUAMEcxCzAJBgNVBAYTAkZJMRowGAYDVQQKDBFQYWx2ZWx1dmF5bGEgVGVzdDELMAkGA1UECwwCQ0ExDzANBgNVBAMMBlJvb3RDQTAeFw0xNjA1MTkwNTMzNTVaFw0zNjA1MTQwNTMzNTVaMEcxCzAJBgNVBAYTAkZJMRowGAYDVQQKDBFQYWx2ZWx1dmF5bGEgVGVzdDELMAkGA1UECwwCQ0ExDzANBgNVBAMMBlJvb3RDQTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOpeeUgefL8unsZKVRR20vbayp4In9QMJ/2S5ZkimRx5K97kzvxzqRCgndR0Q3gBrLHB9GEsJ4zKwvForGx+JcopBqQn02MEGIhlf3iUjtIAMFTz3SlMfdmzw6+yzUM/iZTqkQ6+iPzTgZucTp1cNtOIo1yZzFBQ7AoIYBEAzkOikRJaTY15zEhLptfJLpinxiOtIeuYUecEZf3ykw7xGlnzGoWh489GVlw4+syTCw0amm7Gas2SpbiLRfkGZjZ1Aisl3lGx/ELXl8thmHHjN1YCeBNChHu+tPWr3sDvzCLEoJlFfn91/JB1u49D2bIYLGRPE06//8iC8MANapLQqbXlGNJZZATgtIZzNU9bDs5CLXxjoFdj9/oRLj1liWqCivYvXTgeF+gNyFFE8POeljIRXls2W6cgLrohPnTR97ioiIDDQbtfAcLcBpyVE1AnlAPUneqd39O+gpm2UIInRURpv2J1RV8++0E3TsUNI8Y7u8igOQXfIDqNoam2Vq4C6kLn8fZOD1GpXjzdvOdvpahgAqaTVitjVo4jqlKXzTiNIT3did4IxUrTmfet7HL939TkBnWsJjxCzC25k4TBh0BMBwEmkN8YJJumMqkU+vpyLPDgtrwDOz7pbycuW0HZPsZ9dOcXr8vkKU+rvRpWyQokihVX/ZO3x5u3TzOzrXSnAgMBAAGjYzBhMB0GA1UdDgQWBBQk6zhtXCj4xw0RosN2sZpu5ylBSTAfBgNVHSMEGDAWgBQk6zhtXCj4xw0RosN2sZpu5ylBSTAPBgNVHRMBAf8EBTADAQH/MA4GA1UdDwEB/wQEAwIBhjANBgkqhkiG9w0BAQsFAAOCAgEAdPoZYuUEQ7NCagCz0m9J53P4YKxWSP943Awjssuu1XyBUs0oAGsp89pq76lUXRcZ5uEWGDrI59+3Gnyx/0mYspoSRz8rKboD1S/5oIxpEouwPq7F7DDmUTo233TZlAjHopJ5CUlCELfTbt4zgMUOTCHj2bHZgSjxTO7oSwf1e5ApDjtmgI9EcgkUQqujIUKttVxFgTpU5508uYCVPbJbjsoQzj2xgzMxrycRjvHPnQ20B0kGZ03BtFr5sILQcubDug4xwUZr/aAJ6rc3lP7HEpXnOk2du6Nne/lNrECVv7vKQ3cJR5vExVPziaMDCAlPGykZ+oV9049K0scbyOeA1Gv7LVqIvuASqxkWDYJ5b9UiZL/O0OKkz7ES5u1t5qVeQJOBGsVjbrTXuyITstYvlPlzcbNucvTCTE3Z/Z7rFtVTk+0p06z14KAJXlfC68uY7k0XbUo91YqmTJ9ZQevCbOKqj7vaTyrvp/OWsmmC6u7A7IZ4KSRaeyv75+nczM1YqSL7f6eGJeTLLcaHdQ66B4izqBYWgb3L5fteePG38TuKW4dHtrLS1Oj0NoyW3vUWFm1A/4Bh/dlpd0d5EeuxO1X117VGjMgLBQ1LtEic25JRHFjMl3m7/4LJ3hMnKsqT1EUxvNLFHhsYJvLiuExbrcPQlIqPXr2G73hPwBbAq9g=</cert>
-            <ocsp>
-                <url>http://dev-is.palveluvayla.com:8888/</url>
-            </ocsp>
-        </topCA>
-        <certificateProfileInfo>ee.ria.xroad.common.certificateprofile.impl.FiVRKCertificateProfileInfoProvider</certificateProfileInfo>
-    </approvedCA>
-    <approvedCA>
-        <name>CA3</name>
-        <topCA>
-            <cert>MIIFbDCCA1SgAwIBAgIBBDANBgkqhkiG9w0BAQsFADBHMQswCQYDVQQGEwJGSTEaMBgGA1UECgwRUGFsdmVsdXZheWxhIFRlc3QxCzAJBgNVBAsMAkNBMQ8wDQYDVQQDDAZSb290Q0EwHhcNMTYwNTE5MDUzNjUxWhcNMzYwNTE0MDUzNjUxWjBEMQswCQYDVQQGEwJGSTEaMBgGA1UECgwRUGFsdmVsdXZheWxhIFRlc3QxCzAJBgNVBAsMAkNBMQwwCgYDVQQDDANDQTMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQChdQAgdKY2zyNieHApBPhQa/MGCGihN/1WDm//LKvl6purPwMGElTFk3Co0gj92kPKh0kvuMKv8Dq7mC7ZgA0EAzuM4rKJq5gOPWkczorZtNfZU4o+6ldzYQa8g/k1ACAVLqGv3pMGaT/hGSD6jQl36QFJxFwEF9W9S34Ogcs6D7hy+CeOxOZByQvNNrKztLbs6yNPstWltsG6TE0xGxrC+9GNj1x1LweQPY0/V+CIGdc5u8Qn0PlkbTbLK+Yk4YsRfly7135L/fcaa4MERwZqRjfZq9nTlCmXLHTmL6ERmGylB5pycYQyZE2HE5ihw3GoERdour2Rle53VA+z2SGBeDeKeKxw+YzZA8SPScUtlTIfoDq8G+14Y5MU0ddtsagjxRvqF5H3GTqu2JzcMFte1W/5h91mOHOEyWq+fmBNCI+Ap/m156Sr6bE876QbkjVjyES7QX4mjecu/SPzGTYC5hyt7FsBU8eEJp7DuVwmUmjYzbbncb2jdkxldlCqetMJ35qU11Zbdwtd9PlWq0d247qKiScJ9LfdM3XE1VbiLZE/5PL5zalJqNQzK7noK0sv9SvXd9tf2Oi8CDySNvhtH7cef9p45V0uh7jqJTLXJuvc56oBRZR7v433suwMJ5hlptB7YRTRWOZNMQLhiDIxmmGzIY7xdU/uhHEQycynkQIDAQABo2YwZDAdBgNVHQ4EFgQUbifpxG6rjRv/SmcYYYoW12H1qfcwHwYDVR0jBBgwFoAUJOs4bVwo+McNEaLDdrGabucpQUkwEgYDVR0TAQH/BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAYYwDQYJKoZIhvcNAQELBQADggIBAMxjLmqINcHXhpJ00hQpxSYOWAjWKFpxUBl5cakK0LV3iPlJXge4J+xJG7BHTjeaquChfnH2fsLKUV33ZQjYdPfCnNTFrvVU8KksQhIB3CajcfzPrzpZrEBN9gL9WU87nOhb/4yuvIdhfP4e+IqYLRxK2BobGEgCYqPFU8IahVlzWG2vyAWpT1ynhjV2bvvVlyoqaCRdocyzUHJ0W8e2EXNsK36iG4oAdYLuEMbDPMoW4RhI/OsxAABa7K7gKDhUNKRwI6qnOO29VFy8en+28FowVSJbTGM5f9Q2LnsmCtQ08wrFA0VEFDJ7aM1UyGWtbMyM4QvFStmp8Sobt2NXeyofb3fA6KDwNm1DMxDY1dmcQpMW8QlYZlge9MSPG8vbNSKuF/PMH/Ei5ZthXZRQu4IkIF5zspbj2xZX62glkshgQP9fpKvEBomUgwa7Bu/3LJcp74W5JO71Y2xqCrUdUjjnVMiaqDRl0sO/AKSia+98Jtcdp7MG3vKMWCHVIkMkXkqwFdIZNJInl4F7NZGV20Pol4POFOCQ0bk7WRWZwmH2q84AuZaU7+KADkNSLAJBuie5p+bvRoeV9MBdUd0x3CqeapHsN4dXa2L1+urmAgxngq/xwOUxLfFxNsnL7fnkO/cc6zrz+oReqaTvP9L3kafXGb7g+L9MG+O8/ElcpV36</cert>
-            <ocsp>
-                <url>http://dev-is.palveluvayla.com:8888/CA3/</url>
-                <cert>MIIFbDCCA1SgAwIBAgIBBDANBgkqhkiG9w0BAQsFADBHMQswCQYDVQQGEwJGSTEaMBgGA1UECgwRUGFsdmVsdXZheWxhIFRlc3QxCzAJBgNVBAsMAkNBMQ8wDQYDVQQDDAZSb290Q0EwHhcNMTYwNTE5MDUzNjUxWhcNMzYwNTE0MDUzNjUxWjBEMQswCQYDVQQGEwJGSTEaMBgGA1UECgwRUGFsdmVsdXZheWxhIFRlc3QxCzAJBgNVBAsMAkNBMQwwCgYDVQQDDANDQTMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQChdQAgdKY2zyNieHApBPhQa/MGCGihN/1WDm//LKvl6purPwMGElTFk3Co0gj92kPKh0kvuMKv8Dq7mC7ZgA0EAzuM4rKJq5gOPWkczorZtNfZU4o+6ldzYQa8g/k1ACAVLqGv3pMGaT/hGSD6jQl36QFJxFwEF9W9S34Ogcs6D7hy+CeOxOZByQvNNrKztLbs6yNPstWltsG6TE0xGxrC+9GNj1x1LweQPY0/V+CIGdc5u8Qn0PlkbTbLK+Yk4YsRfly7135L/fcaa4MERwZqRjfZq9nTlCmXLHTmL6ERmGylB5pycYQyZE2HE5ihw3GoERdour2Rle53VA+z2SGBeDeKeKxw+YzZA8SPScUtlTIfoDq8G+14Y5MU0ddtsagjxRvqF5H3GTqu2JzcMFte1W/5h91mOHOEyWq+fmBNCI+Ap/m156Sr6bE876QbkjVjyES7QX4mjecu/SPzGTYC5hyt7FsBU8eEJp7DuVwmUmjYzbbncb2jdkxldlCqetMJ35qU11Zbdwtd9PlWq0d247qKiScJ9LfdM3XE1VbiLZE/5PL5zalJqNQzK7noK0sv9SvXd9tf2Oi8CDySNvhtH7cef9p45V0uh7jqJTLXJuvc56oBRZR7v433suwMJ5hlptB7YRTRWOZNMQLhiDIxmmGzIY7xdU/uhHEQycynkQIDAQABo2YwZDAdBgNVHQ4EFgQUbifpxG6rjRv/SmcYYYoW12H1qfcwHwYDVR0jBBgwFoAUJOs4bVwo+McNEaLDdrGabucpQUkwEgYDVR0TAQH/BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAYYwDQYJKoZIhvcNAQELBQADggIBAMxjLmqINcHXhpJ00hQpxSYOWAjWKFpxUBl5cakK0LV3iPlJXge4J+xJG7BHTjeaquChfnH2fsLKUV33ZQjYdPfCnNTFrvVU8KksQhIB3CajcfzPrzpZrEBN9gL9WU87nOhb/4yuvIdhfP4e+IqYLRxK2BobGEgCYqPFU8IahVlzWG2vyAWpT1ynhjV2bvvVlyoqaCRdocyzUHJ0W8e2EXNsK36iG4oAdYLuEMbDPMoW4RhI/OsxAABa7K7gKDhUNKRwI6qnOO29VFy8en+28FowVSJbTGM5f9Q2LnsmCtQ08wrFA0VEFDJ7aM1UyGWtbMyM4QvFStmp8Sobt2NXeyofb3fA6KDwNm1DMxDY1dmcQpMW8QlYZlge9MSPG8vbNSKuF/PMH/Ei5ZthXZRQu4IkIF5zspbj2xZX62glkshgQP9fpKvEBomUgwa7Bu/3LJcp74W5JO71Y2xqCrUdUjjnVMiaqDRl0sO/AKSia+98Jtcdp7MG3vKMWCHVIkMkXkqwFdIZNJInl4F7NZGV20Pol4POFOCQ0bk7WRWZwmH2q84AuZaU7+KADkNSLAJBuie5p+bvRoeV9MBdUd0x3CqeapHsN4dXa2L1+urmAgxngq/xwOUxLfFxNsnL7fnkO/cc6zrz+oReqaTvP9L3kafXGb7g+L9MG+O8/ElcpV36</cert>
-            </ocsp>
-            <ocsp>
-                <url>http://dev-is.palveluvayla.com:8888/CA3333/</url>
-            </ocsp>
-        </topCA>
-        <certificateProfileInfo>ee.ria.xroad.common.certificateprofile.impl.FiVRKCertificateProfileInfoProvider</certificateProfileInfo>
-    </approvedCA>
-    <approvedTSA>
-        <name>/CN=X-Road TSA/O=CSC/C=FI-test</name>
-        <url>https://pv6ttsa01.csc.fi</url>
-        <cert>MIIFgDCCBGigAwIBAgIIUN/iVeooyCMwDQYJKoZIhvcNAQELBQAwPTEbMBkGA1UEAwwSWC1Sb2FkLTZfU2VydmVyX0NBMQwwCgYDVQQKDANDU0MxEDAOBgNVBAYTB0ZJLXRlc3QwHhcNMTUwNTA3MDk0MjA5WhcNMTcwNTA2MDk0MjA5WjA1MRMwEQYDVQQDDApYLVJvYWQgVFNBMQwwCgYDVQQKDANDU0MxEDAOBgNVBAYTB0ZJLXRlc3QwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCIT6OnEGScQpg0URv7rDF39Zm+sAxcIAW84aUIzdlM+DDxA1GbVn2X5k5gnSH5HlMv7VEzPYely/mUG++aEnvhqRjnTNgcP6wr1lU1KKms/qzhXoDhsAV96sRM0GvCxO4WhaSkyu8J7ehF1Y4dhHetaszejhiNHiAenddeb0hRzZdGq/DIel8WMyOav4TS9N0UJidod4Fm2OmWpOOyLpsJeNUTl8RRvpsszX8fW19n6ridu4YNr7XXfrj2qwXYytvo8EmgqB7Js+sl4dj1lLOS/5q8haGWYy2SOu+IjlwqZd4eLBQTBR4HZxaAnCMrzrKw/jVq9OcJb4xxw2Cjp/sdOD7WhhFYiMe2RQJtkjvMLzeP0tljFqyw5dj8wqAANLkpkgbumt5XU8TsptqTSNSMgRi7XliomiR5NYaQwYGq58lERJLx40YHqHpB0UjRWZDMrw3XCPFzlZ5TAN/J29tWZCc8RqHbusvos/WnPhhoWxqWWQ1xcpKe3+p8+psUH9CMKGilEHH2bS1Qvaz72P51S2CbbghsOQCHJ/BJb5RNCWKetzzq/PusX8lvPRAwQvOgw9R+teRdS+vgtVf58soCor0KLtF+WxacxvnHFX0L5tC0OiNBC+XlK9N8Bg5W2pBKe4IE6XzDrZ0ro8dEj/FRNxHfGsSTJPoFfa9uSHfgOQIDAQABo4IBijCCAYYwTgYIKwYBBQUHAQEEQjBAMD4GCCsGAQUFBzABhjJodHRwOi8vcHY2dGNhMDEuY3NjLmZpL2VqYmNhL3B1YmxpY3dlYi9zdGF0dXMvb2NzcDAdBgNVHQ4EFgQUYjbtAKXg5pAMQKe6/eqbyvL+ycEwDAYDVR0TAQH/BAIwADAfBgNVHSMEGDAWgBT8vu0YW+2ztK9xer5qD3WP6kEqITCBggYDVR0fBHsweTB3oHWgc4ZxaHR0cDovL3B2NnRjYTAxLmNzYy5maTo4MDgwL2VqYmNhL3B1YmxpY3dlYi93ZWJkaXN0L2NlcnRkaXN0P2NtZD1jcmwmaXNzdWVyPUNOPVgtUm9hZC02X1NlcnZlcl9DQSxPPUNTQyxDPUZJLXRlc3QwDgYDVR0PAQH/BAQDAgeAMBYGA1UdJQEB/wQMMAoGCCsGAQUFBwMIMDkGA1UdEQQyMDCBHHBhbHZlbHV2YXlsYUBwYWx2ZWx1dmF5bGEuZmmCEHB2NnR0c2EwMS5jc2MuZmkwDQYJKoZIhvcNAQELBQADggEBALPV0IU/odr2z08CtitOahYQd911DnEN/x8FqUyolyZNpjDMA2021cMelB9P+Hx+mhu5QHhHUqT0gl5YZft+fNjJnKz0aHhyqTLG+kkAnUXhTjbP2HXkAPiWL0u3uXAFiAcS5Ru0qnpjBtttAomESud2V/WYw3VeBndVCIysIxkL/etxF3WHrQ8SHgtiZ/phRXTdacFP5APM+KKDOpMu5+Ex2M8sFt7CIbc+8BwkCxeGvUvEym3C9GNkFxcET3Edg17/jEcgf9DDHOGoADg0OYyjke4n1Ui8E/SBZx81b2RLWiv+mpodzDYqrp8gZuVzDmUTqV1zlURinlnIdZcPw3o=</cert>
-    </approvedTSA>
     <approvedTSA>
         <name>/C=FI/O=Palveluvayla Test/CN=Palveluvayla Test TSA</name>
-        <url>http://dev-is.palveluvayla.com:8899</url>
-        <cert>MIIFNjCCAx6gAwIBAgIBAjANBgkqhkiG9w0BAQsFADBIMQswCQYDVQQGEwJGSTEaMBgGA1UECgwRUGFsdmVseXZheWxhIFRlc3QxHTAbBgNVBAMMFFBhbHZlbHV2YXlsYSBUZXN0IENBMB4XDTE1MDgwNTA2MzI1M1oXDTM1MDczMTA2MzI1M1owSTELMAkGA1UEBhMCRkkxGjAYBgNVBAoMEVBhbHZlbHV2YXlsYSBUZXN0MR4wHAYDVQQDDBVQYWx2ZWx1dmF5bGEgVGVzdCBUU0EwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDV8KHItNpkO8N55drQZ3JVNiEYHePqHO9IsC1UXS1q0zqYQpgsQdf8j+LDTihYh5HA9M9uPfJIEb86w4eqQ8EWnxce/LM9W8jZBSn45WYDFCgCZvZ5jnwmTcnn233K7JyDhkJT4fCSU64RpNH6d4hJ2ISFAd2R9p77+kJztzbEc0zUzofPoFt9ZOjdc9js6ggVUgdf8ZIAPkKNKjSzsc/NBeN6hIDOLVZWkcvLzcG6CR3wXkd5avpbv4vfuQNZoh+VY+GpuF3MusJjTC1OFwqrwqV27e/I/vyddGv39GM83U1UemvsBg5gRwQ+IEaeHWs1/m3vm05uRHp4NBYtOJXFka/issWS48AWEcewcyMXpvsUEbvTl6y9YPrKsgmhYoL190iFMsILhaq8pxBCOKj7pkSE6p/Sm+BDEoyhlpLfTzQeqhimwNWGAj6ERZefHsBmbZn5yImH9MeyjNodsIkBhlo9Fjn1cCJG6lIsU11FC3wGcOmM0qkxOI3004w1CgQiwLIzm8z+G5KVLhLYhFjGjshTPt923HaAPf4sOf+77LJluF3GEBnJjL6APeHBpBJoDYJpKDZP3gWEhtCpXQ2u3Vr4Oo4x+6v2teKZH9iOCoUMZjk71Jqw+5wOdxUmidycQZ28iO3xIOFqgLWbpt+EtgViPOCFyH/zVpqUihHetQIDAQABoyowKDAWBgNVHSUBAf8EDDAKBggrBgEFBQcDCDAOBgNVHQ8BAf8EBAMCBkAwDQYJKoZIhvcNAQELBQADggIBAHzCL4IfIT2PE2R5LR5+1+jRC37l8M22oG4xshRcjoDStGvVXbrRwTeJHhZE5at3Q3RKbz7Sn9keSL++cDdff/WsVUUvaVajmc+LBrnz0QrldEAxP+/2ZUOePTrcIgUI4H8IaMdJUZz1CB/OyZ4uC4igDat3HwKsQd6UqbidLeZ/MUC+sFJ9l6wGHquQpIx7atP+2l6IYsuTzmKpaC9bfketZRdP5kwXPu0pi2sJHQ1/0HbQOpYG8alHPnfkzk+hYhJpPd+w8DAAs1y2hZJdQXG+ziq2y44O8zKVH/85lut6UU1Ec422cxEWaT5py9fmE46WBm55fNvUOZCLHOoak9kiQ3KVfA+OOKdKDpp89WeP1McafeadfkBpLdf8NpL6YSuQPT0atKUhGLF8hxt8jch7ZlIt35FXQYTKauE8IQ4ibtck4AdZEWEUaG7McClYAv/grc3JYFoq5I2VJg7jmXny7J4sh5lcvUWwsRIlfSI4a66VDzHLGd6x3Tzlcq/JLrNSuqNvI6ZJWri4BbdDlis6iQe2l0LyEC9nSIBVBruSz9/lBYgn0yjaqjXvLunSzcwRiv52eAwPiY9JcRfdoqsCou8ftoE429RL+M8Zpn+DcApDEqgRKuZa7ksUYBzjIJ/0pn3aafrYEzrzGSUopLmT6RzIlg2l0bgaCo9KfZZP</cert>
+        <url>http://tsa-server.com:8899</url>
+        <cert>ThisIsTSACertHashBeliveIt</cert>
     </approvedTSA>
     <member id="id0">
         <memberClass>
@@ -315,20 +240,20 @@
     </member>
     <securityServer>
         <owner>id0</owner>
-        <serverCode>gdev-ss1.i.palveluvayla.com</serverCode>
-        <address>gdev-ss1.i.palveluvayla.com</address>
-        <authCertHash>cTB4zG68P33R7Okum3drAvszUQ0=</authCertHash>
+        <serverCode>servername-1.com</serverCode>
+        <address>servername-1.com</address>
+        <authCertHash>authCertHash</authCertHash>
         <client>id2</client>
         <client>id32</client>
         <client>id10</client>
     </securityServer>
     <securityServer>
         <owner>id0</owner>
-        <serverCode>gdev-ss2.i.palveluvayla.com</serverCode>
-        <address>gdev-ss2.i.palveluvayla.com</address>
-        <authCertHash>dpYk0BA30n9HLxgpgnUoB431sz4=</authCertHash>
-        <authCertHash>AuOwLvR+IKpdu0gfTDObN9uFL8o=</authCertHash>
-        <authCertHash>5FcmhgvLGFm3kjWUdBmYipOnui0=</authCertHash>
+        <serverCode>servername-2.com</serverCode>
+        <address>servername-2.com</address>
+        <authCertHash>authCertHash</authCertHash>
+        <authCertHash>authCertHash</authCertHash>
+        <authCertHash>authCertHash</authCertHash>
         <client>id4</client>
         <client>id5</client>
         <client>id6</client>
@@ -338,9 +263,9 @@
     </securityServer>
     <securityServer>
         <owner>id11</owner>
-        <serverCode>gdev-rh1</serverCode>
-        <address>gdev-rh1.i.palveluvayla.com</address>
-        <authCertHash>9rlYm3FnrAxnT8lcjIlIcSMKKpY=</authCertHash>
+        <serverCode>servername-3.com</serverCode>
+        <address>servername-3.com</address>
+        <authCertHash>authCertHash</authCertHash>
         <client>id12</client>
         <client>id27</client>
         <client>id28</client>
@@ -350,9 +275,9 @@
     </securityServer>
     <securityServer>
         <owner>id11</owner>
-        <serverCode>gdev-rh2</serverCode>
-        <address>gdev-rh2.i.palveluvayla.com</address>
-        <authCertHash>gzuyFb7kMIsK3xC+V/qx4BdkL5w=</authCertHash>
+        <serverCode>servername-4.com</serverCode>
+        <address>servername-4.com</address>
+        <authCertHash>authCertHash</authCertHash>
         <client>id12</client>
         <client>id22</client>
         <client>id23</client>
@@ -361,58 +286,58 @@
     </securityServer>
     <securityServer>
         <owner>id0</owner>
-        <serverCode>gdev-demo.i.palveluvayla.com</serverCode>
-        <address>gdev-demo.i.palveluvayla.com</address>
-        <authCertHash>2GynGzO6J5VCtmxr0emuz+3VvUI=</authCertHash>
+        <serverCode>servername-5.com</serverCode>
+        <address>servername-5.com</address>
+        <authCertHash>authCertHash</authCertHash>
     </securityServer>
     <securityServer>
         <owner>id17</owner>
-        <serverCode>gdev-loadtest-ss1.i.palveluvayla.com</serverCode>
-        <address>gdev-loadtest-ss1.i.palveluvayla.com</address>
-        <authCertHash>vV+UQSsK38UikMsJqW5o+sdKR5k=</authCertHash>
+        <serverCode>servername-6.com</serverCode>
+        <address>servername-6.com</address>
+        <authCertHash>authCertHash</authCertHash>
         <client>id18</client>
     </securityServer>
     <securityServer>
         <owner>id15</owner>
-        <serverCode>gdev-loadtest-ss2.i.palveluvayla.com</serverCode>
-        <address>gdev-loadtest-ss2.i.palveluvayla.com</address>
-        <authCertHash>AVMmbmhdjhcLmZmFlx2IPHhaxYw=</authCertHash>
+        <serverCode>servername-7.com</serverCode>
+        <address>servername-7.com</address>
+        <authCertHash>authCertHash</authCertHash>
         <client>id16</client>
     </securityServer>
     <securityServer>
         <owner>id34</owner>
-        <serverCode>sami-lxd-ss1</serverCode>
-        <address>sami-lxd-ss1</address>
-        <authCertHash>VUeU9t06mgJV+uBJYqxGZICxZ70=</authCertHash>
+        <serverCode>servername-8.com</serverCode>
+        <address>servername-8.com</address>
+        <authCertHash>authCertHash</authCertHash>
         <client>id35</client>
     </securityServer>
     <securityServer>
         <owner>id34</owner>
-        <serverCode>sami-lxd-ss2</serverCode>
-        <address>sami-lxd-ss2.lxd</address>
-        <authCertHash>XAKt8KfkKKppWy2NrAo74HJ7rJ4=</authCertHash>
+        <serverCode>servername-9.com</serverCode>
+        <address>servername-9.com</address>
+        <authCertHash>authCertHash</authCertHash>
     </securityServer>
     <securityServer>
         <owner>id37</owner>
-        <serverCode>gdev-ss3.i.palveluvayla.com</serverCode>
-        <address>gdev-ss3.i.palveluvayla.com</address>
-        <authCertHash>KKAUD2rKjkS3sAG7UB4Fu4PAboI=</authCertHash>
+        <serverCode>servername-10.com</serverCode>
+        <address>servername-10.com</address>
+        <authCertHash>authCertHash</authCertHash>
         <client>id38</client>
         <client>id39</client>
     </securityServer>
     <securityServer>
         <owner>id40</owner>
-        <serverCode>gdev-ss4.i.palveluvayla.com</serverCode>
-        <address>gdev-ss4.i.palveluvayla.com</address>
-        <authCertHash>SrPMiEO5ZEqDuz4AymNuaR/3qrI=</authCertHash>
+        <serverCode>servername-11.com</serverCode>
+        <address>servername-11.com</address>
+        <authCertHash>authCertHash</authCertHash>
         <client>id41</client>
         <client>id42</client>
     </securityServer>
     <securityServer>
         <owner>id43</owner>
-        <serverCode>LXD-JH1</serverCode>
-        <address>kapabox.lxd</address>
-        <authCertHash>T/2rSF6Verf5W/I865FSMYTwJPo=</authCertHash>
+        <serverCode>servername-12</serverCode>
+        <address>servername-12</address>
+        <authCertHash>authCertHash</authCertHash>
     </securityServer>
     <globalGroup>
         <groupCode>security-server-owners</groupCode>
