@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns3:conf xmlns:ns2="http://x-road.eu/xsd/identifiers" xmlns:ns3="http://x-road.eu/xsd/xroad.xsd">
+    <instanceIdentifier>FI</instanceIdentifier>
+    <approvedCA>
+        <name>X-Road-6_Server_CA</name>
+        <topCA>
+            <cert>ThisIsCACertHashBeliveIt</cert>
+        </topCA>
+        <certificateProfileInfo>ee.ria.xroad.common.certificateprofile.impl.FiVRKCertificateProfileInfoProvider</certificateProfileInfo>
+    </approvedCA>
+    <approvedTSA>
+        <name>/C=FI/O=Palveluvayla Test/CN=Palveluvayla Test TSA</name>
+        <url>http://tsa-server.com:8899</url>
+        <cert>ThisIsTSACertHashBeliveIt</cert>
+    </approvedTSA>
+    <member id="id0">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>1710128-9</memberCode>
+        <name>Gofore</name>
+        <subsystem id="id1">
+            <subsystemCode>Management</subsystemCode>
+        </subsystem>
+        <subsystem id="id2">
+            <subsystemCode>SS1</subsystemCode>
+        </subsystem>
+        <subsystem id="id3">
+            <subsystemCode>JANNEN</subsystemCode>
+        </subsystem>
+        <subsystem id="id4">
+            <subsystemCode>MANSIKKA</subsystemCode>
+        </subsystem>
+        <subsystem id="id5">
+            <subsystemCode>KIRSIKKA</subsystemCode>
+        </subsystem>
+        <subsystem id="id6">
+            <subsystemCode>HERUKKA</subsystemCode>
+        </subsystem>
+        <subsystem id="id7">
+            <subsystemCode>VAMMA/MARJA</subsystemCode>
+        </subsystem>
+        <subsystem id="id8">
+            <subsystemCode>Catalog</subsystemCode>
+        </subsystem>
+        <subsystem id="id9">
+            <subsystemCode>SS-cataloglister-testaamiseen</subsystemCode>
+        </subsystem>
+        <subsystem id="id10">
+            <subsystemCode>MANAGEMENT</subsystemCode>
+        </subsystem>
+    </member>
+    <member id="id11">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>1945065-0</memberCode>
+        <name>Vaakon Nakki</name>
+        <subsystem id="id12">
+            <subsystemCode>VAAKKO1</subsystemCode>
+        </subsystem>
+        <subsystem id="id13">
+            <subsystemCode>REST-GW-CONSUMERS</subsystemCode>
+        </subsystem>
+        <subsystem id="id14">
+            <subsystemCode>MYSERVICE</subsystemCode>
+        </subsystem>
+    </member>
+    <member id="id15">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>15334513</memberCode>
+        <name>Pepe Design</name>
+        <subsystem id="id16">
+            <subsystemCode>SUBS</subsystemCode>
+        </subsystem>
+    </member>
+    <member id="id17">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>13775550</memberCode>
+        <name>Kampaamo Lissu</name>
+        <subsystem id="id18">
+            <subsystemCode>SUBS</subsystemCode>
+        </subsystem>
+    </member>
+    <member id="id19">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>88834888</memberCode>
+        <name>Ritvan Kala-Kahvila</name>
+    </member>
+    <member id="id20">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>PWNED&lt;script&gt;console.log("OWNED!")&lt;/script&gt;</memberCode>
+        <name>Le Hacker</name>
+    </member>
+    <member id="id21">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>ÖÖÖÄÄÄ</memberCode>
+        <name>&lt;i&gt;HACKER&lt;/i&gt;</name>
+    </member>
+    <member id="id22">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>07227937</memberCode>
+        <name>Member jolta puuttuu subsystemit</name>
+    </member>
+    <member id="id23">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>20033870</memberCode>
+        <name>Kuljetus J. Voutilainen Oy</name>
+        <subsystem id="id24">
+            <subsystemCode>SS1</subsystemCode>
+        </subsystem>
+        <subsystem id="id25">
+            <subsystemCode>SS2</subsystemCode>
+        </subsystem>
+        <subsystem id="id26">
+            <subsystemCode>SS3</subsystemCode>
+        </subsystem>
+    </member>
+    <member id="id27">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>15581493</memberCode>
+        <name>Jansun Oy Sprint-demo-versio</name>
+        <subsystem id="id28">
+            <subsystemCode>SS1</subsystemCode>
+        </subsystem>
+        <subsystem id="id29">
+            <subsystemCode>MONDAY1</subsystemCode>
+        </subsystem>
+        <subsystem id="id30">
+            <subsystemCode>SPRINT-DEMO</subsystemCode>
+        </subsystem>
+    </member>
+    <member id="id31">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>TEST</memberCode>
+        <name>TEST</name>
+        <subsystem id="id32">
+            <subsystemCode>TEST</subsystemCode>
+        </subsystem>
+    </member>
+    <member id="id33">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>2216869-2</memberCode>
+        <name>Testing123</name>
+    </member>
+    <member id="id34">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>sami-lxd</memberCode>
+        <name>sami-lxd</name>
+        <subsystem id="id35">
+            <subsystemCode>sami-subsystem1</subsystemCode>
+        </subsystem>
+    </member>
+    <member id="id36">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>1234000</memberCode>
+        <name>Member jolla ei ole subsystemeja 3</name>
+    </member>
+    <member id="id37">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>7777</memberCode>
+        <name>Gollum</name>
+        <subsystem id="id38">
+            <subsystemCode>TestClient</subsystemCode>
+        </subsystem>
+        <subsystem id="id39">
+            <subsystemCode>TestService</subsystemCode>
+        </subsystem>
+    </member>
+    <member id="id40">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>8888</memberCode>
+        <name>Sauron</name>
+        <subsystem id="id41">
+            <subsystemCode>TestClient</subsystemCode>
+        </subsystem>
+        <subsystem id="id42">
+            <subsystemCode>TestService</subsystemCode>
+        </subsystem>
+    </member>
+    <member id="id43">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>JH1</memberCode>
+        <name>LXD-JH1</name>
+    </member>
+    <member id="id44">
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <memberCode>123123</memberCode>
+        <name>TestiMember</name>
+    </member>
+    <securityServer>
+        <owner>id0</owner>
+        <serverCode>servername-1.com</serverCode>
+        <address>servername-1.com</address>
+        <authCertHash>authCertHash</authCertHash>
+        <client>id2</client>
+        <client>id32</client>
+        <client>id10</client>
+    </securityServer>
+    <securityServer>
+        <owner>id0</owner>
+        <serverCode>servername-2.com</serverCode>
+        <address>servername-2.com</address>
+        <authCertHash>authCertHash</authCertHash>
+        <authCertHash>authCertHash</authCertHash>
+        <authCertHash>authCertHash</authCertHash>
+        <client>id4</client>
+        <client>id5</client>
+        <client>id6</client>
+        <client>id7</client>
+        <client>id8</client>
+        <client>id9</client>
+    </securityServer>
+    <securityServer>
+        <owner>id11</owner>
+        <serverCode>servername-3.com</serverCode>
+        <address>servername-3.com</address>
+        <authCertHash>authCertHash</authCertHash>
+        <client>id12</client>
+        <client>id27</client>
+        <client>id28</client>
+        <client>id29</client>
+        <client>id13</client>
+        <client>id14</client>
+    </securityServer>
+    <securityServer>
+        <owner>id11</owner>
+        <serverCode>servername-4.com</serverCode>
+        <address>servername-4.com</address>
+        <authCertHash>authCertHash</authCertHash>
+        <client>id12</client>
+        <client>id22</client>
+        <client>id23</client>
+        <client>id24</client>
+        <client>id25</client>
+    </securityServer>
+    <securityServer>
+        <owner>id0</owner>
+        <serverCode>servername-5.com</serverCode>
+        <address>servername-5.com</address>
+        <authCertHash>authCertHash</authCertHash>
+    </securityServer>
+    <securityServer>
+        <owner>id17</owner>
+        <serverCode>servername-6.com</serverCode>
+        <address>servername-6.com</address>
+        <authCertHash>authCertHash</authCertHash>
+        <client>id18</client>
+    </securityServer>
+    <securityServer>
+        <owner>id15</owner>
+        <serverCode>servername-7.com</serverCode>
+        <address>servername-7.com</address>
+        <authCertHash>authCertHash</authCertHash>
+        <client>id16</client>
+    </securityServer>
+    <securityServer>
+        <owner>id34</owner>
+        <serverCode>servername-8.com</serverCode>
+        <address>servername-8.com</address>
+        <authCertHash>authCertHash</authCertHash>
+        <client>id35</client>
+    </securityServer>
+    <securityServer>
+        <owner>id34</owner>
+        <serverCode>servername-9.com</serverCode>
+        <address>servername-9.com</address>
+        <authCertHash>authCertHash</authCertHash>
+    </securityServer>
+    <securityServer>
+        <owner>id37</owner>
+        <serverCode>servername-10.com</serverCode>
+        <address>servername-10.com</address>
+        <authCertHash>authCertHash</authCertHash>
+        <client>id38</client>
+        <client>id39</client>
+    </securityServer>
+    <securityServer>
+        <owner>id40</owner>
+        <serverCode>servername-11.com</serverCode>
+        <address>servername-11.com</address>
+        <authCertHash>authCertHash</authCertHash>
+        <client>id41</client>
+        <client>id42</client>
+    </securityServer>
+    <securityServer>
+        <owner>id43</owner>
+        <serverCode>servername-12</serverCode>
+        <address>servername-12</address>
+        <authCertHash>authCertHash</authCertHash>
+    </securityServer>
+    <globalGroup>
+        <groupCode>security-server-owners</groupCode>
+        <description>Security server owners</description>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>1710128-9</ns2:memberCode>
+        </groupMember>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>1945065-0</ns2:memberCode>
+        </groupMember>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>13775550</ns2:memberCode>
+        </groupMember>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>15334513</ns2:memberCode>
+        </groupMember>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>sami-lxd</ns2:memberCode>
+        </groupMember>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>7777</ns2:memberCode>
+        </groupMember>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>8888</ns2:memberCode>
+        </groupMember>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>JH1</ns2:memberCode>
+        </groupMember>
+    </globalGroup>
+    <globalGroup>
+        <groupCode>&lt;b&gt;FOo&lt;/b&gt;</groupCode>
+        <description>&lt;a href="www.google.fi?q=owned"&gt;Moe&lt;/a&gt;</description>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>PWNED&lt;script&gt;console.log("OWNED!")&lt;/script&gt;</ns2:memberCode>
+        </groupMember>
+        <groupMember ns2:objectType="SUBSYSTEM">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>1710128-9</ns2:memberCode>
+            <ns2:subsystemCode>Management</ns2:subsystemCode>
+        </groupMember>
+        <groupMember ns2:objectType="SUBSYSTEM">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>1710128-9</ns2:memberCode>
+            <ns2:subsystemCode>SS1</ns2:subsystemCode>
+        </groupMember>
+        <groupMember ns2:objectType="SUBSYSTEM">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>1710128-9</ns2:memberCode>
+            <ns2:subsystemCode>KIRSIKKA</ns2:subsystemCode>
+        </groupMember>
+        <groupMember ns2:objectType="SUBSYSTEM">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>1710128-9</ns2:memberCode>
+            <ns2:subsystemCode>JANNEN</ns2:subsystemCode>
+        </groupMember>
+        <groupMember ns2:objectType="SUBSYSTEM">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>1710128-9</ns2:memberCode>
+            <ns2:subsystemCode>MANSIKKA</ns2:subsystemCode>
+        </groupMember>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>1710128-9</ns2:memberCode>
+        </groupMember>
+        <groupMember ns2:objectType="SUBSYSTEM">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>1710128-9</ns2:memberCode>
+            <ns2:subsystemCode>HERUKKA</ns2:subsystemCode>
+        </groupMember>
+        <groupMember ns2:objectType="SUBSYSTEM">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>1710128-9</ns2:memberCode>
+            <ns2:subsystemCode>VAMMA/MARJA</ns2:subsystemCode>
+        </groupMember>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>13775550</ns2:memberCode>
+        </groupMember>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>15334513</ns2:memberCode>
+        </groupMember>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>88834888</ns2:memberCode>
+        </groupMember>
+        <groupMember ns2:objectType="SUBSYSTEM">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>1945065-0</ns2:memberCode>
+            <ns2:subsystemCode>VAAKKO1</ns2:subsystemCode>
+        </groupMember>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>1945065-0</ns2:memberCode>
+        </groupMember>
+        <groupMember ns2:objectType="MEMBER">
+            <ns2:xRoadInstance>FI</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>ÖÖÖÄÄÄ</ns2:memberCode>
+        </groupMember>
+    </globalGroup>
+    <globalSettings>
+        <memberClass>
+            <code>GOV</code>
+            <description>Governmental</description>
+        </memberClass>
+        <ocspFreshnessSeconds>7200</ocspFreshnessSeconds>
+    </globalSettings>
+</ns3:conf>
