@@ -18,10 +18,10 @@ public class SharedParamsParserTest {
 
   private final SharedParamsParser parser = new SharedParamsParser("src/test/resources/shared-params.xml");
   private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
-          "gdev-ss1.i.palveluvayla.com",
-          "gdev-ss1.i.palveluvayla.com",
+          "servername-6.com",
+          "servername-6.com",
           "GOV",
-          "1710128-9");
+          "13775550");
 
   @Test
   public void testParse() throws IOException, SAXException, ParserConfigurationException {
