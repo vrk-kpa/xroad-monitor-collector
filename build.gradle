@@ -33,9 +33,9 @@ dependencies {
 }
 
 test {
-    systemProperty 'spring.config.name', 'monitor-collector-test'
+    systemProperty 'spring.config.name', 'collector'
 }
 
 bootRun {
-    systemProperty 'spring.config.name', 'monitor-collector-test'
+    systemProperty 'spring.config.name', 'collector'
 }
