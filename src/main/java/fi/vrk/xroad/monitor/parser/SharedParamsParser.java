@@ -1,6 +1,9 @@
 package fi.vrk.xroad.monitor.parser;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -19,9 +22,14 @@ import java.util.Set;
  * Class for parsing X-Road shared-params.xml
  */
 @Slf4j
+@Component
+@Scope("prototype")
 public class SharedParamsParser {
 
   private final String filename;
+
+  @Value("${jotain}")
+  private String sharedParamsFile;
 
   /**
    * Constructor
@@ -40,6 +48,8 @@ public class SharedParamsParser {
    * @throws SAXException
    */
   public Set<SecurityServerInfo> parse() throws ParserConfigurationException, IOException, SAXException {
+    log.info("Jotain {}", sharedParamsFile);
+
     File inputFile = new File(filename);
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
