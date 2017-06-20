@@ -25,20 +25,10 @@ import java.util.Set;
 @Slf4j
 @Component
 @Scope("prototype")
-@Setter
 public class SharedParamsParser {
 
-  private String filename;
-
-  @Value("${jotain}")
+  @Value("${xroad-monitor-collector.shared-params-file}")
   private String sharedParamsFile;
-
-  public SharedParamsParser(){
-  }
-
-//  public SharedParamsParser(String filename){
-//    this.filename = filename;
-//  }
 
   /**
    * Parses security server information from X-Road global configuration shared-params.xml.
@@ -51,7 +41,7 @@ public class SharedParamsParser {
   public Set<SecurityServerInfo> parse() throws ParserConfigurationException, IOException, SAXException {
     log.info("Jotain {}", sharedParamsFile);
 
-    File inputFile = new File(filename);
+    File inputFile = new File(sharedParamsFile);
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
     Document document = documentBuilder.parse(inputFile); // This could throw IOException (missing file) or SAXException (can't parse filepath)

@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public class SharedParamsParserTest {
 
-  private final SharedParamsParser parser = new SharedParamsParser("src/test/resources/shared-params.xml");
+  private final SharedParamsParser parser = new SharedParamsParser();
   private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
           "servername-6.com",
           "servername-6.com",
