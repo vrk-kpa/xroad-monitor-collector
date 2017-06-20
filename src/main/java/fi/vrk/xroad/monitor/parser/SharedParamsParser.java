@@ -1,5 +1,6 @@
 package fi.vrk.xroad.monitor.parser;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
@@ -24,20 +25,20 @@ import java.util.Set;
 @Slf4j
 @Component
 @Scope("prototype")
+@Setter
 public class SharedParamsParser {
 
-  private final String filename;
+  private String filename;
 
   @Value("${jotain}")
   private String sharedParamsFile;
 
-  /**
-   * Constructor
-   * @param filename
-   */
-  public SharedParamsParser(String filename){
-    this.filename = filename;
+  public SharedParamsParser(){
   }
+
+//  public SharedParamsParser(String filename){
+//    this.filename = filename;
+//  }
 
   /**
    * Parses security server information from X-Road global configuration shared-params.xml.

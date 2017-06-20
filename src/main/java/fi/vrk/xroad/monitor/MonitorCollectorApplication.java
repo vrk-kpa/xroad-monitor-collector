@@ -39,7 +39,7 @@ public class MonitorCollectorApplication {
         ActorSystem system = context.getBean(ActorSystem.class);
         SpringExtension ext = context.getBean(SpringExtension.class);
 
-        SharedParamsParser parser = new SharedParamsParser("/etc/xroad/globalconf/FI/shared-params.xml");
+        SharedParamsParser parser = context.getBean(SharedParamsParser.class);
         Set<SecurityServerInfo> securityServerInfos;
         try {
             securityServerInfos = parser.parse();
