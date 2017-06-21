@@ -24,7 +24,6 @@ import java.util.Set;
  */
 @Slf4j
 @Component
-@Scope("prototype")
 public class SharedParamsParser {
 
   @Value("${xroad-monitor-collector.shared-params-file}")
@@ -39,7 +38,6 @@ public class SharedParamsParser {
    * @throws SAXException
    */
   public Set<SecurityServerInfo> parse() throws ParserConfigurationException, IOException, SAXException {
-    log.info("Jotain {}", sharedParamsFile);
 
     File inputFile = new File(sharedParamsFile);
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
