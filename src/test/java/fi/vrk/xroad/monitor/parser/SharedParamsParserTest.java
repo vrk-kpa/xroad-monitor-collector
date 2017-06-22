@@ -1,6 +1,10 @@
 package fi.vrk.xroad.monitor.parser;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,9 +18,13 @@ import static org.junit.Assert.*;
 /**
  * Tests for {@link SharedParamsParser}
  */
+@SpringBootTest(classes = SharedParamsParser.class)
+@RunWith(SpringRunner.class)
 public class SharedParamsParserTest {
 
-  private final SharedParamsParser parser = new SharedParamsParser();
+  @Autowired
+  private SharedParamsParser parser;
+
   private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
           "servername-6.com",
           "servername-6.com",

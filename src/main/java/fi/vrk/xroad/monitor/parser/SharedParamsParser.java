@@ -38,7 +38,7 @@ public class SharedParamsParser {
    * @throws SAXException
    */
   public Set<SecurityServerInfo> parse() throws ParserConfigurationException, IOException, SAXException {
-
+    log.info("What is here: {}", sharedParamsFile);
     File inputFile = new File(sharedParamsFile);
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();

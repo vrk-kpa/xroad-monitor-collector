@@ -4,10 +4,16 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.testkit.TestActorRef;
+import fi.vrk.xroad.monitor.MonitorCollectorApplication;
+import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import fi.vrk.xroad.monitor.parser.SharedParamsParser;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,14 +27,19 @@ import static org.junit.Assert.fail;
  * Tests for {@link ResultCollectorActor}
  */
 @Slf4j
+@SpringBootTest(classes = SharedParamsParser.class)
+@RunWith(SpringRunner.class)
 public class ResultCollectorActorTest {
+
+  @Autowired
+  SharedParamsParser parser;
 
   @Test
   public void testResultCollectorActor() {
     ActorSystem system = ActorSystem.create();
 
     // parse global config to get security server information
-    SharedParamsParser parser = new SharedParamsParser();
+    //parser = new SharedParamsParser();
     Set<SecurityServerInfo> securityServerInfos = null;
     try {
       securityServerInfos = parser.parse();
