@@ -24,6 +24,7 @@ public class ResultCollectorActor extends AbstractActor {
 
   private Set<SecurityServerInfo> awaitedResults;
   private int numAwaitedResults;
+  private long startTime;
 
   @Override
   public Receive createReceive() {
@@ -38,6 +39,7 @@ public class ResultCollectorActor extends AbstractActor {
   private void handleInitialization(Set<SecurityServerInfo> infos) {
     log.info("Initializing resultCollerActor: {}", infos);
 
+    this.startTime = System.nanoTime();
     this.awaitedResults = new HashSet<>(infos);
     this.numAwaitedResults = infos.size();
     getSender().tell("Initializing done", getSelf());
@@ -45,6 +47,9 @@ public class ResultCollectorActor extends AbstractActor {
 
   private void handleMonitorDataResult(MonitorDataResult result) {
     awaitedResults.remove(result.getSecurityServerInfo());
+    if ( !(awaitedResults.size() > 0)) {
+      log.info("All request handled in time of: {} seconds", ((double)System.nanoTime() - startTime) / 1000000000.0);
+    }
     if (result.isSuccess()) {
       log.info("received success with data {}", result.toString());
     } else {
