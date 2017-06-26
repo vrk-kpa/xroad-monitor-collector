@@ -41,7 +41,7 @@ public class Supervisor extends AbstractActor {
   @Autowired
   SpringExtension ext;
 
-  public Supervisor () {}
+  public Supervisor() { }
 
   /**
    * For testing purposes
@@ -77,7 +77,7 @@ public class Supervisor extends AbstractActor {
         .build();
   }
 
-  private void handleMonitorDataRequest (StartCollectingMonitorDataCommand request) {
+  private void handleMonitorDataRequest(StartCollectingMonitorDataCommand request) {
     Timeout timeout = new Timeout(1, TimeUnit.MINUTES);
 
     try {
@@ -114,10 +114,13 @@ public class Supervisor extends AbstractActor {
   //  DeathPactException will stop the failing child actor
   //  Exception will restart the failing child actor
   //  Other types of Throwable will be escalated to parent actor
-  //  If the exception escalate all the way up to the root guardian it will handle it in the same way as the default strategy defined above.`
+  //  If the exception escalate all the way up to the root guardian it will handle it in the same way as the default
+  //  strategy defined above.`
   private static SupervisorStrategy strategy =
       new OneForOneStrategy(3, Duration.create("1 minute"), DeciderBuilder
-          .match(NullPointerException.class, e -> { log.info("NullPointer!!"); return resume(); })
+          .match(NullPointerException.class, e -> {
+            log.info("NullPointer!!"); return resume();
+          })
           .matchAny(e -> resume()).build());
 
   @Override

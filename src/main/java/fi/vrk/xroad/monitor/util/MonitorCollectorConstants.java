@@ -7,6 +7,6 @@ public class MonitorCollectorConstants {
 
   public static int SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE = 5;
 
-  private MonitorCollectorConstants() {}
+  private MonitorCollectorConstants() { }
 
 }

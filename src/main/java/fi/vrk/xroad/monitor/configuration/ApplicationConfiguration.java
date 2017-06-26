@@ -4,7 +4,6 @@ import akka.actor.ActorSystem;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
-import fi.vrk.xroad.monitor.parser.SharedParamsParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;

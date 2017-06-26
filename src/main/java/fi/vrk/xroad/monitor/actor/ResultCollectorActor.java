@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.Set;
 
-import static akka.japi.pf.UnitMatch.match;
-
 /**
  * Actor for collecting security server monitoring data processing results
  */
@@ -47,8 +45,8 @@ public class ResultCollectorActor extends AbstractActor {
 
   private void handleMonitorDataResult(MonitorDataResult result) {
     awaitedResults.remove(result.getSecurityServerInfo());
-    if ( !(awaitedResults.size() > 0)) {
-      log.info("All request handled in time of: {} seconds", ((double)System.nanoTime() - startTime) / 1000000000.0);
+    if (!(awaitedResults.size() > 0)) {
+      log.info("All request handled in time of: {} seconds", ((double)System.nanoTime() - startTime) /  1000000000.0);
     }
     if (result.isSuccess()) {
       log.info("received success with data {}", result.toString());
@@ -97,7 +95,7 @@ public class ResultCollectorActor extends AbstractActor {
   @Getter
   @ToString
   @EqualsAndHashCode
-  public static class MonitorDataResult {
+  public static final class MonitorDataResult {
 
     private final SecurityServerInfo securityServerInfo;
     private final boolean success;

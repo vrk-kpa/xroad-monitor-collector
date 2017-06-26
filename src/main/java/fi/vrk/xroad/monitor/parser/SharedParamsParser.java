@@ -1,9 +1,7 @@
 package fi.vrk.xroad.monitor.parser;
 
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -41,7 +39,7 @@ public class SharedParamsParser {
     File inputFile = new File(sharedParamsFile);
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-    Document document = documentBuilder.parse(inputFile); // This could throw IOException (missing file) or SAXException (can't parse filepath)
+    Document document = documentBuilder.parse(inputFile);
     document.setXmlVersion("1.0");
     document.getDocumentElement().normalize();
     Element root = document.getDocumentElement();
@@ -50,14 +48,14 @@ public class SharedParamsParser {
     NodeList securityServers = root.getElementsByTagName("securityServer");
     Set<SecurityServerInfo> securityServerInfos = new HashSet<>();
 
-    for (int i=0; i<securityServers.getLength(); i++) {
+    for (int i = 0; i < securityServers.getLength(); i++) {
       Node securityServer = securityServers.item(i);
       if (securityServer.getNodeType() == Node.ELEMENT_NODE) {
         Element securityServerElement = (Element) securityServer;
         String owner =  securityServerElement.getElementsByTagName("owner").item(0).getTextContent();
         String serverCode = securityServerElement.getElementsByTagName("serverCode").item(0).getTextContent();
         String address = securityServerElement.getElementsByTagName("address").item(0).getTextContent();
-        for (int j=0; j<members.getLength(); j++) {
+        for (int j = 0; j < members.getLength(); j++) {
           Node member = members.item(j);
           if (member.getNodeType() == Node.ELEMENT_NODE) {
             Element memberElement = (Element) member;
