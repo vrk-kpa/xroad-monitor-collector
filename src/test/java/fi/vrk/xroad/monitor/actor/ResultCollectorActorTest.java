@@ -27,8 +27,6 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.testkit.TestActorRef;
-import fi.vrk.xroad.monitor.MonitorCollectorApplication;
-import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import fi.vrk.xroad.monitor.parser.SharedParamsParser;
 import lombok.extern.slf4j.Slf4j;
@@ -88,7 +86,9 @@ public class ResultCollectorActorTest {
     assertEquals(false, actor.isDone());
 
     // send results
-    securityServerInfos.stream().forEach(info -> ref.receive(ResultCollectorActor.MonitorDataResult.createSuccess(info)));
+    securityServerInfos.stream().forEach(
+            info -> ref.receive(ResultCollectorActor.MonitorDataResult.createSuccess(info))
+    );
     assertEquals(securityServerInfos.size(), actor.getNumProcessedResults());
 
     // assert that all results have been received

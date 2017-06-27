@@ -26,9 +26,11 @@
         <property name="message" value="Line has trailing spaces."/>
     </module>
 
+    <module name="SuppressWarningsFilter" />
     <module name="TreeWalker">
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
+        <module name="SuppressWarningsHolder" />
 
         <module name="JavadocMethod">
             <property name="scope" value="public"/>

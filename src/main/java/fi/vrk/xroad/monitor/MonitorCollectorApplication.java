@@ -48,12 +48,12 @@ import java.util.Set;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan("fi.vrk.xroad.monitor")
+@SuppressWarnings("checkstyle:HideUtilityClassConstructor")
 public class MonitorCollectorApplication {
     /**
      * Entry point
      * @param args
      */
-
     public static void main(String[] args) {
 
         log.info("X-Road Monitor Collector started");

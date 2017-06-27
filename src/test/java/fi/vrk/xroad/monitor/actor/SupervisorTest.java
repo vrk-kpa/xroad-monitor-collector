@@ -66,14 +66,16 @@ public class SupervisorTest {
 
     Set<SecurityServerInfo> securityServerInfos = new HashSet<>();
     securityServerInfos.add(new SecurityServerInfo("Eka", "Osoite", "memberClass", "memberCode"));
-    securityServerInfos.add(new SecurityServerInfo("", "","",""));
+    securityServerInfos.add(new SecurityServerInfo("", "", "", ""));
     securityServerInfos.add(new SecurityServerInfo("Toka", "osoite", "memberClass", "memberCode"));
 
     final TestActorRef<ResultCollectorActor> resultCollectorActor = TestActorRef.create(
             system, Props.create(ResultCollectorActor.class));
 
     final TestActorRef<MonitorDataActor> monitorDataRequestPoolRouter =
-            TestActorRef.create(system, new SmallestMailboxPool(2).props(Props.create(MonitorDataActor.class, resultCollectorActor)));
+            TestActorRef.create(system, new SmallestMailboxPool(2).props(
+                    Props.create(MonitorDataActor.class, resultCollectorActor))
+            );
 
     // create supervisor
     final Props supervisorProps = ext.props("supervisor");
