@@ -38,8 +38,8 @@ public class SpringExtension implements Extension {
     /**
      * Used to initialize the Spring application context for the extension.
      */
-    public void initialize(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+    public void initialize(ApplicationContext ac) {
+        this.applicationContext = ac;
     }
 
     /**

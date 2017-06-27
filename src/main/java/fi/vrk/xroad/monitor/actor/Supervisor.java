@@ -71,15 +71,15 @@ public class Supervisor extends AbstractActor {
   /**
    * For testing purposes
    */
-  void overrideResultCollectorActor(ActorRef resultCollectorActor) {
-    this.resultCollectorActor = resultCollectorActor;
+  void overrideResultCollectorActor(ActorRef testingResultCollectorActor) {
+    this.resultCollectorActor = testingResultCollectorActor;
   }
 
   /**
    * For testing purposes
    */
-  void overrideMonitorDataRequestPoolRouter(ActorRef monitorDataRequestPoolRouter) {
-    this.monitorDataRequestPoolRouter = monitorDataRequestPoolRouter;
+  void overrideMonitorDataRequestPoolRouter(ActorRef testingMonitorDataRequestPoolRouter) {
+    this.monitorDataRequestPoolRouter = testingMonitorDataRequestPoolRouter;
   }
 
   @Override
