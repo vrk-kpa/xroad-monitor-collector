@@ -14,6 +14,11 @@ Or
 
     $ java -jar build/libs/xroad-monitor-collector.jar
 
+Then run the collector with profile production
+
+    $ java -Dspring.profiles.active=production -jar build/libs/xroad-monitor-collector.jar --spring.config.name=collector
+
+
 ## Build RPM Packages on Non-RedHat Platform
  
     $ gradle clean build

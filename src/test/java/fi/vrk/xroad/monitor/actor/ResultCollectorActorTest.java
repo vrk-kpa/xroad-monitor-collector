@@ -60,7 +60,6 @@ public class ResultCollectorActorTest {
     ActorSystem system = ActorSystem.create();
 
     // parse global config to get security server information
-    //parser = new SharedParamsParser();
     Set<SecurityServerInfo> securityServerInfos = null;
     try {
       securityServerInfos = parser.parse();
