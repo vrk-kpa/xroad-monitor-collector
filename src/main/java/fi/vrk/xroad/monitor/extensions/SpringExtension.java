@@ -1,6 +1,6 @@
 /**
  * The MIT License
- * Copyright (c) 2016, Population Register Centre (VRK)
+ * Copyright (c) 2017, Population Register Centre (VRK)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,8 +38,8 @@ public class SpringExtension implements Extension {
     /**
      * Used to initialize the Spring application context for the extension.
      */
-    public void initialize(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+    public void initialize(ApplicationContext ac) {
+        this.applicationContext = ac;
     }
 
     /**

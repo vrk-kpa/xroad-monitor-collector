@@ -1,3 +1,26 @@
+/**
+ * The MIT License
+ * Copyright (c) 2017, Population Register Centre (VRK)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package fi.vrk.xroad.monitor.actor;
 
 import akka.actor.AbstractActor;
@@ -12,8 +35,6 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.Set;
 
-import static akka.japi.pf.UnitMatch.match;
-
 /**
  * Actor for collecting security server monitoring data processing results
  */
@@ -24,6 +45,8 @@ public class ResultCollectorActor extends AbstractActor {
 
   private Set<SecurityServerInfo> awaitedResults;
   private int numAwaitedResults;
+  private long startTime;
+  private static final double NANOSECOND = 1000000000.0;
 
   @Override
   public Receive createReceive() {
@@ -38,6 +61,7 @@ public class ResultCollectorActor extends AbstractActor {
   private void handleInitialization(Set<SecurityServerInfo> infos) {
     log.info("Initializing resultCollerActor: {}", infos);
 
+    this.startTime = System.nanoTime();
     this.awaitedResults = new HashSet<>(infos);
     this.numAwaitedResults = infos.size();
     getSender().tell("Initializing done", getSelf());
@@ -45,6 +69,9 @@ public class ResultCollectorActor extends AbstractActor {
 
   private void handleMonitorDataResult(MonitorDataResult result) {
     awaitedResults.remove(result.getSecurityServerInfo());
+    if (!(awaitedResults.size() > 0)) {
+      log.info("All request handled in time of: {} seconds", ((double)System.nanoTime() - startTime) / NANOSECOND);
+    }
     if (result.isSuccess()) {
       log.info("received success with data {}", result.toString());
     } else {
@@ -92,7 +119,7 @@ public class ResultCollectorActor extends AbstractActor {
   @Getter
   @ToString
   @EqualsAndHashCode
-  public static class MonitorDataResult {
+  public static final class MonitorDataResult {
 
     private final SecurityServerInfo securityServerInfo;
     private final boolean success;
