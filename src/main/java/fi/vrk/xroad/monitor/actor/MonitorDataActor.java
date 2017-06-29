@@ -57,10 +57,35 @@ public class MonitorDataActor extends AbstractActor {
   protected void handleMonitorDataRequest(MonitorDataRequest request) {
 
     log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
+
+    String xml = requestMonitorData(request.getSecurityServerInfo());
+
+    saveMonitorData(xml, request.getSecurityServerInfo());
     resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(request.getSecurityServerInfo()),
         getSelf());
     log.info("end handleMonitorDataRequest");
   }
+
+  /**
+   * Will make request for Monitor data from security server and returns only body part
+   * @param securityServerInfo
+   * @return xml string which has body of monitordata request from security server
+   */
+  private String requestMonitorData(SecurityServerInfo securityServerInfo) {
+
+    return "";
+  }
+
+  /**
+   * Will save monitordata as json to elasticsearch. With securityserverinfo
+   * @param xml
+   * @param securityServerInfo
+   */
+  private void saveMonitorData(String xml, SecurityServerInfo securityServerInfo) {
+    // TODO create json element wchich has all data elasticsearch wants
+    // TODO make post to elasticsearch API
+  }
+
 
   /**
    * Request for fetching monitoring data from single security server
