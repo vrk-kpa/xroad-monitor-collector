@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 /**
  * Tests for {@link MonitorDataRequest}

@@ -24,11 +24,13 @@ package fi.vrk.xroad.monitor.monitordata;
 
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestOperations;
+import org.w3c.dom.Document;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 /**
  * Handler for monitordata request, response and parsing
@@ -41,15 +43,18 @@ public class MonitorDataHandler {
     @Value("${xroad-monitor-collector-url.client-url}")
     private String clientUrl;
 
-    //@Autowired
-    //private RestOperations restOperations;
+    @Autowired
+    private RestOperations restOperations;
 
     public String handleMonitorDataRequestAndResponse(SecurityServerInfo securityServerInfo) throws ParserConfigurationException {
         MonitorDataRequest request = new MonitorDataRequest();
-        log.info("Testi: {}", request.getRequestXML(securityServerInfo).toString());
-        //String response = restOperations.postForObject(clientUrl, request.getRequestXML(), String.class);
-        return "poo";
+        return makeRequest(request.getRequestXML(securityServerInfo));
 
+    }
+
+    public String makeRequest(Document xmlRequest) {
+        String response = restOperations.postForObject(clientUrl, xmlRequest, String.class);
+        return "poo";
     }
 
 }
