@@ -7,21 +7,21 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.w3c.dom.Document;
 
 import javax.xml.parsers.ParserConfigurationException;
-
+import javax.xml.transform.TransformerException;
 
 /**
- * Tests for {@link MonitorDataHandler}
+ * Tests for {@link MonitorDataRequest}
  */
 @Slf4j
-@SpringBootTest(classes = MonitorDataHandler.class)
+@SpringBootTest(classes = MonitorDataRequest.class)
 @RunWith(SpringRunner.class)
-public class MonitorDataHandlerTest {
+public class MonitorDataRequestTest {
 
     @Autowired
-    private MonitorDataHandler handler;
-
+    private MonitorDataRequest request;
 
     private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
             "servername-6.com",
@@ -30,7 +30,8 @@ public class MonitorDataHandlerTest {
             "13775550");
 
     @Test
-    public void handleMonitorDataRequestAndResponseTest() throws ParserConfigurationException {
-        String result = handler.handleMonitorDataRequestAndResponse(exampleInfo);
+    public void getRequestXMLTest() throws ParserConfigurationException {
+        Document doc = request.getRequestXML(exampleInfo);
+        log.info(doc.toString());
     }
 }

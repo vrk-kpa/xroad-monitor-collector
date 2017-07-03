@@ -56,6 +56,7 @@ public class MonitorCollectorApplication {
      */
     public static void main(String[] args) {
 
+
         log.info("X-Road Monitor Collector started");
         ApplicationContext context = SpringApplication.run(MonitorCollectorApplication.class, args);
         ActorSystem system = context.getBean(ActorSystem.class);

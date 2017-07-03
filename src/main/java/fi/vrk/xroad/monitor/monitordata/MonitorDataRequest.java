@@ -24,40 +24,37 @@
 package fi.vrk.xroad.monitor.monitordata;
 
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.util.UUID;
 
 /**
  * Creates monitordata request xml.
  */
 @Slf4j
-@RequiredArgsConstructor
+@Component
 public class MonitorDataRequest {
 
-    private final SecurityServerInfo serverInfo;
-
-    @Value("${xroad-monitor-collector.client-security-code}")
+    @Value("${xroad-monitor-collector-client.client-security-code}")
     private String clientSecurityCode;
 
-    @Value("$xroad-monitor-collector.client-member-class")
+    @Value("${xroad-monitor-collector-client.client-member-class}")
     private String clientMemberClass;
 
-    @Value("$xroad-monitor-collector.client-member-code")
+    @Value("${xroad-monitor-collector-client.client-member-code}")
     private String clientMemberCode;
 
-    @Value("$xroad-monitor-collector.instance")
+    @Value("${xroad-monitor-collector-client.instance}")
     private String instance;
 
-    public Document getRequestXML() throws ParserConfigurationException {
+    public Document getRequestXML(SecurityServerInfo serverInfo) throws ParserConfigurationException {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 
@@ -106,12 +103,14 @@ public class MonitorDataRequest {
 
         bodyElement.appendChild(document.createElement("m:getSecurityServerMetrics"));
 
+        document.normalizeDocument();
+
         return document;
     }
 
     private Element createElementWithValue(Document doc, String name, String value) {
-        Element element = doc.createElement(name);
-        element.appendChild(doc.createTextNode(value));
-        return element;
+        Element el = doc.createElement(name);
+        el.appendChild(doc.createTextNode(value));
+        return el;
     }
 }
