@@ -76,7 +76,7 @@ public class ApplicationConfiguration {
     return ConfigFactory.load();
   }
 
-  @Bean
+  /*@Bean
   public RestOperations getRestOperations() {
     return createTimeoutingRestTemplate();
   }
@@ -97,5 +97,5 @@ public class ApplicationConfiguration {
             .getRequestFactory();
     rf.setReadTimeout(timeout);
     rf.setConnectTimeout(timeout);
-  }
+  }*/
 }

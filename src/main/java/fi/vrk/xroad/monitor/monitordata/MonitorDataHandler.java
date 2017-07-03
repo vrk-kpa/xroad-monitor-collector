@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
+import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -43,8 +44,8 @@ public class MonitorDataHandler {
     @Value("${xroad-monitor-collector-url.client-url}")
     private String clientUrl;
 
-    @Autowired
-    private RestOperations restOperations;
+    //@Autowired
+    //private RestOperations restOperations;
 
     public String handleMonitorDataRequestAndResponse(SecurityServerInfo securityServerInfo) throws ParserConfigurationException {
         MonitorDataRequest request = new MonitorDataRequest();
@@ -53,7 +54,9 @@ public class MonitorDataHandler {
     }
 
     public String makeRequest(Document xmlRequest) {
-        String response = restOperations.postForObject(clientUrl, xmlRequest, String.class);
+        RestTemplate rt = new RestTemplate();
+
+        String response = rt.postForObject(clientUrl, xmlRequest, String.class);
         return "poo";
     }
 
