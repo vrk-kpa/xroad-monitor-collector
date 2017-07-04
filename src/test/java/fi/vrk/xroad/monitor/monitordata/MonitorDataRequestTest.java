@@ -30,7 +30,7 @@ public class MonitorDataRequestTest {
 
     @Test
     public void getRequestXMLTest() throws ParserConfigurationException {
-        Document doc = request.getRequestXML(exampleInfo);
-        log.info(doc.toString());
+        String xmlRequest = request.getRequestXML(exampleInfo);
+        log.info(xmlRequest);
     }
 }

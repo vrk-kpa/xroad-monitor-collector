@@ -24,12 +24,11 @@ package fi.vrk.xroad.monitor.monitordata;
 
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
-import org.w3c.dom.Document;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -53,8 +52,10 @@ public class MonitorDataHandler {
 
     }
 
-    public String makeRequest(Document xmlRequest) {
+    public String makeRequest(String xmlRequest) {
         RestTemplate rt = new RestTemplate();
+        rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
+        rt.getMessageConverters().add(new StringHttpMessageConverter());
 
         String response = rt.postForObject(clientUrl, xmlRequest, String.class);
         return "poo";
