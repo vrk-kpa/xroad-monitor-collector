@@ -25,6 +25,9 @@ package fi.vrk.xroad.monitor.monitordata;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.stereotype.Component;
@@ -57,8 +60,12 @@ public class MonitorDataHandler {
         rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
         rt.getMessageConverters().add(new StringHttpMessageConverter());
 
-        String response = rt.postForObject(clientUrl, xmlRequest, String.class);
-        return "poo";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_XML);
+
+        HttpEntity<String> entity = new HttpEntity<>(xmlRequest, headers);
+
+        return rt.postForObject(clientUrl, entity, String.class);
     }
 
 }

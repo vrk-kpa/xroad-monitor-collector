@@ -36,5 +36,6 @@ public class MonitorDataHandlerTest {
     public void makeRequest() throws ParserConfigurationException {
         String xmlRequest = request.getRequestXML(exampleInfo);
         String result = handler.makeRequest(xmlRequest);
+        log.info("result: {}", result);
     }
 }

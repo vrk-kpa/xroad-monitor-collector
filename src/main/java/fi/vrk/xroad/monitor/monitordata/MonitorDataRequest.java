@@ -120,8 +120,7 @@ public class MonitorDataRequest {
         return el;
     }
 
-    private String getStringFromDocument(Document doc)
-    {
+    private String getStringFromDocument(Document doc) {
         try
         {
             DOMSource domSource = new DOMSource(doc);
@@ -135,7 +134,7 @@ public class MonitorDataRequest {
         catch(TransformerException ex)
         {
             ex.printStackTrace();
-            return null;
+            return "";
         }
     }
 
