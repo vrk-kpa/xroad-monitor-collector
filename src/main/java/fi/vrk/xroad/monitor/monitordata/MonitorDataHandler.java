@@ -34,6 +34,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.soap.Node;
 
 /**
  * Handler for monitordata request, response and parsing
@@ -42,17 +43,13 @@ import javax.xml.parsers.ParserConfigurationException;
 @Component
 public class MonitorDataHandler {
 
-
     @Value("${xroad-monitor-collector-url.client-url}")
     private String clientUrl;
 
-    //@Autowired
-    //private RestOperations restOperations;
-
-    public String handleMonitorDataRequestAndResponse(SecurityServerInfo securityServerInfo) throws ParserConfigurationException {
+    public void handleMonitorDataRequestAndResponse(SecurityServerInfo securityServerInfo) {
         MonitorDataRequest request = new MonitorDataRequest();
-        return makeRequest(request.getRequestXML(securityServerInfo));
-
+        String response = makeRequest(request.getRequestXML(securityServerInfo));
+        //return MonitorDataResponse.getMetricInformation(response);
     }
 
     public String makeRequest(String xmlRequest) {
@@ -61,7 +58,7 @@ public class MonitorDataHandler {
         rt.getMessageConverters().add(new StringHttpMessageConverter());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_XML);
+        headers.setContentType(MediaType.TEXT_XML);
 
         HttpEntity<String> entity = new HttpEntity<>(xmlRequest, headers);
 

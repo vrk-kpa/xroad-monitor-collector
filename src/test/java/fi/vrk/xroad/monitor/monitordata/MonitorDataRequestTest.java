@@ -23,13 +23,13 @@ public class MonitorDataRequestTest {
     private MonitorDataRequest request;
 
     private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
-            "servername-6.com",
-            "servername-6.com",
+            "gdev-ss1.i.palveluvayla.com",
+            "http://gdev-ss1.i.palveluvayla.com",
             "GOV",
-            "13775550");
+            "1710128-9");
 
     @Test
-    public void getRequestXMLTest() throws ParserConfigurationException {
+    public void getRequestXMLTest() {
         String xmlRequest = request.getRequestXML(exampleInfo);
         log.info(xmlRequest);
     }

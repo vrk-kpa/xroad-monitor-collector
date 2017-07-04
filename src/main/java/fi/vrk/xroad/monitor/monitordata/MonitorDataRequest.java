@@ -60,9 +60,16 @@ public class MonitorDataRequest {
     @Value("${xroad-monitor-collector-client.instance}")
     private String instance;
 
-    public String getRequestXML(SecurityServerInfo serverInfo) throws ParserConfigurationException {
+    public String getRequestXML(SecurityServerInfo serverInfo) {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        DocumentBuilder documentBuilder = null;
+
+        // This should not be ever exception.
+        try {
+            documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            log.error("Failed to create document builder factory {}", e);
+        }
 
         Document document = documentBuilder.newDocument();
         Element rootElement = document.createElement("SOAP-ENV:Envelope");
@@ -96,6 +103,7 @@ public class MonitorDataRequest {
         Element securityServerElement = document.createElement("xrd:securityServer");
         headerElement.appendChild(securityServerElement);
 
+        securityServerElement.setAttribute("id:objectType", "SERVER");
         securityServerElement.appendChild(createElementWithValue(document, "id:xRoadInstance", instance));
         securityServerElement.appendChild(createElementWithValue(document, "id:memberClass", serverInfo.getMemberClass()));
         securityServerElement.appendChild(createElementWithValue(document, "id:memberCode", serverInfo.getMemberCode()));

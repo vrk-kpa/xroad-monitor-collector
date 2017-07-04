@@ -23,11 +23,72 @@
 
 package fi.vrk.xroad.monitor.monitordata;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+
 /**
  * Handles response and returns only body
  */
+@Slf4j
+@Component
 public class MonitorDataResponse {
 
-    // TODO will get response
-    // TODO will return body
+    public String getMetricInformation(String response) {
+        Document root = parseResponseDocument(response);
+
+        if (root != null) {
+            root.normalizeDocument();
+
+            NodeList nodeList = root.getElementsByTagName("m:getSecurityServerMetricsResponse");
+
+            return nodeToString(nodeList.item(0));
+        }
+        return "";
+    }
+
+    private String nodeToString(Node item) {
+        try {
+            StringWriter writer = new StringWriter();
+            StreamResult result = new StreamResult(writer);
+            Transformer t = TransformerFactory.newInstance().newTransformer();
+            t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            t.transform(new DOMSource(item), result);
+            return writer.toString();
+        } catch (TransformerException e) {
+            log.error("Failed to parse string from metric node: {}", e);
+            return "";
+        }
+    }
+
+    private Document parseResponseDocument(String result) {
+
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            InputSource is = new InputSource(new StringReader(result));
+            return  builder.parse(is);
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            log.error("Failed to parse response document from string: {}", e);
+            return null;
+        }
+    }
 }
