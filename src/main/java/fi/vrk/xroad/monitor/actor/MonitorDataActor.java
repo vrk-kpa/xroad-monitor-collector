@@ -20,11 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package fi.vrk.xroad.monitor.actor;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
+import fi.vrk.xroad.monitor.monitordata.MonitorDataHandler;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -40,59 +40,60 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class MonitorDataActor extends AbstractActor {
 
-  protected final ActorRef resultCollectorActor;
+    protected final ActorRef resultCollectorActor;
 
-  public MonitorDataActor(ActorRef resultCollectorActor) {
-    this.resultCollectorActor = resultCollectorActor;
-  }
+    public MonitorDataActor(ActorRef resultCollectorActor) {
+        this.resultCollectorActor = resultCollectorActor;
+    }
 
-  @Override
-  public Receive createReceive() {
-    return receiveBuilder()
-        .match(MonitorDataRequest.class, this::handleMonitorDataRequest)
-        .matchAny(obj -> log.error("Unhandled message: {}", obj))
-        .build();
-  }
+    @Override
+    public Receive createReceive() {
+        return receiveBuilder()
+                .match(MonitorDataRequest.class, this::handleMonitorDataRequest)
+                .matchAny(obj -> log.error("Unhandled message: {}", obj))
+                .build();
+    }
 
-  protected void handleMonitorDataRequest(MonitorDataRequest request) {
+    protected void handleMonitorDataRequest(MonitorDataRequest request) {
 
-    log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
+        log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
 
-    String xml = requestMonitorData(request.getSecurityServerInfo());
+        String xml = requestMonitorData(request.getSecurityServerInfo());
 
-    saveMonitorData(xml, request.getSecurityServerInfo());
-    resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(request.getSecurityServerInfo()),
-        getSelf());
-    log.info("end handleMonitorDataRequest");
-  }
+        saveMonitorData(xml, request.getSecurityServerInfo());
+        resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(request.getSecurityServerInfo()),
+                getSelf());
+        log.info("end handleMonitorDataRequest");
+    }
 
-  /**
-   * Will make request for Monitor data from security server and returns only body part
-   * @param securityServerInfo
-   * @return xml string which has body of monitordata request from security server
-   */
-  private String requestMonitorData(SecurityServerInfo securityServerInfo) {
+    /**
+     * Will make request for Monitor data from security server and returns only body part
+     * @param securityServerInfo
+     * @return xml string which has body of monitordata request from security server
+     */
+    private String requestMonitorData(SecurityServerInfo securityServerInfo) {
+        MonitorDataHandler handler = new MonitorDataHandler();
+        return handler.handleMonitorDataRequestAndResponse(securityServerInfo);
+    }
 
-    return "";
-  }
-
-  /**
-   * Will save monitordata as json to elasticsearch. With securityserverinfo
-   * @param xml
-   * @param securityServerInfo
-   */
-  private void saveMonitorData(String xml, SecurityServerInfo securityServerInfo) {
-    // TODO create json element wchich has all data elasticsearch wants
-    // TODO make post to elasticsearch API
-  }
+    /**
+     * Will save monitordata as json to elasticsearch. With securityserverinfo
+     * @param xml
+     * @param securityServerInfo
+     */
+    private void saveMonitorData(String xml, SecurityServerInfo securityServerInfo) {
+        // TODO create json element wchich has all data elasticsearch wants
+        // TODO make post to elasticsearch API
+    }
 
 
-  /**
-   * Request for fetching monitoring data from single security server
-   */
-  @RequiredArgsConstructor
-  @Getter
-  public static class MonitorDataRequest {
-    private final SecurityServerInfo securityServerInfo;
-  }
+    /**
+     * Request for fetching monitoring data from single security server
+     */
+    @RequiredArgsConstructor
+    @Getter
+    public static class MonitorDataRequest {
+        private final SecurityServerInfo securityServerInfo;
+
+    }
 }

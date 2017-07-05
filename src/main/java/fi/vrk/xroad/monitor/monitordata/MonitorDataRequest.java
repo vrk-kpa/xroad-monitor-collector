@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package fi.vrk.xroad.monitor.monitordata;
 
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
@@ -60,6 +59,11 @@ public class MonitorDataRequest {
     @Value("${xroad-monitor-collector-client.instance}")
     private String instance;
 
+    /**
+     * Makes xml string what is request for securityserver monitoring metrics
+     * @param serverInfo server information what is target of request
+     * @retur xml string request
+     */
     public String getRequestXML(SecurityServerInfo serverInfo) {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = null;
@@ -105,9 +109,15 @@ public class MonitorDataRequest {
 
         securityServerElement.setAttribute("id:objectType", "SERVER");
         securityServerElement.appendChild(createElementWithValue(document, "id:xRoadInstance", instance));
-        securityServerElement.appendChild(createElementWithValue(document, "id:memberClass", serverInfo.getMemberClass()));
-        securityServerElement.appendChild(createElementWithValue(document, "id:memberCode", serverInfo.getMemberCode()));
-        securityServerElement.appendChild(createElementWithValue(document, "id:serverCode", serverInfo.getServerCode()));
+        securityServerElement.appendChild(
+                createElementWithValue(document, "id:memberClass", serverInfo.getMemberClass())
+        );
+        securityServerElement.appendChild(
+                createElementWithValue(document, "id:memberCode", serverInfo.getMemberCode())
+        );
+        securityServerElement.appendChild(
+                createElementWithValue(document, "id:serverCode", serverInfo.getServerCode())
+        );
 
         headerElement.appendChild(createElementWithValue(document, "xrd:id", UUID.randomUUID().toString()));
         headerElement.appendChild(createElementWithValue(document, "xrd:protocolVersion", "4.0"));
@@ -122,15 +132,26 @@ public class MonitorDataRequest {
         return getStringFromDocument(document);
     }
 
+    /**
+     * Helper for create elementwith values
+     * @param doc
+     * @param name
+     * @param value
+     * @return new element
+     */
     private Element createElementWithValue(Document doc, String name, String value) {
         Element el = doc.createElement(name);
         el.appendChild(doc.createTextNode(value));
         return el;
     }
 
+    /**
+     * Parsing document to string
+     * @param doc
+     * @return
+     */
     private String getStringFromDocument(Document doc) {
-        try
-        {
+        try {
             DOMSource domSource = new DOMSource(doc);
             StringWriter writer = new StringWriter();
             StreamResult result = new StreamResult(writer);
@@ -138,9 +159,7 @@ public class MonitorDataRequest {
             Transformer transformer = tf.newTransformer();
             transformer.transform(domSource, result);
             return writer.toString();
-        }
-        catch(TransformerException ex)
-        {
+        } catch (TransformerException ex) {
             ex.printStackTrace();
             return "";
         }

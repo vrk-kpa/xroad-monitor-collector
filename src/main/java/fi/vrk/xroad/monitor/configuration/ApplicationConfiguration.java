@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package fi.vrk.xroad.monitor.configuration;
 
 import akka.actor.ActorSystem;
@@ -33,9 +32,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.web.client.RestOperations;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Spring configuration for application
@@ -43,38 +39,38 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @Lazy
 @ComponentScan(basePackages = {
-    "fi.vrk.xroad.monitor" })
+        "fi.vrk.xroad.monitor"})
 public class ApplicationConfiguration {
 
-  // The application context is needed to initialize the Akka Spring
-  // Extension
-  @Autowired
-  private ApplicationContext applicationContext;
+    // The application context is needed to initialize the Akka Spring
+    // Extension
+    @Autowired
+    private ApplicationContext applicationContext;
 
-  @Autowired
-  private SpringExtension springExtension;
+    @Autowired
+    private SpringExtension springExtension;
 
-  /**
-   * Actor system singleton for this application.
-   */
-  @Bean
-  public ActorSystem actorSystem() {
+    /**
+     * Actor system singleton for this application.
+     */
+    @Bean
+    public ActorSystem actorSystem() {
 
-    ActorSystem system = ActorSystem
-        .create("AkkaTaskProcessing", akkaConfiguration());
+        ActorSystem system = ActorSystem
+                .create("AkkaTaskProcessing", akkaConfiguration());
 
-    // Initialize the application context in the Akka Spring Extension
-    springExtension.initialize(applicationContext);
-    return system;
-  }
+        // Initialize the application context in the Akka Spring Extension
+        springExtension.initialize(applicationContext);
+        return system;
+    }
 
-  /**
-   * Read configuration from application.conf file
-   */
-  @Bean
-  public Config akkaConfiguration() {
-    return ConfigFactory.load();
-  }
+    /**
+     * Read configuration from application.conf file
+     */
+    @Bean
+    public Config akkaConfiguration() {
+        return ConfigFactory.load();
+    }
 
   /*@Bean
   public RestOperations getRestOperations() {

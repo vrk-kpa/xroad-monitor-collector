@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package fi.vrk.xroad.monitor.monitordata;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +39,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -52,6 +50,11 @@ import java.io.StringWriter;
 @Component
 public class MonitorDataResponse {
 
+    /**
+     * Parse metric information from respose string
+     * @param response xml string what is gotten from securityserver
+     * @return metric data in xml string
+     */
     public String getMetricInformation(String response) {
         Document root = parseResponseDocument(response);
 
@@ -62,9 +65,14 @@ public class MonitorDataResponse {
 
             return nodeToString(nodeList.item(0));
         }
-        return "";
+        return null;
     }
 
+    /**
+     * Parse xml node to string
+     * @param item xml node
+     * @return xml string
+     */
     private String nodeToString(Node item) {
         try {
             StringWriter writer = new StringWriter();
@@ -79,13 +87,18 @@ public class MonitorDataResponse {
         }
     }
 
-    private Document parseResponseDocument(String result) {
+    /**
+     * Parse respose string to xml document
+     * @param response string
+     * @return xml document
+     */
+    private Document parseResponseDocument(String response) {
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            InputSource is = new InputSource(new StringReader(result));
-            return  builder.parse(is);
+            InputSource is = new InputSource(new StringReader(response));
+            return builder.parse(is);
         } catch (ParserConfigurationException | IOException | SAXException e) {
             log.error("Failed to parse response document from string: {}", e);
             return null;

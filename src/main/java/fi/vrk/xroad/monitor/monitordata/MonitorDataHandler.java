@@ -33,9 +33,6 @@ import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConvert
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.soap.Node;
-
 /**
  * Handler for monitordata request, response and parsing
  */
@@ -46,12 +43,22 @@ public class MonitorDataHandler {
     @Value("${xroad-monitor-collector-url.client-url}")
     private String clientUrl;
 
-    public void handleMonitorDataRequestAndResponse(SecurityServerInfo securityServerInfo) {
+    /**
+     * Will handle getting metric data and saving it to elasticseach
+     * @param securityServerInfo information of securityserver what metric to get
+     */
+    public String handleMonitorDataRequestAndResponse(SecurityServerInfo securityServerInfo) {
         MonitorDataRequest request = new MonitorDataRequest();
-        String response = makeRequest(request.getRequestXML(securityServerInfo));
-        //return MonitorDataResponse.getMetricInformation(response);
+        MonitorDataResponse response = new MonitorDataResponse();
+        String responseXml = makeRequest(request.getRequestXML(securityServerInfo));
+        return response.getMetricInformation(responseXml);
     }
 
+    /**
+     * Makes request to get securityserver metric information
+     * @param xmlRequest to posted in body to securityserver
+     * @return securityserver metric information response
+     */
     public String makeRequest(String xmlRequest) {
         RestTemplate rt = new RestTemplate();
         rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());

@@ -29,6 +29,7 @@ import akka.testkit.TestActorRef;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.HashSet;
 import java.util.Set;
