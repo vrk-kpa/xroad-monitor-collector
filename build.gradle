@@ -45,7 +45,6 @@ dependencies {
     compile group: 'com.typesafe.akka', name: 'akka-actor_2.11', version:'2.5.1'
     compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.2.3'
     compile 'org.projectlombok:lombok:1.16.6'
-    compile group: 'org.json', name: 'json', version: '20090211'
     testCompile 'junit:junit:4.12'
     testCompile 'com.typesafe.akka:akka-testkit_2.11:2.5.1'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
