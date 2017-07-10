@@ -23,8 +23,11 @@
 package fi.vrk.xroad.monitor.monitordata;
 
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
+import fi.vrk.xroad.monitor.util.MonitorCollectorPropertyKeys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -47,6 +50,11 @@ import java.util.UUID;
 @Component
 public class MonitorDataRequest {
 
+    //TODO: this loads on tests run on idea, null on direct test execution on command line -> fix
+    @Autowired
+    private Environment environment;
+
+
     @Value("${xroad-monitor-collector-client.client-security-code}")
     private String clientSecurityCode;
 
@@ -61,10 +69,15 @@ public class MonitorDataRequest {
 
     /**
      * Makes xml string what is request for securityserver monitoring metrics
+     *
      * @param serverInfo server information what is target of request
      * @retur xml string request
      */
     public String getRequestXML(SecurityServerInfo serverInfo) {
+
+        String clientUrl = environment != null ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_URL) : null;
+        log.info("clientUrl:" + clientUrl);
+
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = null;
 
@@ -134,6 +147,7 @@ public class MonitorDataRequest {
 
     /**
      * Helper for create elementwith values
+     *
      * @param doc
      * @param name
      * @param value
@@ -147,6 +161,7 @@ public class MonitorDataRequest {
 
     /**
      * Parsing document to string
+     *
      * @param doc
      * @return
      */

@@ -23,8 +23,11 @@
 package fi.vrk.xroad.monitor.monitordata;
 
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
+import fi.vrk.xroad.monitor.util.MonitorCollectorPropertyKeys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -40,11 +43,15 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class MonitorDataHandler {
 
-    @Value("${xroad-monitor-collector-url.client-url}")
-    private String clientUrl;
+    @Autowired
+    private Environment environment;
+
+    //@Value("${xroad-monitor-collector-url.client-url}")
+    //private String clientUrl;
 
     /**
      * Will handle getting metric data and saving it to elasticseach
+     *
      * @param securityServerInfo information of securityserver what metric to get
      */
     public String handleMonitorDataRequestAndResponse(SecurityServerInfo securityServerInfo) {
@@ -56,6 +63,7 @@ public class MonitorDataHandler {
 
     /**
      * Makes request to get securityserver metric information
+     *
      * @param xmlRequest to posted in body to securityserver
      * @return securityserver metric information response
      */
@@ -69,6 +77,8 @@ public class MonitorDataHandler {
 
         HttpEntity<String> entity = new HttpEntity<>(xmlRequest, headers);
 
+        String clientUrl = environment != null ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_URL) : null;
+        log.info("clientUrl:" + clientUrl);
         return rt.postForObject(clientUrl, entity, String.class);
     }
 
