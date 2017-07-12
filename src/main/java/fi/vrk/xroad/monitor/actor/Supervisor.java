@@ -23,10 +23,7 @@
 
 package fi.vrk.xroad.monitor.actor;
 
-import akka.actor.AbstractActor;
-import akka.actor.ActorRef;
-import akka.actor.OneForOneStrategy;
-import akka.actor.SupervisorStrategy;
+import akka.actor.*;
 import akka.japi.pf.DeciderBuilder;
 import akka.pattern.Patterns;
 import akka.routing.SmallestMailboxPool;
@@ -37,6 +34,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import scala.concurrent.Await;

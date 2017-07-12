@@ -50,22 +50,8 @@ import java.util.UUID;
 @Component
 public class MonitorDataRequest {
 
-    //TODO: this loads on tests run on idea, null on direct test execution on command line -> fix
     @Autowired
     private Environment environment;
-
-
-    @Value("${xroad-monitor-collector-client.client-security-code}")
-    private String clientSecurityCode;
-
-    @Value("${xroad-monitor-collector-client.client-member-class}")
-    private String clientMemberClass;
-
-    @Value("${xroad-monitor-collector-client.client-member-code}")
-    private String clientMemberCode;
-
-    @Value("${xroad-monitor-collector-client.instance}")
-    private String instance;
 
     /**
      * Makes xml string what is request for securityserver monitoring metrics
@@ -75,8 +61,10 @@ public class MonitorDataRequest {
      */
     public String getRequestXML(SecurityServerInfo serverInfo) {
 
-        String clientUrl = environment != null ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_URL) : null;
-        log.info("clientUrl:" + clientUrl);
+        String instance = environment != null ? environment.getProperty(MonitorCollectorPropertyKeys.INSTANCE) : null;
+        String clientMemberClass = environment != null ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_MEMBER_CLASS) : null;
+        String clientMemberCode = environment != null ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_MEMBER_CODE) : null;
+
 
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = null;

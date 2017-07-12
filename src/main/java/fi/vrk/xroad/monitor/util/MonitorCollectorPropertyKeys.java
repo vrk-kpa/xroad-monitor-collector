@@ -23,9 +23,19 @@
 
 package fi.vrk.xroad.monitor.util;
 
+
 /**
- * Created by tomi on 10.7.2017.
+ * Property access class
  */
 public class MonitorCollectorPropertyKeys {
     public final static String CLIENT_URL = "xroad-monitor-collector-url.client-url";
+
+    public final static String CLIENT_SECURITY_CODE = "xroad-monitor-collector-client.client-security-code";
+
+    public final static String CLIENT_MEMBER_CLASS = "xroad-monitor-collector-client.client-member-class";
+
+    public final static String CLIENT_MEMBER_CODE = "xroad-monitor-collector-client.client-member-code";
+
+    public final static String INSTANCE = "xroad-monitor-collector-client.instance";
+
 }
