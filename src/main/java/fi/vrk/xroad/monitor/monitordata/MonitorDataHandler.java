@@ -31,6 +31,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.stereotype.Component;
@@ -77,6 +78,7 @@ public class MonitorDataHandler {
         HttpEntity<String> entity = new HttpEntity<>(xmlRequest, headers);
 
         String clientUrl = environment != null ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_URL) : null;
+        // TODO this will stop working if can't connect to securityserver
         return rt.postForObject(clientUrl, entity, String.class);
     }
 

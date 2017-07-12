@@ -74,7 +74,7 @@ public class SupervisorTest {
 
     final TestActorRef<MonitorDataActor> monitorDataRequestPoolRouter =
             TestActorRef.create(system, new SmallestMailboxPool(2).props(
-                    Props.create(MonitorDataActor.class, resultCollectorActor))
+                    ext.props("monitorDataActor", resultCollectorActor))
             );
 
     // create supervisor

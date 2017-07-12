@@ -62,7 +62,12 @@ public class MonitorDataResponse {
             root.normalizeDocument();
 
             NodeList nodeList = root.getElementsByTagName("m:getSecurityServerMetricsResponse");
-
+            if (nodeList.getLength() == 0) {
+                NodeList faultcode = root.getElementsByTagName("faultcode");
+                NodeList faultstring = root.getElementsByTagName("faultstring");
+                log.error("Faultcode in response: {} faultstring: {} response: {}",
+                        nodeToString(faultcode.item(0)), nodeToString(faultstring.item(0)), response);
+            }
             return nodeToString(nodeList.item(0));
         }
         return null;
