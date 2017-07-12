@@ -66,6 +66,8 @@ public class MonitorDataActor extends AbstractActor {
 
         String xml = requestMonitorData(request.getSecurityServerInfo());
 
+        log.info("Response metric: {}", xml);
+
         saveMonitorData(xml, request.getSecurityServerInfo());
         resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(request.getSecurityServerInfo()),
                 getSelf());

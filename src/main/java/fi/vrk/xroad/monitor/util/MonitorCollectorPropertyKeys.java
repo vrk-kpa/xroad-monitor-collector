@@ -29,9 +29,7 @@ package fi.vrk.xroad.monitor.util;
  */
 public class MonitorCollectorPropertyKeys {
     public final static String CLIENT_URL = "xroad-monitor-collector-url.client-url";
-
-    public final static String CLIENT_SECURITY_CODE = "xroad-monitor-collector-client.client-security-code";
-
+    
     public final static String CLIENT_MEMBER_CLASS = "xroad-monitor-collector-client.client-member-class";
 
     public final static String CLIENT_MEMBER_CODE = "xroad-monitor-collector-client.client-member-code";
