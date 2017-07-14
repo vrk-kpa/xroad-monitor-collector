@@ -19,6 +19,10 @@ Then run the collector with profile production
     $ java -Dspring.profiles.active=production -jar build/libs/xroad-monitor-collector.jar --spring.config.name=collector
 
 
+## Running tests
+
+For running tests you need to be able to connect securityserver what you will use for request. You might need to use sshutle for connecting to securityserver.
+
 ## Build RPM Packages on Non-RedHat Platform
  
     $ ./gradlew clean build

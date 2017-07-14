@@ -34,7 +34,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * Tests for {@link MonitorDataHandler}
  */
 @Slf4j
-@SpringBootTest(classes = { MonitorDataRequest.class, MonitorDataHandler.class, MonitorDataResponse.class})
+@SpringBootTest(classes = { MonitorDataRequestBuilder.class, MonitorDataHandler.class, MonitorDataResponseParser.class})
 @RunWith(SpringRunner.class)
 public class MonitorDataHandlerTest {
 
@@ -42,10 +42,10 @@ public class MonitorDataHandlerTest {
     private MonitorDataHandler handler;
 
     @Autowired
-    private MonitorDataRequest request;
+    private MonitorDataRequestBuilder request;
 
     @Autowired
-    private MonitorDataResponse response;
+    private MonitorDataResponseParser response;
 
     private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
             "gdev-ss1.i.palveluvayla.com",

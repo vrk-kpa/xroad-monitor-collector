@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import scala.concurrent.Await;
 import scala.concurrent.duration.Duration;
 
@@ -104,6 +105,7 @@ public class Supervisor extends AbstractActor {
     Timeout timeout = new Timeout(1, TimeUnit.MINUTES);
 
     try {
+      // TODO refactor for using actor messages if this is even nessary
       Await.ready(Patterns.ask(resultCollectorActor, request.getSecurityServerInfos(), timeout), timeout.duration());
 
       request.getSecurityServerInfos().stream()
@@ -141,8 +143,8 @@ public class Supervisor extends AbstractActor {
   //  strategy defined above.`
   private static SupervisorStrategy strategy =
       new OneForOneStrategy(SUPERVISOR_RETRIES, Duration.create("1 minute"), DeciderBuilder
-          .match(NullPointerException.class, e -> {
-            log.info("NullPointer!!"); return resume();
+          .match(RestClientException.class, e -> {
+            log.error("RestClientException ", e); return  resume();
           })
           .matchAny(e -> resume()).build());
 

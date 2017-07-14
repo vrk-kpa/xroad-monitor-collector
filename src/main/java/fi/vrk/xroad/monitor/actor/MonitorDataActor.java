@@ -31,7 +31,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +45,7 @@ public class MonitorDataActor extends AbstractActor {
     protected final ActorRef resultCollectorActor;
 
     @Autowired
-    ApplicationContext context;
+    MonitorDataHandler handler;
 
     public MonitorDataActor(ActorRef resultCollectorActor) {
         this.resultCollectorActor = resultCollectorActor;
@@ -64,7 +63,7 @@ public class MonitorDataActor extends AbstractActor {
 
         log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
 
-        String xml = requestMonitorData(request.getSecurityServerInfo());
+        String xml = handler.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
 
         log.info("Response metric: {}", xml);
 
@@ -72,16 +71,6 @@ public class MonitorDataActor extends AbstractActor {
         resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(request.getSecurityServerInfo()),
                 getSelf());
         log.info("end handleMonitorDataRequest");
-    }
-
-    /**
-     * Will make request for Monitor data from security server and returns only body part
-     * @param securityServerInfo
-     * @return xml string which has body of monitordata request from security server
-     */
-    private String requestMonitorData(SecurityServerInfo securityServerInfo) {
-        MonitorDataHandler handler = context.getBean(MonitorDataHandler.class);
-        return handler.handleMonitorDataRequestAndResponse(securityServerInfo);
     }
 
     /**

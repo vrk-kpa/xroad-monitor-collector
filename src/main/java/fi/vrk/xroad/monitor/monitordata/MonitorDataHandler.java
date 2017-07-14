@@ -26,19 +26,17 @@ import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import fi.vrk.xroad.monitor.util.MonitorCollectorPropertyKeys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Handler for monitordata request, response and parsing
+ * Handler for monitordata requestBuilder, responseParser and parsing
  */
 @Slf4j
 @Component
@@ -48,24 +46,27 @@ public class MonitorDataHandler {
     private Environment environment;
 
     @Autowired
-    ApplicationContext context;
+    private MonitorDataRequestBuilder requestBuilder;
+
+    @Autowired
+    MonitorDataResponseParser responseParser;
+
     /**
      * Will handle getting metric data and saving it to elasticseach
      *
      * @param securityServerInfo information of securityserver what metric to get
      */
     public String handleMonitorDataRequestAndResponse(SecurityServerInfo securityServerInfo) {
-        MonitorDataRequest request = context.getBean(MonitorDataRequest.class);
-        MonitorDataResponse response = context.getBean(MonitorDataResponse.class);
-        String responseXml = makeRequest(request.getRequestXML(securityServerInfo));
-        return response.getMetricInformation(responseXml);
+
+        String responseXml = makeRequest(requestBuilder.getRequestXML(securityServerInfo));
+        return responseParser.getMetricInformation(responseXml);
     }
 
     /**
-     * Makes request to get securityserver metric information
+     * Makes requestBuilder to get securityserver metric information
      *
      * @param xmlRequest to posted in body to securityserver
-     * @return securityserver metric information response
+     * @return securityserver metric information responseParser
      */
     public String makeRequest(String xmlRequest) {
         RestTemplate rt = new RestTemplate();

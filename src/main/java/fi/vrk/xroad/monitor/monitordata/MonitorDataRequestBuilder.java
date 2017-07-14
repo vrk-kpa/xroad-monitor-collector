@@ -25,8 +25,6 @@ package fi.vrk.xroad.monitor.monitordata;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import fi.vrk.xroad.monitor.util.MonitorCollectorPropertyKeys;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -48,10 +46,17 @@ import java.util.UUID;
  */
 @Slf4j
 @Component
-public class MonitorDataRequest {
+public class MonitorDataRequestBuilder {
 
-    @Autowired
-    private Environment environment;
+    private final String instance;
+    private final String clientMemberClass;
+    private final String clientMemberCode;
+
+    public MonitorDataRequestBuilder(Environment environment) {
+        instance = environment.getProperty(MonitorCollectorPropertyKeys.INSTANCE);
+        clientMemberClass = environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_MEMBER_CLASS);
+        clientMemberCode = environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_MEMBER_CODE);
+    }
 
     /**
      * Makes xml string what is request for securityserver monitoring metrics
@@ -60,11 +65,6 @@ public class MonitorDataRequest {
      * @retur xml string request
      */
     public String getRequestXML(SecurityServerInfo serverInfo) {
-
-        String instance = environment != null ? environment.getProperty(MonitorCollectorPropertyKeys.INSTANCE) : null;
-        String clientMemberClass = environment != null ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_MEMBER_CLASS) : null;
-        String clientMemberCode = environment != null ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_MEMBER_CODE) : null;
-
 
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = null;

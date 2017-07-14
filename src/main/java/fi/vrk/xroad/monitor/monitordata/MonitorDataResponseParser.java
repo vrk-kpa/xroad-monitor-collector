@@ -44,11 +44,11 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 /**
- * Handles response and returns only body
+ * Handles responseParser and returns only body
  */
 @Slf4j
 @Component
-public class MonitorDataResponse {
+public class MonitorDataResponseParser {
 
     /**
      * Parse metric information from respose string
@@ -65,7 +65,7 @@ public class MonitorDataResponse {
             if (nodeList.getLength() == 0) {
                 NodeList faultcode = root.getElementsByTagName("faultcode");
                 NodeList faultstring = root.getElementsByTagName("faultstring");
-                log.error("Faultcode in response: {} faultstring: {} response: {}",
+                log.error("Faultcode in responseParser: {} faultstring: {} responseParser: {}",
                         nodeToString(faultcode.item(0)), nodeToString(faultstring.item(0)), response);
             }
             return nodeToString(nodeList.item(0));
@@ -105,7 +105,7 @@ public class MonitorDataResponse {
             InputSource is = new InputSource(new StringReader(response));
             return builder.parse(is);
         } catch (ParserConfigurationException | IOException | SAXException e) {
-            log.error("Failed to parse response document from string: {}", e);
+            log.error("Failed to parse responseParser document from string: {}", e);
             return null;
         }
     }

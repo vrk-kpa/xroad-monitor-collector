@@ -53,9 +53,6 @@ public class SharedParamsParser {
     @Autowired
     private Environment environment;
 
-    //@Value("${xroad-monitor-collector.shared-params-file}")
-   // private String sharedParamsFile;
-
     /**
      * Parses security server information from X-Road global configuration shared-params.xml.
      * Matches member elements with securityServer elements to gather the information.
@@ -96,7 +93,6 @@ public class SharedParamsParser {
                             Element memberClassElement = (Element) memberElement.getElementsByTagName("memberClass").item(0);
                             String memberClass = memberClassElement.getElementsByTagName("code").item(0).getTextContent();
                             String memberCode = memberElement.getElementsByTagName("memberCode").item(0).getTextContent();
-                            String memberName = memberElement.getElementsByTagName("name").item(0).getTextContent();
                             SecurityServerInfo info = new SecurityServerInfo(serverCode, address, memberClass, memberCode);
                             log.debug("SecurityServerInfo: {}", info);
                             securityServerInfos.add(info);
