@@ -41,6 +41,7 @@ public class SpringActorProducer implements IndirectActorProducer {
     /**
      * Create a new SpringActorProducer which creates new Actor instances without
      * constructor arguments
+     *
      * @param applicationContext
      * @param actorBeanName
      */
@@ -54,9 +55,10 @@ public class SpringActorProducer implements IndirectActorProducer {
     /**
      * Create a new SpringActorProducer which creates new Actor instances,
      * using given constructor arguments
+     *
      * @param applicationContext
      * @param actorBeanName
-     * @param args arguments to use when creating a bean instance using explicit arguments
+     * @param args               arguments to use when creating a bean instance using explicit arguments
      */
     public SpringActorProducer(ApplicationContext applicationContext,
                                String actorBeanName,

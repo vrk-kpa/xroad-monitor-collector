@@ -55,12 +55,7 @@ public class ApplicationConfiguration {
      */
     @Bean
     public ActorSystem actorSystem() {
-
-        ActorSystem system = ActorSystem
-                .create("AkkaTaskProcessing", akkaConfiguration());
-
-        // Initialize the application context in the Akka Spring Extension
-        springExtension.initialize(applicationContext);
+        ActorSystem system = ActorSystem.create("AkkaTaskProcessing", akkaConfiguration());
         return system;
     }
 

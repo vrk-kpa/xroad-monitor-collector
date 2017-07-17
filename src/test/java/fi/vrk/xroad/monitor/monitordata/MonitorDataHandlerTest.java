@@ -34,7 +34,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * Tests for {@link MonitorDataHandler}
  */
 @Slf4j
-@SpringBootTest(classes = { MonitorDataRequestBuilder.class, MonitorDataHandler.class, MonitorDataResponseParser.class})
+@SpringBootTest(classes = {MonitorDataRequestBuilder.class, MonitorDataHandler.class, MonitorDataResponseParser.class})
 @RunWith(SpringRunner.class)
 public class MonitorDataHandlerTest {
 

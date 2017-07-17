@@ -30,12 +30,16 @@ import akka.routing.SmallestMailboxPool;
 import akka.testkit.TestActorRef;
 import fi.vrk.xroad.monitor.MonitorCollectorApplication;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
+import fi.vrk.xroad.monitor.monitordata.MonitorDataHandler;
+import fi.vrk.xroad.monitor.monitordata.MonitorDataRequestBuilder;
+import fi.vrk.xroad.monitor.monitordata.MonitorDataResponseParser;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
@@ -47,49 +51,62 @@ import static org.junit.Assert.assertEquals;
  * Tests for {@link Supervisor}
  */
 @Slf4j
-@SpringBootTest(classes = MonitorCollectorApplication.class)
+@SpringBootTest(classes = {
+        SpringExtension.class,
+        Supervisor.class,
+        ApplicationContext.class,
+        MonitorDataActor.class,
+        ResultCollectorActor.class,
+        MonitorDataHandler.class,
+        MonitorDataRequestBuilder.class,
+        MonitorDataResponseParser.class})
 @RunWith(SpringRunner.class)
 public class SupervisorTest {
 
-  @Autowired
-  ActorSystem system;
+    @Autowired
+    SpringExtension springExtension;
 
-  @Autowired
-  SpringExtension ext;
+//  @Autowired
+//  private ApplicationContext applicationContext;
 
-  /**
-   * Tests the system logic so that when supervisor starts processing
-   * the collector receives the processing results.
-   */
-  @Test
-  public void testSupervisor() {
+    /**
+     * Tests the system logic so that when supervisor starts processing
+     * the collector receives the processing results.
+     */
+    @Test
+    public void testSupervisor() {
 
-    Set<SecurityServerInfo> securityServerInfos = new HashSet<>();
-    securityServerInfos.add(new SecurityServerInfo("Eka", "Osoite", "memberClass", "memberCode"));
-    securityServerInfos.add(new SecurityServerInfo("", "", "", ""));
-    securityServerInfos.add(new SecurityServerInfo("Toka", "osoite", "memberClass", "memberCode"));
+        ActorSystem system = ActorSystem.create();
 
-    final TestActorRef<ResultCollectorActor> resultCollectorActor = TestActorRef.create(
-            system, Props.create(ResultCollectorActor.class));
+        Set<SecurityServerInfo> securityServerInfos = new HashSet<>();
+        securityServerInfos.add(new SecurityServerInfo("Eka", "Osoite", "memberClass", "memberCode"));
+        securityServerInfos.add(new SecurityServerInfo("", "", "", ""));
+        securityServerInfos.add(new SecurityServerInfo("Toka", "osoite", "memberClass", "memberCode"));
 
-    final TestActorRef<MonitorDataActor> monitorDataRequestPoolRouter =
-            TestActorRef.create(system, new SmallestMailboxPool(2).props(
-                    ext.props("monitorDataActor", resultCollectorActor))
-            );
+        final TestActorRef<ResultCollectorActor> resultCollectorActor = TestActorRef.create(
+                system, Props.create(ResultCollectorActor.class));
 
-    // create supervisor
-    final Props supervisorProps = ext.props("supervisor");
-    final TestActorRef<Supervisor> supervisorRef = TestActorRef.create(system, supervisorProps, "supervisor");
-    Supervisor underlying = supervisorRef.underlyingActor();
-    underlying.overrideResultCollectorActor(resultCollectorActor);
-    underlying.overrideMonitorDataRequestPoolRouter(monitorDataRequestPoolRouter);
+        final TestActorRef<MonitorDataActor> monitorDataRequestPoolRouter =
+                TestActorRef.create(system, new SmallestMailboxPool(2).props(
+                        springExtension.props(
+                                //MonitorDataActor.class.getName()
+                                "monitorDataActor"
+                                , resultCollectorActor))
+                );
 
-    // send message to supervisor to start processing
-    supervisorRef.receive(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
+        // create supervisor
+        final Props supervisorProps = springExtension.props("supervisor");
+        final TestActorRef<Supervisor> supervisorRef = TestActorRef.create(system, supervisorProps, "supervisor");
+        Supervisor underlying = supervisorRef.underlyingActor();
+        underlying.overrideResultCollectorActor(resultCollectorActor);
+        underlying.overrideMonitorDataRequestPoolRouter(monitorDataRequestPoolRouter);
 
-    // assert that all the results have been received
-    assertEquals(securityServerInfos.size(), resultCollectorActor.underlyingActor().getNumProcessedResults());
+        // send message to supervisor to start processing
+        supervisorRef.receive(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
 
-  }
+        // assert that all the results have been received
+        assertEquals(securityServerInfos.size(), resultCollectorActor.underlyingActor().getNumProcessedResults());
+
+    }
 
 }

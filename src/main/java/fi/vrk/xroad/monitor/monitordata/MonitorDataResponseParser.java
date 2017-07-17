@@ -52,6 +52,7 @@ public class MonitorDataResponseParser {
 
     /**
      * Parse metric information from respose string
+     *
      * @param response xml string what is gotten from securityserver
      * @return metric data in xml string
      */
@@ -75,6 +76,7 @@ public class MonitorDataResponseParser {
 
     /**
      * Parse xml node to string
+     *
      * @param item xml node
      * @return xml string
      */
@@ -94,6 +96,7 @@ public class MonitorDataResponseParser {
 
     /**
      * Parse respose string to xml document
+     *
      * @param response string
      * @return xml document
      */

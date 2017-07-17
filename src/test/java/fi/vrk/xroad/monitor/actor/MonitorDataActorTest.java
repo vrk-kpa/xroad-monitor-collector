@@ -64,30 +64,29 @@ public class MonitorDataActorTest {
   @Test
   public void testMonitorDataActor() {
 
-    // create result collector actor
-    final Props resultCollectorActorProps = Props.create(ResultCollectorActor.class);
-    final TestActorRef<ResultCollectorActor> resultCollectorRef =
-            TestActorRef.create(system, resultCollectorActorProps, "testA");
-    ResultCollectorActor resultCollectorActor = resultCollectorRef.underlyingActor();
+      // create result collector actor
+      final Props resultCollectorActorProps = Props.create(ResultCollectorActor.class);
+      final TestActorRef<ResultCollectorActor> resultCollectorRef =
+              TestActorRef.create(system, resultCollectorActorProps, "testA");
+      ResultCollectorActor resultCollectorActor = resultCollectorRef.underlyingActor();
 
-    // create monitor data actor
-    final Props monitorDataActorProps = ext.props("monitorDataActor", resultCollectorRef);
-    final TestActorRef<MonitorDataActor> monitorDataRef = TestActorRef.create(system, monitorDataActorProps, "testB");
-    Set<SecurityServerInfo> infos = new HashSet<>();
-    infos.add(new SecurityServerInfo("gdev-ss1.i.palveluvayla.com", "gdev-ss1.i.palveluvayla.com", "GOV", "1710128-9"));
-    infos.add(new SecurityServerInfo("gdev-ss2.i.palveluvayla.com", "gdev-ss2.i.palveluvayla.com", "GOV", "1710128-9"));
+      // create monitor data actor
+      final Props monitorDataActorProps = ext.props("monitorDataActor", resultCollectorRef);
+      final TestActorRef<MonitorDataActor> monitorDataRef = TestActorRef.create(system, monitorDataActorProps, "testB");
+      Set<SecurityServerInfo> infos = new HashSet<>();
+      infos.add(new SecurityServerInfo("gdev-ss1.i.palveluvayla.com", "gdev-ss1.i.palveluvayla.com", "GOV", "1710128-9"));
+      infos.add(new SecurityServerInfo("gdev-ss2.i.palveluvayla.com", "gdev-ss2.i.palveluvayla.com", "GOV", "1710128-9"));
 
-    // Initialize resultcollertor
-    resultCollectorRef.receive(infos);
+      // Initialize resultcollertor
+      resultCollectorRef.receive(infos);
 
-    // process all requests
-    for (SecurityServerInfo info : infos) {
-      monitorDataRef.receive(new MonitorDataActor.MonitorDataRequest(info));
+      // process all requests
+      for (SecurityServerInfo info : infos) {
+          monitorDataRef.receive(new MonitorDataActor.MonitorDataRequest(info));
+      }
 
+
+      // assert that result collector actor has received 2 results
+      assertEquals(2, resultCollectorActor.getNumProcessedResults());
     }
-
-
-    // assert that result collector actor has received 2 results
-    assertEquals(2, resultCollectorActor.getNumProcessedResults());
-  }
 }
