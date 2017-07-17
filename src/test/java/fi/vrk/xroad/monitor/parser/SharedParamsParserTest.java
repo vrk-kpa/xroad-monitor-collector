@@ -45,20 +45,20 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 public class SharedParamsParserTest {
 
-  @Autowired
-  private SharedParamsParser parser;
+    @Autowired
+    private SharedParamsParser parser;
 
-  private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
-          "servername-6.com",
-          "servername-6.com",
-          "GOV",
-          "13775550");
+    private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
+            "servername-6.com",
+            "servername-6.com",
+            "GOV",
+            "13775550");
 
-  @Test
-  public void testParse() throws IOException, SAXException, ParserConfigurationException {
-    Set<SecurityServerInfo> resultList = parser.parse();
-    assertNotNull(resultList);
-    assertThat(resultList.size(), not(is(0)));
-    assertTrue(resultList.contains(exampleInfo));
-  }
+    @Test
+    public void testParse() throws IOException, SAXException, ParserConfigurationException {
+        Set<SecurityServerInfo> resultList = parser.parse();
+        assertNotNull(resultList);
+        assertThat(resultList.size(), not(is(0)));
+        assertTrue(resultList.contains(exampleInfo));
+    }
 }

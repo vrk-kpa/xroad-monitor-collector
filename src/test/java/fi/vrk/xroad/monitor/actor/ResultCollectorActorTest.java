@@ -52,45 +52,45 @@ import static org.junit.Assert.fail;
 @RunWith(SpringRunner.class)
 public class ResultCollectorActorTest {
 
-  @Autowired
-  SharedParamsParser parser;
+    @Autowired
+    SharedParamsParser parser;
 
-  @Test
-  public void testResultCollectorActor() {
-    ActorSystem system = ActorSystem.create();
+    @Test
+    public void testResultCollectorActor() {
+        ActorSystem system = ActorSystem.create();
 
-    // parse global config to get security server information
-    Set<SecurityServerInfo> securityServerInfos = null;
-    try {
-      securityServerInfos = parser.parse();
-    } catch (ParserConfigurationException | IOException | SAXException e) {
-      log.error("Failed parsing", e);
-      fail("Failed parsing shared-params.xml");
+        // parse global config to get security server information
+        Set<SecurityServerInfo> securityServerInfos = null;
+        try {
+            securityServerInfos = parser.parse();
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            log.error("Failed parsing", e);
+            fail("Failed parsing shared-params.xml");
+        }
+
+        // create result collector actor
+        final Props props = Props.create(ResultCollectorActor.class);
+        final TestActorRef<ResultCollectorActor> ref = TestActorRef.create(system, props);
+        final ResultCollectorActor actor = ref.underlyingActor();
+
+        ref.receive(securityServerInfos, ActorRef.noSender());
+
+        // assert that we expect as many results as given in the actor constructor
+        assertEquals(securityServerInfos.size(), actor.getNumExpectedResults());
+
+        // assert that it hasn't received any results yet
+        assertEquals(0, actor.getNumProcessedResults());
+
+        // assert that it hasn't received all expected results yet
+        assertEquals(false, actor.isDone());
+
+        // send results
+        securityServerInfos.stream().forEach(
+                info -> ref.receive(ResultCollectorActor.MonitorDataResult.createSuccess(info))
+        );
+        assertEquals(securityServerInfos.size(), actor.getNumProcessedResults());
+
+        // assert that all results have been received
+        assertEquals(true, actor.isDone());
     }
-
-    // create result collector actor
-    final Props props = Props.create(ResultCollectorActor.class);
-    final TestActorRef<ResultCollectorActor> ref = TestActorRef.create(system, props);
-    final ResultCollectorActor actor = ref.underlyingActor();
-
-    ref.receive(securityServerInfos, ActorRef.noSender());
-
-    // assert that we expect as many results as given in the actor constructor
-    assertEquals(securityServerInfos.size(), actor.getNumExpectedResults());
-
-    // assert that it hasn't received any results yet
-    assertEquals(0, actor.getNumProcessedResults());
-
-    // assert that it hasn't received all expected results yet
-    assertEquals(false, actor.isDone());
-
-    // send results
-    securityServerInfos.stream().forEach(
-            info -> ref.receive(ResultCollectorActor.MonitorDataResult.createSuccess(info))
-    );
-    assertEquals(securityServerInfos.size(), actor.getNumProcessedResults());
-
-    // assert that all results have been received
-    assertEquals(true, actor.isDone());
-  }
 }

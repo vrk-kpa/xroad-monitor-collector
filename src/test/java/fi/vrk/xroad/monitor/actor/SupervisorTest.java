@@ -61,52 +61,52 @@ import static org.junit.Assert.assertEquals;
         MonitorDataRequestBuilder.class,
         MonitorDataResponseParser.class})
 @RunWith(SpringRunner.class)
-  public class SupervisorTest {
+public class SupervisorTest {
 
-  @Autowired
-  SpringExtension springExtension;
+    @Autowired
+    SpringExtension springExtension;
 
 //  @Autowired
 //  private ApplicationContext applicationContext;
 
-  /**
-   * Tests the system logic so that when supervisor starts processing
-   * the collector receives the processing results.
-   */
-  @Test
-  public void testSupervisor() {
+    /**
+     * Tests the system logic so that when supervisor starts processing
+     * the collector receives the processing results.
+     */
+    @Test
+    public void testSupervisor() {
 
-    ActorSystem system = ActorSystem.create();
+        ActorSystem system = ActorSystem.create();
 
-    Set<SecurityServerInfo> securityServerInfos = new HashSet<>();
-    securityServerInfos.add(new SecurityServerInfo("Eka", "Osoite", "memberClass", "memberCode"));
-    securityServerInfos.add(new SecurityServerInfo("", "", "", ""));
-    securityServerInfos.add(new SecurityServerInfo("Toka", "osoite", "memberClass", "memberCode"));
+        Set<SecurityServerInfo> securityServerInfos = new HashSet<>();
+        securityServerInfos.add(new SecurityServerInfo("Eka", "Osoite", "memberClass", "memberCode"));
+        securityServerInfos.add(new SecurityServerInfo("", "", "", ""));
+        securityServerInfos.add(new SecurityServerInfo("Toka", "osoite", "memberClass", "memberCode"));
 
-    final TestActorRef<ResultCollectorActor> resultCollectorActor = TestActorRef.create(
-            system, Props.create(ResultCollectorActor.class));
+        final TestActorRef<ResultCollectorActor> resultCollectorActor = TestActorRef.create(
+                system, Props.create(ResultCollectorActor.class));
 
-    final TestActorRef<MonitorDataActor> monitorDataRequestPoolRouter =
-            TestActorRef.create(system, new SmallestMailboxPool(2).props(
-                    springExtension.props(
-                            //MonitorDataActor.class.getName()
-                            "monitorDataActor"
-                            ,resultCollectorActor))
-            );
+        final TestActorRef<MonitorDataActor> monitorDataRequestPoolRouter =
+                TestActorRef.create(system, new SmallestMailboxPool(2).props(
+                        springExtension.props(
+                                //MonitorDataActor.class.getName()
+                                "monitorDataActor"
+                                , resultCollectorActor))
+                );
 
-    // create supervisor
-    final Props supervisorProps = springExtension.props("supervisor");
-    final TestActorRef<Supervisor> supervisorRef = TestActorRef.create(system, supervisorProps, "supervisor");
-    Supervisor underlying = supervisorRef.underlyingActor();
-    underlying.overrideResultCollectorActor(resultCollectorActor);
-    underlying.overrideMonitorDataRequestPoolRouter(monitorDataRequestPoolRouter);
+        // create supervisor
+        final Props supervisorProps = springExtension.props("supervisor");
+        final TestActorRef<Supervisor> supervisorRef = TestActorRef.create(system, supervisorProps, "supervisor");
+        Supervisor underlying = supervisorRef.underlyingActor();
+        underlying.overrideResultCollectorActor(resultCollectorActor);
+        underlying.overrideMonitorDataRequestPoolRouter(monitorDataRequestPoolRouter);
 
-    // send message to supervisor to start processing
-    supervisorRef.receive(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
+        // send message to supervisor to start processing
+        supervisorRef.receive(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
 
-    // assert that all the results have been received
-    assertEquals(securityServerInfos.size(), resultCollectorActor.underlyingActor().getNumProcessedResults());
+        // assert that all the results have been received
+        assertEquals(securityServerInfos.size(), resultCollectorActor.underlyingActor().getNumProcessedResults());
 
-  }
+    }
 
 }
