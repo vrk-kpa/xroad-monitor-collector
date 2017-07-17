@@ -28,6 +28,7 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.routing.SmallestMailboxPool;
 import akka.testkit.TestActorRef;
+import akka.testkit.javadsl.TestKit;
 import fi.vrk.xroad.monitor.MonitorCollectorApplication;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import fi.vrk.xroad.monitor.monitordata.MonitorDataHandler;
@@ -35,6 +36,8 @@ import fi.vrk.xroad.monitor.monitordata.MonitorDataRequestBuilder;
 import fi.vrk.xroad.monitor.monitordata.MonitorDataResponseParser;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +69,18 @@ public class SupervisorTest {
     @Autowired
     SpringExtension springExtension;
 
-//  @Autowired
-//  private ApplicationContext applicationContext;
+    static ActorSystem system;
+
+    @BeforeClass
+    public static void setup() {
+        system = ActorSystem.create();
+    }
+
+    @AfterClass
+    public static void teardown() {
+        TestKit.shutdownActorSystem(system);
+        system = null;
+    }
 
     /**
      * Tests the system logic so that when supervisor starts processing
@@ -75,8 +88,6 @@ public class SupervisorTest {
      */
     @Test
     public void testSupervisor() {
-
-        ActorSystem system = ActorSystem.create();
 
         Set<SecurityServerInfo> securityServerInfos = new HashSet<>();
         securityServerInfos.add(new SecurityServerInfo("Eka", "Osoite", "memberClass", "memberCode"));
