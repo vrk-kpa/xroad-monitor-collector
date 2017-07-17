@@ -42,6 +42,8 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class MonitorDataHandler {
 
+    RestTemplate rt = new RestTemplate();
+
     @Autowired
     private Environment environment;
 
@@ -69,7 +71,7 @@ public class MonitorDataHandler {
      * @return securityserver metric information responseParser
      */
     public String makeRequest(String xmlRequest) {
-        RestTemplate rt = new RestTemplate();
+
         rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
         rt.getMessageConverters().add(new StringHttpMessageConverter());
 
@@ -79,7 +81,6 @@ public class MonitorDataHandler {
         HttpEntity<String> entity = new HttpEntity<>(xmlRequest, headers);
 
         String clientUrl = environment != null ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_URL) : null;
-        // TODO this will stop working if can't connect to securityserver
         return rt.postForObject(clientUrl, entity, String.class);
     }
 
