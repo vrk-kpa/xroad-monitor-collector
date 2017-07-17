@@ -1,6 +1,6 @@
 /**
- *  The MIT License
- *  Copyright (c) 2017, Population Register Centre (VRK)
+ * The MIT License
+ * Copyright (c) 2017, Population Register Centre (VRK)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -11,7 +11,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
-
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -52,6 +52,7 @@ import java.util.Set;
 public class MonitorCollectorApplication {
     /**
      * Entry point
+     *
      * @param args
      */
     public static void main(String[] args) {

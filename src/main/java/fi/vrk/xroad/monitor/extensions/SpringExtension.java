@@ -24,23 +24,20 @@ package fi.vrk.xroad.monitor.extensions;
 
 import akka.actor.Extension;
 import akka.actor.Props;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
  * Extension to tell Akka how to create beans via Spring.
  */
+@Slf4j
 @Component
 public class SpringExtension implements Extension {
 
+    @Autowired
     private ApplicationContext applicationContext;
-
-    /**
-     * Used to initialize the Spring application context for the extension.
-     */
-    public void initialize(ApplicationContext ac) {
-        this.applicationContext = ac;
-    }
 
     /**
      * Create a Props for the specified actorBeanName using the
@@ -48,13 +45,14 @@ public class SpringExtension implements Extension {
      */
     public Props props(String actorBeanName) {
         return Props.create(SpringActorProducer.class,
-            applicationContext, actorBeanName);
+                applicationContext, actorBeanName);
     }
 
     /**
      * Create a Props for the specified actorBeanName using the
      * SpringActorProducer class. Created actor bean is given constructor arguments
      * from {@code args} param
+     *
      * @param actorBeanName
      * @param args
      * @return

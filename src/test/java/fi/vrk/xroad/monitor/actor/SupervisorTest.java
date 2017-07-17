@@ -30,12 +30,16 @@ import akka.routing.SmallestMailboxPool;
 import akka.testkit.TestActorRef;
 import fi.vrk.xroad.monitor.MonitorCollectorApplication;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
+import fi.vrk.xroad.monitor.monitordata.MonitorDataHandler;
+import fi.vrk.xroad.monitor.monitordata.MonitorDataRequestBuilder;
+import fi.vrk.xroad.monitor.monitordata.MonitorDataResponseParser;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
@@ -47,15 +51,23 @@ import static org.junit.Assert.assertEquals;
  * Tests for {@link Supervisor}
  */
 @Slf4j
-@SpringBootTest(classes = MonitorCollectorApplication.class)
+@SpringBootTest(classes = {
+        SpringExtension.class,
+        Supervisor.class,
+        ApplicationContext.class,
+        MonitorDataActor.class,
+        ResultCollectorActor.class,
+        MonitorDataHandler.class,
+        MonitorDataRequestBuilder.class,
+        MonitorDataResponseParser.class})
 @RunWith(SpringRunner.class)
-public class SupervisorTest {
+  public class SupervisorTest {
 
   @Autowired
-  ActorSystem system;
+  SpringExtension springExtension;
 
-  @Autowired
-  SpringExtension ext;
+//  @Autowired
+//  private ApplicationContext applicationContext;
 
   /**
    * Tests the system logic so that when supervisor starts processing
@@ -63,6 +75,8 @@ public class SupervisorTest {
    */
   @Test
   public void testSupervisor() {
+
+    ActorSystem system = ActorSystem.create();
 
     Set<SecurityServerInfo> securityServerInfos = new HashSet<>();
     securityServerInfos.add(new SecurityServerInfo("Eka", "Osoite", "memberClass", "memberCode"));
@@ -74,11 +88,14 @@ public class SupervisorTest {
 
     final TestActorRef<MonitorDataActor> monitorDataRequestPoolRouter =
             TestActorRef.create(system, new SmallestMailboxPool(2).props(
-                    ext.props("monitorDataActor", resultCollectorActor))
+                    springExtension.props(
+                            //MonitorDataActor.class.getName()
+                            "monitorDataActor"
+                            ,resultCollectorActor))
             );
 
     // create supervisor
-    final Props supervisorProps = ext.props("supervisor");
+    final Props supervisorProps = springExtension.props("supervisor");
     final TestActorRef<Supervisor> supervisorRef = TestActorRef.create(system, supervisorProps, "supervisor");
     Supervisor underlying = supervisorRef.underlyingActor();
     underlying.overrideResultCollectorActor(resultCollectorActor);
