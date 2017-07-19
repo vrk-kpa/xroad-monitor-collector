@@ -47,6 +47,7 @@ public class MonitorDataHandlerTest {
     @Autowired
     private MonitorDataResponseParser response;
 
+    // Test requires this to be valid and accessible server
     private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
             "gdev-ss1.i.palveluvayla.com",
             "http://gdev-ss1.i.palveluvayla.com",

@@ -49,6 +49,7 @@ public class MonitorDataRequestBuilderTest {
 
     @Test
     public void getRequestXMLTest() {
+        // Runtime exceptions (DOMException) are thrown if DOM creation fails.
         String xmlRequest = request.getRequestXML(exampleInfo);
         log.info(xmlRequest);
     }

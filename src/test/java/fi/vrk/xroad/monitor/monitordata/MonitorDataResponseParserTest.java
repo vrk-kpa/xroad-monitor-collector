@@ -38,6 +38,7 @@ public class MonitorDataResponseParserTest {
 
     @Test
     public void testEmpty() {
-
+        // Placeholder for tests if parser features are extended.
+        // No use testing Java's DocumentBuilderFactory converting String -> Document -> String
     }
 }
