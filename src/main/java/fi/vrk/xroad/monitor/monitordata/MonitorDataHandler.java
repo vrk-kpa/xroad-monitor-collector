@@ -59,9 +59,7 @@ public class MonitorDataHandler {
      * @param securityServerInfo information of securityserver what metric to get
      */
     public String handleMonitorDataRequestAndResponse(SecurityServerInfo securityServerInfo) {
-
-        String responseXml = makeRequest(requestBuilder.getRequestXML(securityServerInfo));
-        return responseParser.getMetricInformation(responseXml);
+        return responseParser.getMetricInformation(makeRequest(requestBuilder.getRequestXML(securityServerInfo)));
     }
 
     /**
