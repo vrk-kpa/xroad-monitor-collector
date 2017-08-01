@@ -66,27 +66,4 @@ public class ApplicationConfiguration {
     public Config akkaConfiguration() {
         return ConfigFactory.load();
     }
-
-  /*@Bean
-  public RestOperations getRestOperations() {
-    return createTimeoutingRestTemplate();
-  }
-
-  private static final int TIMEOUT = 10 * 60 * 1000; // 10 minutes
-  private RestTemplate createTimeoutingRestTemplate() {
-    RestTemplate rt = new RestTemplate();
-    setTimeout(rt, TIMEOUT);
-    return rt;
-  }
-
-  private void setTimeout(RestTemplate restTemplate, int timeout) {
-    //Explicitly setting ClientHttpRequestFactory instance to
-    //SimpleClientHttpRequestFactory instance to leverage
-    //set*Timeout methods
-    restTemplate.setRequestFactory(new SimpleClientHttpRequestFactory());
-    SimpleClientHttpRequestFactory rf = (SimpleClientHttpRequestFactory) restTemplate
-            .getRequestFactory();
-    rf.setReadTimeout(timeout);
-    rf.setConnectTimeout(timeout);
-  }*/
 }
