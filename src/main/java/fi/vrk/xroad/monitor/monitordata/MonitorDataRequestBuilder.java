@@ -52,6 +52,10 @@ public class MonitorDataRequestBuilder {
     private final String clientMemberClass;
     private final String clientMemberCode;
 
+    /**
+     * Constructor
+     * @param environment
+     */
     public MonitorDataRequestBuilder(Environment environment) {
         instance = environment.getProperty(MonitorCollectorPropertyKeys.INSTANCE);
         clientMemberClass = environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_MEMBER_CLASS);

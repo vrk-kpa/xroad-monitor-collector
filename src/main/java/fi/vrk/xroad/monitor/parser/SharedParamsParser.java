@@ -25,7 +25,6 @@ package fi.vrk.xroad.monitor.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -90,10 +89,14 @@ public class SharedParamsParser {
                     if (member.getNodeType() == Node.ELEMENT_NODE) {
                         Element memberElement = (Element) member;
                         if (memberElement.getAttribute("id").equals(owner)) {
-                            Element memberClassElement = (Element) memberElement.getElementsByTagName("memberClass").item(0);
-                            String memberClass = memberClassElement.getElementsByTagName("code").item(0).getTextContent();
-                            String memberCode = memberElement.getElementsByTagName("memberCode").item(0).getTextContent();
-                            SecurityServerInfo info = new SecurityServerInfo(serverCode, address, memberClass, memberCode);
+                            Element memberClassElement =
+                                (Element) memberElement.getElementsByTagName("memberClass").item(0);
+                            String memberClass =
+                                memberClassElement.getElementsByTagName("code").item(0).getTextContent();
+                            String memberCode =
+                                memberElement.getElementsByTagName("memberCode").item(0).getTextContent();
+                            SecurityServerInfo info =
+                                new SecurityServerInfo(serverCode, address, memberClass, memberCode);
                             log.debug("SecurityServerInfo: {}", info);
                             securityServerInfos.add(info);
                             break;

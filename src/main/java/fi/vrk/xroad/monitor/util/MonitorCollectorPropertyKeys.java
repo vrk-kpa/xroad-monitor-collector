@@ -27,13 +27,14 @@ package fi.vrk.xroad.monitor.util;
 /**
  * Property access class
  */
-public class MonitorCollectorPropertyKeys {
-    public final static String CLIENT_URL = "xroad-monitor-collector-url.client-url";
+public final class MonitorCollectorPropertyKeys {
+    public static final String CLIENT_URL = "xroad-monitor-collector-url.client-url";
     
-    public final static String CLIENT_MEMBER_CLASS = "xroad-monitor-collector-client.client-member-class";
+    public static final String CLIENT_MEMBER_CLASS = "xroad-monitor-collector-client.client-member-class";
 
-    public final static String CLIENT_MEMBER_CODE = "xroad-monitor-collector-client.client-member-code";
+    public static final String CLIENT_MEMBER_CODE = "xroad-monitor-collector-client.client-member-code";
 
-    public final static String INSTANCE = "xroad-monitor-collector-client.instance";
+    public static final String INSTANCE = "xroad-monitor-collector-client.instance";
 
+    private MonitorCollectorPropertyKeys() { }
 }

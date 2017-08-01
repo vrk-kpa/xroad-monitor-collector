@@ -29,7 +29,6 @@ import akka.actor.Props;
 import akka.routing.SmallestMailboxPool;
 import akka.testkit.TestActorRef;
 import akka.testkit.javadsl.TestKit;
-import fi.vrk.xroad.monitor.MonitorCollectorApplication;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import fi.vrk.xroad.monitor.monitordata.MonitorDataHandler;
 import fi.vrk.xroad.monitor.monitordata.MonitorDataRequestBuilder;
@@ -101,8 +100,8 @@ public class SupervisorTest {
                 TestActorRef.create(system, new SmallestMailboxPool(2).props(
                         springExtension.props(
                                 //MonitorDataActor.class.getName()
-                                "monitorDataActor"
-                                , resultCollectorActor))
+                                "monitorDataActor",
+                                resultCollectorActor))
                 );
 
         // create supervisor
@@ -113,7 +112,8 @@ public class SupervisorTest {
         underlying.overrideMonitorDataRequestPoolRouter(monitorDataRequestPoolRouter);
 
         // send message to supervisor to start processing
-        supervisorRef.receive(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
+        supervisorRef.receive(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos),
+            ActorRef.noSender());
 
         // assert that all the results have been received
         assertEquals(securityServerInfos.size(), resultCollectorActor.underlyingActor().getNumProcessedResults());

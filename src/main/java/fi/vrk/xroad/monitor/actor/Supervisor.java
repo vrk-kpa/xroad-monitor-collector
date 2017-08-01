@@ -34,7 +34,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -106,8 +105,8 @@ public class Supervisor extends AbstractActor {
         Timeout timeout = new Timeout(1, TimeUnit.MINUTES);
 
         try {
-            // TODO refactor for using actor messages if this is even nessary
-            Await.ready(Patterns.ask(resultCollectorActor, request.getSecurityServerInfos(), timeout), timeout.duration());
+            Await.ready(Patterns.ask(resultCollectorActor, request.getSecurityServerInfos(), timeout),
+                timeout.duration());
 
             request.getSecurityServerInfos().stream()
                     .forEach(info -> {

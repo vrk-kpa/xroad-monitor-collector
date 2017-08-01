@@ -37,7 +37,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
@@ -49,7 +48,8 @@ import static org.junit.Assert.assertEquals;
  * Tests for {@link MonitorDataActor}
  */
 @Slf4j
-@SpringBootTest(classes = {MonitorCollectorApplication.class, MonitorDataHandler.class, MonitorDataRequestBuilder.class, MonitorDataResponseParser.class})
+@SpringBootTest(classes = {MonitorCollectorApplication.class, MonitorDataHandler.class,
+    MonitorDataRequestBuilder.class, MonitorDataResponseParser.class})
 @RunWith(SpringRunner.class)
 public class MonitorDataActorTest {
 
@@ -74,8 +74,10 @@ public class MonitorDataActorTest {
       final Props monitorDataActorProps = ext.props("monitorDataActor", resultCollectorRef);
       final TestActorRef<MonitorDataActor> monitorDataRef = TestActorRef.create(system, monitorDataActorProps, "testB");
       Set<SecurityServerInfo> infos = new HashSet<>();
-      infos.add(new SecurityServerInfo("gdev-ss1.i.palveluvayla.com", "gdev-ss1.i.palveluvayla.com", "GOV", "1710128-9"));
-      infos.add(new SecurityServerInfo("gdev-ss2.i.palveluvayla.com", "gdev-ss2.i.palveluvayla.com", "GOV", "1710128-9"));
+      infos.add(new SecurityServerInfo("gdev-ss1.i.palveluvayla.com", "gdev-ss1.i.palveluvayla.com",
+          "GOV", "1710128-9"));
+      infos.add(new SecurityServerInfo("gdev-ss2.i.palveluvayla.com", "gdev-ss2.i.palveluvayla.com",
+          "GOV", "1710128-9"));
 
       // Initialize resultcollertor
       resultCollectorRef.receive(infos);

@@ -80,7 +80,8 @@ public class MonitorDataHandler {
 
         HttpEntity<String> entity = new HttpEntity<>(xmlRequest, headers);
 
-        String clientUrl = environment != null ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_URL) : null;
+        String clientUrl = environment != null
+            ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_URL) : null;
         return rt.postForObject(clientUrl, entity, String.class);
     }
 

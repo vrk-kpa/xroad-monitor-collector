@@ -26,7 +26,7 @@ checkstyle {
     toolVersion = "6.19"
     configFile = new File(rootDir, "checkstyle.xml")
     configProperties.config_loc = "$rootDir"
-    ignoreFailures = true
+    ignoreFailures = false
     showViolations = true
 }
 
