@@ -2,11 +2,14 @@
 
 ## Build
 
+To compile, run unit tests and integration tests
 
     $ ./gradlew clean build
 
 
 ## Run
+
+To run the application
 
     $ ./gradlew bootRun
 
@@ -21,13 +24,27 @@ Then run the collector with profile production
 
 ## Running tests
 
-For running tests you need to be able to connect securityserver what you will use for request. You might need to use sshutle for connecting to securityserver.
+To run unit tests
+
+    $ ./gradlew clean test
+
+To run integration tests
+
+    $ ./gradlew clean integrationTest
+
+To and run all tests
+
+    $ ./gradlew clean test integrationTest
+
+Integration tests require that you are able to connect to the specified security server.
+
 
 ## Build RPM Packages on Non-RedHat Platform
  
     $ ./gradlew clean build
     $ docker build -t collector-rpm packages/xroad-monitor-collector/docker
     $ docker run -v $PWD/..:/workspace  -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro collector-rpm
+
 
 ## Format license header format
 
