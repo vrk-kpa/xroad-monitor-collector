@@ -30,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Tests for {@link MonitorDataHandler}
  */
@@ -61,5 +63,6 @@ public class MonitorDataHandlerTest {
         log.info("result: {}", root);
         String metric = response.getMetricInformation(root);
         log.info("body: {}", metric);
+        assertTrue(metric.contains("getSecurityServerMetricsResponse"));
     }
 }
