@@ -30,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Tests for {@link MonitorDataRequestBuilder}
  */
@@ -52,5 +54,9 @@ public class MonitorDataRequestBuilderTest {
         // Runtime exceptions (DOMException) are thrown if DOM creation fails.
         String xmlRequest = request.getRequestXML(exampleInfo);
         log.info(xmlRequest);
+        // Assert that request contains member class, member code and server code
+        assertTrue(xmlRequest.contains("GOV"));
+        assertTrue(xmlRequest.contains("1710128-9"));
+        assertTrue(xmlRequest.contains("gdev-ss1.i.palveluvayla.com"));
     }
 }
