@@ -16,7 +16,7 @@ Or
 
 Then run the collector with profile production
 
-    $ java -Dspring.profiles.active=production -jar build/libs/xroad-monitor-collector.jar --spring.config.name=collector
+    $ java -Dspring.profiles.active=production -jar build/libs/xroad-monitor-collector.jar --spring.config.name=application
 
 
 ## Running tests
