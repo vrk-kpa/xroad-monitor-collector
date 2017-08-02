@@ -1,2 +1,2 @@
 #!/bin/sh
-* * * * * root systemctl restart xroad-monitor-collector
+*/5 * * * * root systemctl restart xroad-monitor-collector
