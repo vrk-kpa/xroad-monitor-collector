@@ -20,46 +20,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fi.vrk.xroad.monitor.extensions;
+package fi.vrk.xroad.monitor.monitordata;
 
-import akka.actor.Extension;
-import akka.actor.Props;
+import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.junit.Assert.assertTrue;
 
 /**
- * Extension to tell Akka how to create beans via Spring.
+ * Tests for {@link MonitorDataRequestBuilder}
  */
 @Slf4j
-@Component
-public class SpringExtension implements Extension {
+@SpringBootTest(classes = MonitorDataRequestBuilder.class)
+@RunWith(SpringRunner.class)
+public class MonitorDataRequestBuilderTest {
 
     @Autowired
-    private ApplicationContext applicationContext;
+    private MonitorDataRequestBuilder request;
 
-    /**
-     * Create a Props for the specified actorBeanName using the
-     * SpringActorProducer class.
-     */
-    public Props props(String actorBeanName) {
-        return Props.create(SpringActorProducer.class,
-                applicationContext, actorBeanName);
+    private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
+            "gdev-ss1.i.palveluvayla.com",
+            "http://gdev-ss1.i.palveluvayla.com",
+            "GOV",
+            "1710128-9");
+
+    @Test
+    public void getRequestXMLTest() {
+        // Runtime exceptions (DOMException) are thrown if DOM creation fails.
+        String xmlRequest = request.getRequestXML(exampleInfo);
+        log.info(xmlRequest);
+        // Assert that request contains member class, member code and server code
+        assertTrue(xmlRequest.contains("GOV"));
+        assertTrue(xmlRequest.contains("1710128-9"));
+        assertTrue(xmlRequest.contains("gdev-ss1.i.palveluvayla.com"));
     }
-
-    /**
-     * Create a Props for the specified actorBeanName using the
-     * SpringActorProducer class. Created actor bean is given constructor arguments
-     * from {@code args} param
-     *
-     * @param actorBeanName
-     * @param args
-     * @return
-     */
-    public Props props(String actorBeanName, Object... args) {
-        return Props.create(SpringActorProducer.class,
-                applicationContext, actorBeanName, args);
-    }
-
 }

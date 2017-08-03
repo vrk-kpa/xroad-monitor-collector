@@ -34,6 +34,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Actor for collecting security server monitoring data processing results
@@ -46,7 +47,6 @@ public class ResultCollectorActor extends AbstractActor {
   private Set<SecurityServerInfo> awaitedResults;
   private int numAwaitedResults;
   private long startTime;
-  private static final double NANOSECOND = 1000000000.0;
 
   @Override
   public Receive createReceive() {
@@ -57,7 +57,6 @@ public class ResultCollectorActor extends AbstractActor {
         .build();
   }
 
-  // TODO this should be tested!!! Or Try-Catch or something
   private void handleInitialization(Set<SecurityServerInfo> infos) {
     log.info("Initializing resultCollerActor: {}", infos);
 
@@ -70,7 +69,8 @@ public class ResultCollectorActor extends AbstractActor {
   private void handleMonitorDataResult(MonitorDataResult result) {
     awaitedResults.remove(result.getSecurityServerInfo());
     if (!(awaitedResults.size() > 0)) {
-      log.info("All request handled in time of: {} seconds", ((double)System.nanoTime() - startTime) / NANOSECOND);
+      log.info("All request handled in time of: {} seconds",
+              TimeUnit.SECONDS.convert(System.nanoTime() - startTime, TimeUnit.NANOSECONDS));
     }
     if (result.isSuccess()) {
       log.info("received success with data {}", result.toString());

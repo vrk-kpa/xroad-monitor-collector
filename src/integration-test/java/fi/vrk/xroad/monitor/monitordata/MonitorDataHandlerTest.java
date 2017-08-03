@@ -20,45 +20,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package fi.vrk.xroad.monitor.monitordata;
 
-package fi.vrk.xroad.monitor.parser;
-
+import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.util.Set;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Tests for {@link SharedParamsParser}
+ * Tests for {@link MonitorDataHandler}
  */
-@SpringBootTest(classes = SharedParamsParser.class)
+@Slf4j
+@SpringBootTest(classes = {MonitorDataRequestBuilder.class, MonitorDataHandler.class, MonitorDataResponseParser.class})
 @RunWith(SpringRunner.class)
-public class SharedParamsParserTest {
+public class MonitorDataHandlerTest {
 
     @Autowired
-    private SharedParamsParser parser;
+    private MonitorDataHandler handler;
 
+    @Autowired
+    private MonitorDataRequestBuilder request;
+
+    @Autowired
+    private MonitorDataResponseParser response;
+
+    // Test requires this to be valid and accessible server
     private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
-            "servername-6.com",
-            "servername-6.com",
+            "gdev-ss1.i.palveluvayla.com",
+            "http://gdev-ss1.i.palveluvayla.com",
             "GOV",
-            "13775550");
+            "1710128-9");
 
     @Test
-    public void testParse() throws IOException, SAXException, ParserConfigurationException {
-        Set<SecurityServerInfo> resultList = parser.parse();
-        assertNotNull(resultList);
-        assertThat(resultList.size(), not(is(0)));
-        assertTrue(resultList.contains(exampleInfo));
+    public void makeRequest() {
+        String xmlRequest = request.getRequestXML(exampleInfo);
+        String root = handler.makeRequest(xmlRequest);
+        log.info("result: {}", root);
+        String metric = response.getMetricInformation(root);
+        log.info("body: {}", metric);
+        assertTrue(metric.contains("getSecurityServerMetricsResponse"));
     }
 }

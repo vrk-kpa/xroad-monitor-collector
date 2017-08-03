@@ -20,46 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fi.vrk.xroad.monitor.extensions;
+package fi.vrk.xroad.monitor.monitordata;
 
-import akka.actor.Extension;
-import akka.actor.Props;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * Extension to tell Akka how to create beans via Spring.
+ * Tests for {@link MonitorDataResponseParser}
  */
 @Slf4j
-@Component
-public class SpringExtension implements Extension {
+@SpringBootTest(classes = MonitorDataResponseParser.class)
+@RunWith(SpringRunner.class)
+public class MonitorDataResponseParserTest {
 
-    @Autowired
-    private ApplicationContext applicationContext;
-
-    /**
-     * Create a Props for the specified actorBeanName using the
-     * SpringActorProducer class.
-     */
-    public Props props(String actorBeanName) {
-        return Props.create(SpringActorProducer.class,
-                applicationContext, actorBeanName);
+    @Test
+    public void testEmpty() {
+        // Placeholder for tests if parser features are extended.
+        // No use testing Java's DocumentBuilderFactory converting String -> Document -> String
     }
-
-    /**
-     * Create a Props for the specified actorBeanName using the
-     * SpringActorProducer class. Created actor bean is given constructor arguments
-     * from {@code args} param
-     *
-     * @param actorBeanName
-     * @param args
-     * @return
-     */
-    public Props props(String actorBeanName, Object... args) {
-        return Props.create(SpringActorProducer.class,
-                applicationContext, actorBeanName, args);
-    }
-
 }

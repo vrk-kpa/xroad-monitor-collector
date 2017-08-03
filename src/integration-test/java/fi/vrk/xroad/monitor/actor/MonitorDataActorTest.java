@@ -23,13 +23,14 @@
 
 package fi.vrk.xroad.monitor.actor;
 
-import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.routing.SmallestMailboxPool;
 import akka.testkit.TestActorRef;
 import fi.vrk.xroad.monitor.MonitorCollectorApplication;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
+import fi.vrk.xroad.monitor.monitordata.MonitorDataHandler;
+import fi.vrk.xroad.monitor.monitordata.MonitorDataRequestBuilder;
+import fi.vrk.xroad.monitor.monitordata.MonitorDataResponseParser;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -44,52 +45,50 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Tests for {@link Supervisor}
+ * Tests for {@link MonitorDataActor}
  */
 @Slf4j
-@SpringBootTest(classes = MonitorCollectorApplication.class)
+@SpringBootTest(classes = {MonitorCollectorApplication.class, MonitorDataHandler.class,
+    MonitorDataRequestBuilder.class, MonitorDataResponseParser.class})
 @RunWith(SpringRunner.class)
-public class SupervisorTest {
+public class MonitorDataActorTest {
 
   @Autowired
   ActorSystem system;
 
   @Autowired
   SpringExtension ext;
-
   /**
-   * Tests the system logic so that when supervisor starts processing
-   * the collector receives the processing results.
+   * Tests that the monitor data actor sends processing results to result collector actor.
    */
   @Test
-  public void testSupervisor() {
+  public void testMonitorDataActor() {
 
-    Set<SecurityServerInfo> securityServerInfos = new HashSet<>();
-    securityServerInfos.add(new SecurityServerInfo("Eka", "Osoite", "memberClass", "memberCode"));
-    securityServerInfos.add(new SecurityServerInfo("", "", "", ""));
-    securityServerInfos.add(new SecurityServerInfo("Toka", "osoite", "memberClass", "memberCode"));
+      // create result collector actor
+      final Props resultCollectorActorProps = Props.create(ResultCollectorActor.class);
+      final TestActorRef<ResultCollectorActor> resultCollectorRef =
+              TestActorRef.create(system, resultCollectorActorProps, "testA");
+      ResultCollectorActor resultCollectorActor = resultCollectorRef.underlyingActor();
 
-    final TestActorRef<ResultCollectorActor> resultCollectorActor = TestActorRef.create(
-            system, Props.create(ResultCollectorActor.class));
+      // create monitor data actor
+      final Props monitorDataActorProps = ext.props("monitorDataActor", resultCollectorRef);
+      final TestActorRef<MonitorDataActor> monitorDataRef = TestActorRef.create(system, monitorDataActorProps, "testB");
+      Set<SecurityServerInfo> infos = new HashSet<>();
+      infos.add(new SecurityServerInfo("gdev-ss1.i.palveluvayla.com", "gdev-ss1.i.palveluvayla.com",
+          "GOV", "1710128-9"));
+      infos.add(new SecurityServerInfo("gdev-ss2.i.palveluvayla.com", "gdev-ss2.i.palveluvayla.com",
+          "GOV", "1710128-9"));
 
-    final TestActorRef<MonitorDataActor> monitorDataRequestPoolRouter =
-            TestActorRef.create(system, new SmallestMailboxPool(2).props(
-                    Props.create(MonitorDataActor.class, resultCollectorActor))
-            );
+      // Initialize resultcollertor
+      resultCollectorRef.receive(infos);
 
-    // create supervisor
-    final Props supervisorProps = ext.props("supervisor");
-    final TestActorRef<Supervisor> supervisorRef = TestActorRef.create(system, supervisorProps, "supervisor");
-    Supervisor underlying = supervisorRef.underlyingActor();
-    underlying.overrideResultCollectorActor(resultCollectorActor);
-    underlying.overrideMonitorDataRequestPoolRouter(monitorDataRequestPoolRouter);
+      // process all requests
+      for (SecurityServerInfo info : infos) {
+          monitorDataRef.receive(new MonitorDataActor.MonitorDataRequest(info));
+      }
 
-    // send message to supervisor to start processing
-    supervisorRef.receive(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos), ActorRef.noSender());
 
-    // assert that all the results have been received
-    assertEquals(securityServerInfos.size(), resultCollectorActor.underlyingActor().getNumProcessedResults());
-
-  }
-
+      // assert that result collector actor has received 2 results
+      assertEquals(2, resultCollectorActor.getNumProcessedResults());
+    }
 }

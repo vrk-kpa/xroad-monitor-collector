@@ -17,6 +17,22 @@ apply plugin: 'idea'
 apply plugin: 'checkstyle'
 apply plugin: 'org.springframework.boot'
 
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration-test/java')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
 license {
     header project.file('LICENSE.txt')
     include '**/*.java'
@@ -43,17 +59,32 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter', version:'1.5.3.RELEASE'
     compile("org.springframework:spring-web")
     compile group: 'com.typesafe.akka', name: 'akka-actor_2.11', version:'2.5.1'
+    compile group: 'com.typesafe.akka', name: 'akka-slf4j_2.11', version: '2.5.1'
     compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.2.3'
     compile 'org.projectlombok:lombok:1.16.6'
     testCompile 'junit:junit:4.12'
     testCompile 'com.typesafe.akka:akka-testkit_2.11:2.5.1'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+    // to add dependencies to integration tests only use format such as
+    // integrationTestCompile 'org.assertj:assertj-core:3.0.0'
 }
 
 test {
-    systemProperty 'spring.config.name', 'collector'
+    systemProperty 'spring.config.name', 'application'
 }
 
 bootRun {
-    systemProperty 'spring.config.name', 'collector'
+    systemProperty 'spring.config.name', 'application'
+}
+
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test
+
+tasks.withType(Test) {
+    reports.html.destination = file("${reporting.baseDir}/${name}")
 }

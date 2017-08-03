@@ -21,23 +21,20 @@
  * THE SOFTWARE.
  */
 
-package fi.vrk.xroad.monitor.parser;
+package fi.vrk.xroad.monitor.util;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 /**
- * Data structure for holding security server information
+ * Property access class
  */
-@Getter
-@ToString
-@EqualsAndHashCode
-@RequiredArgsConstructor
-public class SecurityServerInfo {
-    private final String serverCode;
-    private final String address;
-    private final String memberClass;
-    private final String memberCode;
+public final class MonitorCollectorPropertyKeys {
+    public static final String CLIENT_URL = "xroad-monitor-collector-url.client-url";
+    
+    public static final String CLIENT_MEMBER_CLASS = "xroad-monitor-collector-client.client-member-class";
+
+    public static final String CLIENT_MEMBER_CODE = "xroad-monitor-collector-client.client-member-code";
+
+    public static final String INSTANCE = "xroad-monitor-collector-client.instance";
+
+    private MonitorCollectorPropertyKeys() { }
 }
