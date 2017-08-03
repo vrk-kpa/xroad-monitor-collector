@@ -22,6 +22,7 @@
  */
 package fi.vrk.xroad.monitor.monitordata;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -50,6 +51,9 @@ import java.io.StringWriter;
 @Component
 public class MonitorDataResponseParser {
 
+    @Getter
+    private String lastErrorDescription;
+
     /**
      * Parse metric information from respose string
      *
@@ -57,6 +61,8 @@ public class MonitorDataResponseParser {
      * @return metric data in xml string
      */
     public String getMetricInformation(String response) {
+        lastErrorDescription = "";
+
         Document root = parseResponseDocument(response);
 
         if (root != null) {
@@ -64,10 +70,12 @@ public class MonitorDataResponseParser {
 
             NodeList nodeList = root.getElementsByTagName("m:getSecurityServerMetricsResponse");
             if (nodeList.getLength() == 0) {
-                NodeList faultcode = root.getElementsByTagName("faultcode");
-                NodeList faultstring = root.getElementsByTagName("faultstring");
+                NodeList faultCode = root.getElementsByTagName("faultcode");
+                NodeList faultString = root.getElementsByTagName("faultstring");
                 log.error("Faultcode in responseParser: {} faultstring: {} responseParser: {}",
-                        nodeToString(faultcode.item(0)), nodeToString(faultstring.item(0)), response);
+                        nodeToString(faultCode.item(0)), nodeToString(faultString.item(0)), response);
+                lastErrorDescription = String.format("%s %s", nodeToString(faultCode.item(0)),
+                    nodeToString(faultString.item(0)));
             }
             return nodeToString(nodeList.item(0));
         }

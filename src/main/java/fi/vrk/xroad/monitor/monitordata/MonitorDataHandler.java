@@ -42,7 +42,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class MonitorDataHandler {
 
-    RestTemplate rt = new RestTemplate();
+    private RestTemplate rt = new RestTemplate();
 
     @Autowired
     private Environment environment;
@@ -51,7 +51,7 @@ public class MonitorDataHandler {
     private MonitorDataRequestBuilder requestBuilder;
 
     @Autowired
-    MonitorDataResponseParser responseParser;
+    private MonitorDataResponseParser responseParser;
 
     /**
      * Will handle getting metric data and saving it to elasticseach
@@ -84,4 +84,10 @@ public class MonitorDataHandler {
         return rt.postForObject(clientUrl, entity, String.class);
     }
 
+    /**
+     * @return last error description string
+     */
+    public String getLastErrorDescription() {
+        return responseParser.getLastErrorDescription();
+    }
 }
