@@ -66,8 +66,8 @@ public class MonitorDataActor extends AbstractActor {
         log.info("Response metric: {}", xml);
         if (xml.startsWith("<m:getSecurityServerMetricsResponse>")) {
             saveMonitorData(xml, request.getSecurityServerInfo());
-            resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(request.getSecurityServerInfo()),
-                getSelf());
+            resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(
+                request.getSecurityServerInfo()), getSelf());
         } else {
             resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createError(
                 request.getSecurityServerInfo(), handler.getLastErrorDescription()), getSelf());
