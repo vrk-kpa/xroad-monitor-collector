@@ -1,0 +1,32 @@
+<om:serviceEvents>
+    <om:service id:objectType="SERVICE">
+        <id:xRoadInstance>LXDJ</id:xRoadInstance>
+        <id:memberClass>COM</id:memberClass>
+        <id:memberCode>500</id:memberCode>
+        <id:serviceCode>getSecurityServerHealthData</id:serviceCode>
+    </om:service>
+    <om:lastSuccessfulRequestTimestamp>1485771041782</om:lastSuccessfulRequestTimestamp>
+    <om:lastPeriodStatistics>
+        <om:successfulRequestCount>1</om:successfulRequestCount>
+        <om:unsuccessfulRequestCount>0</om:unsuccessfulRequestCount>
+        <om:requestMinDuration>1194</om:requestMinDuration>
+        <om:requestAverageDuration>1194.0</om:requestAverageDuration>
+        <om:requestMaxDuration>1194</om:requestMaxDuration>
+        <om:requestDurationStdDev>0.0</om:requestDurationStdDev>
+        <om:requestMinSoapSize>1361</om:requestMinSoapSize>
+        <om:requestAverageSoapSize>1361.0</om:requestAverageSoapSize>
+        <om:requestMaxSoapSize>1361</om:requestMaxSoapSize>
+        <om:requestSoapSizeStdDev>0.0</om:requestSoapSizeStdDev>
+        <om:responseMinSoapSize>2254</om:responseMinSoapSize>
+        <om:responseAverageSoapSize>2254.0</om:responseAverageSoapSize>
+        <om:responseMaxSoapSize>2254</om:responseMaxSoapSize>
+        <om:responseSoapSizeStdDev>0.0</om:responseSoapSizeStdDev>
+    </om:lastPeriodStatistics>
+</om:serviceEvents>
+<om:serviceEvents>
+<om:service id:objectType="SERVICE">
+    <id:xRoadInstance>LXDJ</id:xRoadInstance>
+    <id:memberClass>COM</id:memberClass>
+    <id:memberCode>500</id:memberCode>
+    <id:serviceCode>getSecurityServerMetrics</id:serviceCode>
+</om:service>
