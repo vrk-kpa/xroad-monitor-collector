@@ -17,6 +17,10 @@ apply plugin: 'idea'
 apply plugin: 'checkstyle'
 apply plugin: 'org.springframework.boot'
 
+repositories {
+    maven { url "http://repo.spring.io/libs-milestone" }
+}
+
 sourceSets {
     integrationTest {
         java {
@@ -55,6 +59,7 @@ repositories {
 }
 
 dependencies {
+    compile group: 'org.springframework.data', name: 'spring-data-elasticsearch', version: '3.0.0.RC2'
     compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version:'1.5.3.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter', version:'1.5.3.RELEASE'
     compile("org.springframework:spring-web")
