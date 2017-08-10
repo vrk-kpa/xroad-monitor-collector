@@ -32,12 +32,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 /**
  * Spring configuration for application
  */
 @Configuration
 @Lazy
+@EnableElasticsearchRepositories(basePackages = "fi.vrk.xroad.monitor.repository")
 @ComponentScan(basePackages = {
         "fi.vrk.xroad.monitor"})
 public class ApplicationConfiguration {

@@ -20,30 +20,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fi.vrk.xroad.monitor.monitordata;
+package fi.vrk.xroad.monitor.repository;
 
-import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
-import org.json.XML;
-import org.junit.Test;
-
-import java.io.FileInputStream;
-import java.io.IOException;
+import fi.vrk.xroad.monitor.entity.EnvMonitorData;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**
- * Tests env monitor XML data conversion to JSON
+ * Repository for environmental monitoring data
  */
-public class MonitorDataConverterTest {
-
-  @Test
-  public void testConversion() throws IOException {
-    String soapmessageString;
-
-    try (FileInputStream inputStream = new FileInputStream("src/test/resources/envmonitor.xml")) {
-      soapmessageString = IOUtils.toString(inputStream);
-    }
-
-    JSONObject soapDatainJsonObject = XML.toJSONObject(soapmessageString);
-    System.out.println(soapDatainJsonObject);
-  }
+public interface EnvMonitorDataRepository extends ElasticsearchRepository<EnvMonitorData, String> {
 }
