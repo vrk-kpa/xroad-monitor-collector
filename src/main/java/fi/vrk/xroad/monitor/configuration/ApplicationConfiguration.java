@@ -49,7 +49,7 @@ import java.nio.file.Paths;
  */
 @Configuration
 @Lazy
-@EnableElasticsearchRepositories(basePackages = "fi.vrk.xroad.monitor")
+@EnableElasticsearchRepositories(basePackages = "fi.vrk.xroad.monitor.repository")
 @ComponentScan(basePackages = {
         "fi.vrk.xroad.monitor"})
 public class ApplicationConfiguration {

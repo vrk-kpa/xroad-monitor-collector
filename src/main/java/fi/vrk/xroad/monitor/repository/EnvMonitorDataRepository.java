@@ -24,11 +24,11 @@ package fi.vrk.xroad.monitor.repository;
 
 import fi.vrk.xroad.monitor.entity.EnvMonitorData;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository for environmental monitoring data
  */
-@Component
+@Repository
 public interface EnvMonitorDataRepository extends ElasticsearchRepository<EnvMonitorData, String> {
 }
