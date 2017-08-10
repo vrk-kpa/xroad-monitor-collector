@@ -26,20 +26,30 @@ import akka.actor.ActorSystem;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.node.NodeBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Spring configuration for application
  */
 @Configuration
 @Lazy
-@EnableElasticsearchRepositories(basePackages = "fi.vrk.xroad.monitor.repository")
+@EnableElasticsearchRepositories(basePackages = "fi.vrk.xroad.monitor")
 @ComponentScan(basePackages = {
         "fi.vrk.xroad.monitor"})
 public class ApplicationConfiguration {
@@ -67,5 +77,42 @@ public class ApplicationConfiguration {
     @Bean
     public Config akkaConfiguration() {
         return ConfigFactory.load();
+    }
+
+
+    /**
+     *
+     * @return client
+     */
+    @Bean
+    public Client client() {
+        try {
+            final Path tmpDir = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")),
+                "elasticsearch_data");
+
+            final Settings.Builder elasticsearchSettings =
+                Settings.settingsBuilder().put("http.enabled", "false")
+                    .put("path.data", tmpDir.toAbsolutePath().toString())
+                    .put("path.home", "/home/ilkka");
+
+            return new NodeBuilder()
+                .local(true)
+                .settings(elasticsearchSettings)
+                .node()
+                .client();
+
+            // @formatter:on
+        } catch (final IOException ioex) {
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+     *
+     * @return operations
+     */
+    @Bean
+    public ElasticsearchOperations elasticsearchTemplate() {
+        return new ElasticsearchTemplate(client());
     }
 }
