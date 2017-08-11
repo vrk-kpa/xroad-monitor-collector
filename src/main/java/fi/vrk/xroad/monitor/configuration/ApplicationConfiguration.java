@@ -26,32 +26,18 @@ import akka.actor.ActorSystem;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.common.transport.TransportAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
 /**
  * Spring configuration for application
  */
 @Configuration
 @Lazy
-@EnableElasticsearchRepositories(basePackages = "fi.vrk.xroad.monitor.repository")
 @ComponentScan(basePackages = {
         "fi.vrk.xroad.monitor"})
 public class ApplicationConfiguration {
@@ -79,28 +65,5 @@ public class ApplicationConfiguration {
     @Bean
     public Config akkaConfiguration() {
         return ConfigFactory.load();
-    }
-
-    /**
-     *
-     * @return client
-     */
-    @Bean
-    public Client client() throws UnknownHostException {
-        Client client = TransportClient.builder().build()
-            .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
-        return client;
-    }
-
-    /**
-     *
-     * @return operations
-     */
-    @Bean
-    public ElasticsearchOperations elasticsearchTemplate() throws UnknownHostException {
-        // external Elasticsearch server
-        return new ElasticsearchTemplate(client());
-        // embedded Elasticsearch server
-        // return new ElasticsearchTemplate(nodeBuilder().local(true).node().client());
     }
 }

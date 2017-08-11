@@ -17,13 +17,6 @@ apply plugin: 'idea'
 apply plugin: 'checkstyle'
 apply plugin: 'org.springframework.boot'
 
-repositories {
-//    mavenLocal()
-    maven { url "http://repo.spring.io/libs-snapshot" }
-    maven { url "http://repo.spring.io/libs-milestone" }
-    maven { url "http://repo.spring.io/libs-release" }
-}
-
 sourceSets {
     integrationTest {
         java {
@@ -62,8 +55,8 @@ repositories {
 }
 
 dependencies {
-//    compile group: 'org.springframework.data', name: 'spring-data-elasticsearch', version: '3.0.0.RC2'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-elasticsearch', version: '2.0.0.M3'
+    compile 'org.elasticsearch.client:transport:5.5.1'
+    compile 'org.elasticsearch:elasticsearch:5.5.1'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter', version:'1.5.6.RELEASE'
     compile("org.springframework:spring-web")
     compile group: 'com.typesafe.akka', name: 'akka-actor_2.11', version:'2.5.1'
