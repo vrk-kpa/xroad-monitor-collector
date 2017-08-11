@@ -30,6 +30,8 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -45,14 +47,17 @@ import java.net.UnknownHostException;
 @Service
 public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageService {
 
+  @Autowired
+  private Environment environment;
+
   private TransportClient client;
-  private static final String HOST = "localhost";
-  private static final int PORT = 9300;
 
   @PostConstruct
   public void init() throws UnknownHostException {
     client = new PreBuiltTransportClient(Settings.EMPTY)
-        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(HOST), PORT));
+        .addTransportAddress(new InetSocketTransportAddress(
+            InetAddress.getByName(environment.getProperty("xroad-monitor-collector-elasticsearch.host")),
+            Integer.parseInt(environment.getProperty("xroad-monitor-collector-elasticsearch.port"))));
   }
 
   @Override
