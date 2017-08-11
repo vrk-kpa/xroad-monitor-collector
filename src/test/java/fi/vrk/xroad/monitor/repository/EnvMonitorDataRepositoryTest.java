@@ -25,7 +25,6 @@ package fi.vrk.xroad.monitor.repository;
 import fi.vrk.xroad.monitor.configuration.ApplicationConfiguration;
 import fi.vrk.xroad.monitor.entity.EnvMonitorData;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
