@@ -23,13 +23,17 @@
 package fi.vrk.xroad.monitor.repository;
 
 import fi.vrk.xroad.monitor.configuration.ApplicationConfiguration;
+import fi.vrk.xroad.monitor.entity.EnvMonitorData;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for {@link EnvMonitorDataRepository}
@@ -50,25 +54,13 @@ public class EnvMonitorDataRepositoryTest {
   @Test
   public void shouldIndexSingleEnvMonitorDataEntity() {
 
-//    Article article = new Article();
-//    article.setId("123455");
-//    article.setTitle("Spring Data Elasticsearch Test Article");
-//    List<String> authors = new ArrayList<String>();
-//    authors.add("Author1");
-//    authors.add("Author2");
-//    article.setAuthors(authors);
-//    List<String> tags = new ArrayList<String>();
-//    tags.add("tag1");
-//    tags.add("tag2");
-//    tags.add("tag3");
-//    article.setTags(tags);
-//    //Indexing using sampleArticleRepository
-//    sampleArticleRepository.save(article);
-//    //lets try to search same record in elasticsearch
-//    Article indexedArticle = sampleArticleRepository.findOne(article.getId());
-//    assertThat(indexedArticle,is(notNullValue()));
-//    assertThat(indexedArticle.getId(),is(article.getId()));
-//    assertThat(indexedArticle.getAuthors().size(),is(authors.size()));
-//    assertThat(indexedArticle.getTags().size(),is(tags.size()));
+    EnvMonitorData envMonitorData = new EnvMonitorData();
+    envMonitorData.setId("111");
+    envMonitorData.setName("foobar");
+    sampleArticleRepository.save(envMonitorData);
+
+    EnvMonitorData one = sampleArticleRepository.findOne("111");
+    assertEquals(one.getId(), envMonitorData.getId());
+    assertEquals(one.getName(), envMonitorData.getName());
   }
 }
