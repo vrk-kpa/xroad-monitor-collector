@@ -24,13 +24,13 @@ public class ElasticsearchServiceTest {
 
   @Before
   public void createClient() throws UnknownHostException {
-    Settings settings = Settings.builder()
-        .put("client.transport.sniff", true)
-        .put("cluster.name", "elasticsearch")
-        .put("client.transport.ignore_cluster_name", "true")
-        .put("client.transport.nodes_sampler_interval", 10, TimeUnit.SECONDS)
-        .put("client.transport.ping_timeout", 20, TimeUnit.SECONDS).build();
-    client = new PreBuiltTransportClient(settings)
+//    Settings settings = Settings.builder()
+//        .put("client.transport.sniff", true)
+//        .put("cluster.name", "elasticsearch")
+//        .put("client.transport.ignore_cluster_name", "true")
+//        .put("client.transport.nodes_sampler_interval", 10, TimeUnit.SECONDS)
+//        .put("client.transport.ping_timeout", 20, TimeUnit.SECONDS).build();
+    client = new PreBuiltTransportClient(Settings.EMPTY)
         .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), PORT));
   }
 
