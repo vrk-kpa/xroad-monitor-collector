@@ -6,3 +6,5 @@ classes
 packages/xroad-monitor-collector/redhat/BUILDROOT
 packages/xroad-monitor-collector/redhat/RPMS
 packages/xroad-monitor-collector/redhat/SRPMS
+xroad-monitor-collector.iml
+data
