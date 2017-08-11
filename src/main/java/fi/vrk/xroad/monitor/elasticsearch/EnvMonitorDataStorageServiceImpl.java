@@ -52,6 +52,10 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
 
   private TransportClient client;
 
+  /**
+   * Initializes transport client
+   * @throws UnknownHostException
+   */
   @PostConstruct
   public void init() throws UnknownHostException {
     client = new PreBuiltTransportClient(Settings.EMPTY)
@@ -60,16 +64,33 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
             Integer.parseInt(environment.getProperty("xroad-monitor-collector-elasticsearch.port"))));
   }
 
+  /**
+   * Save json data
+   * @param index
+   * @param type
+   * @param json
+   * @return
+   */
   @Override
   public IndexResponse save(String index, String type, String json) {
     return client.prepareIndex(index, type).setSource(json, XContentType.JSON).get();
   }
 
+  /**
+   * Load json data
+   * @param index
+   * @param type
+   * @param json
+   * @return
+   */
   @Override
   public GetResponse load(String index, String type, String json) {
     return client.prepareGet(index, type, json).get();
   }
 
+  /**
+   * Closes transport client
+   */
   @PreDestroy
   public void shutdown() {
     client.close();
