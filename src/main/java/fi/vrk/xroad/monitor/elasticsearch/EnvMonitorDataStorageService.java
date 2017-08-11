@@ -22,41 +22,22 @@
  */
 package fi.vrk.xroad.monitor.elasticsearch;
 
-import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.junit.Assert.assertEquals;
 
 /**
- * Tests for Elasticsearch data access
+ * Service interface for loading/saving env monitor data
  */
-@Slf4j
-@SpringBootTest(classes = {EnvMonitorDataStorageService.class, EnvMonitorDataStorageServiceImpl.class})
-@RunWith(SpringRunner.class)
-public class ElasticsearchServiceTest {
+public interface EnvMonitorDataStorageService {
 
-  @Autowired
-  private EnvMonitorDataStorageService envMonitorDataStorageService;
+  /**
+   * Save data
+   */
+  IndexResponse save(String index, String type, String json);
 
-  @Test
-  public void shouldSaveAndLoadJson() {
-    String json = "{"
-        + "\"user\":\"kimchy\","
-        + "\"postDate\":\"2013-01-30\","
-        + "\"message\":\"trying out Elasticsearch\""
-        + "}";
-    IndexResponse save = envMonitorDataStorageService.save("twitter", "tweet", json);
-    log.info("save: {}", save);
-    assertEquals(save.getResult(), DocWriteResponse.Result.CREATED);
-    GetResponse load = envMonitorDataStorageService.load("twitter", "tweet", save.getId());
-    log.info("load: {}", load);
-    assertEquals(load.getId(), save.getId());
-  }
+  /**
+   * Load data
+   */
+  GetResponse load(String index, String type, String key);
+
 }
