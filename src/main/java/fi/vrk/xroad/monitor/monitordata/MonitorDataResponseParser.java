@@ -22,6 +22,7 @@
  */
 package fi.vrk.xroad.monitor.monitordata;
 
+import ee.ria.xroad.proxymonitor.message.GetSecurityServerMetricsResponse;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -77,6 +81,16 @@ public class MonitorDataResponseParser {
                 lastErrorDescription = String.format("%s %s", nodeToString(faultCode.item(0)),
                     nodeToString(faultString.item(0)));
             }
+
+            try {
+                Unmarshaller jaxbUnmarshaller =
+                        JAXBContext.newInstance(GetSecurityServerMetricsResponse.class).createUnmarshaller();
+                GetSecurityServerMetricsResponse responseObject
+                        = (GetSecurityServerMetricsResponse) jaxbUnmarshaller.unmarshal(nodeList.item(0));
+
+            } catch (JAXBException e) {
+                e.printStackTrace();
+            }
             return nodeToString(nodeList.item(0));
         }
         return null;
@@ -112,6 +126,7 @@ public class MonitorDataResponseParser {
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setNamespaceAware(true);
             DocumentBuilder builder = factory.newDocumentBuilder();
             InputSource is = new InputSource(new StringReader(response));
             return builder.parse(is);

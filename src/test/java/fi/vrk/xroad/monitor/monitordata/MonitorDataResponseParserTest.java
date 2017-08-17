@@ -23,10 +23,16 @@
 package fi.vrk.xroad.monitor.monitordata;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for {@link MonitorDataResponseParser}
@@ -36,9 +42,28 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 public class MonitorDataResponseParserTest {
 
+    String exampleResponseXmlFile = "src/test/resources/exampleResponse.xml";
+
     @Test
     public void testEmpty() {
         // Placeholder for tests if parser features are extended.
         // No use testing Java's DocumentBuilderFactory converting String -> Document -> String
+    }
+
+    @Test
+    public void parseResponseMetricsToJsonTest() throws IOException {
+        String responseString;
+        try (FileInputStream inputStream = new FileInputStream(exampleResponseXmlFile)) {
+            responseString = IOUtils.toString(inputStream);
+            MonitorDataResponseParser monitorDataResponseParser = new MonitorDataResponseParser();
+            String json = monitorDataResponseParser.getMetricInformation(responseString);
+
+            String soapmessageString;
+            try (FileInputStream inputStream = new FileInputStream("src/test/resources/envmonitor.xml")) {
+                soapmessageString = IOUtils.toString(inputStream);
+            }
+
+            assertTrue(json.equals());
+        }
     }
 }

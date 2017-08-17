@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+                   xmlns:id="http://x-road.eu/xsd/identifiers" xmlns:m="http://x-road.eu/xsd/monitoring"
+                   xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
+    <SOAP-ENV:Header>
+        <xrd:client id:objectType="MEMBER">
+            <id:xRoadInstance>FI</id:xRoadInstance>
+            <id:memberClass>GOV</id:memberClass>
+            <id:memberCode>1710128-9</id:memberCode>
+        </xrd:client>
+        <xrd:service id:objectType="SERVICE">
+            <id:xRoadInstance>FI</id:xRoadInstance>
+            <id:memberClass>GOV</id:memberClass>
+            <id:memberCode>1710128-9</id:memberCode>
+            <id:serviceCode>getSecurityServerMetrics</id:serviceCode>
+        </xrd:service>
+        <xrd:securityServer id:objectType="SERVER">
+            <id:xRoadInstance>FI</id:xRoadInstance>
+            <id:memberClass>GOV</id:memberClass>
+            <id:memberCode>1710128-9</id:memberCode>
+            <id:serverCode>gdev-ss1.i.palveluvayla.com</id:serverCode>
+        </xrd:securityServer>
+        <xrd:id>a7e32aaf-4a5b-4815-a1de-5b2198cf04b5</xrd:id>
+        <xrd:requestHash algorithmId="http://www.w3.org/2001/04/xmlenc#sha512">
+            ryr32jej0IV78tDsH8lcFD9lRA9JXMVgysllWD3q9d0To2Z6pgsxvaGz2dV5nQR1gmebkuovbci+hC8gItQAew==
+        </xrd:requestHash>
+        <xrd:protocolVersion>4.0</xrd:protocolVersion>
+    </SOAP-ENV:Header>
+    <SOAP-ENV:Body>
+        <m:getSecurityServerMetricsResponse>
+            <m:metricSet>
+                <m:name>SERVER:FI/GOV/1710128-9/gdev-ss1.i.palveluvayla.com</m:name>
+                <m:stringMetric>
+                    <m:name>proxyVersion</m:name>
+                    <m:value>6.16.0-0.20170808060834gitea867c6</m:value>
+                </m:stringMetric>
+                <m:metricSet>
+                    <m:name>systemMetrics</m:name>
+                    <m:histogramMetric>
+                        <m:name>CommittedVirtualMemory</m:name>
+                        <m:updated>2017-08-17T07:14:58.797Z</m:updated>
+                        <m:min>5938237440</m:min>
+                        <m:max>5942439936</m:max>
+                        <m:mean>5939875676.16</m:mean>
+                        <m:median>5938237440</m:median>
+                        <m:stddev>1850199.6211931547</m:stddev>
+                    </m:histogramMetric>
+                    <m:histogramMetric>
+                        <m:name>FreePhysicalMemory</m:name>
+                        <m:updated>2017-08-17T07:14:58.797Z</m:updated>
+                        <m:min>1213014016</m:min>
+                        <m:max>1251467264</m:max>
+                        <m:mean>1231090257.92</m:mean>
+                        <m:median>1230956544</m:median>
+                        <m:stddev>9802374.055990282</m:stddev>
+                    </m:histogramMetric>
+                    <m:numericMetric>
+                        <m:name>DiskSpaceFree_/</m:name>
+                        <m:value>3738570752</m:value>
+                    </m:numericMetric>
+                    <m:numericMetric>
+                        <m:name>DiskSpaceTotal_/</m:name>
+                        <m:value>8309932032</m:value>
+                    </m:numericMetric>
+                    <m:stringMetric>
+                        <m:name>OperatingSystem</m:name>
+                        <m:value>Linux version 3.13.0-128-generic (buildd@lgw01-39) (gcc version 4.8.4 (Ubuntu
+                            4.8.4-2ubuntu1~14.04.3) ) #177-Ubuntu SMP Tue Aug 8 11:40:23 UTC 2017
+                        </m:value>
+                    </m:stringMetric>
+                    <m:numericMetric>
+                        <m:name>TotalPhysicalMemory</m:name>
+                        <m:value>4143955968</m:value>
+                    </m:numericMetric>
+                    <m:numericMetric>
+                        <m:name>TotalSwapSpace</m:name>
+                        <m:value>4143955968</m:value>
+                    </m:numericMetric>
+                    <m:metricSet>
+                        <m:name>Processes</m:name>
+                        <m:metricSet>
+                            <m:name>1</m:name>
+                            <m:stringMetric>
+                                <m:name>processId</m:name>
+                                <m:value>1</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>command</m:name>
+                                <m:value>init</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>cpuLoad</m:name>
+                                <m:value>0.3</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>memUsed</m:name>
+                                <m:value>0.0</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>startTime</m:name>
+                                <m:value>07:30</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>userId</m:name>
+                                <m:value>root</m:value>
+                            </m:stringMetric>
+                        </m:metricSet>
+                        <m:metricSet>
+                            <m:name>2</m:name>
+                            <m:stringMetric>
+                                <m:name>processId</m:name>
+                                <m:value>2</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>command</m:name>
+                                <m:value>kthreadd</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>cpuLoad</m:name>
+                                <m:value>0.0</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>memUsed</m:name>
+                                <m:value>0.0</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>startTime</m:name>
+                                <m:value>07:30</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>userId</m:name>
+                                <m:value>root</m:value>
+                            </m:stringMetric>
+                        </m:metricSet>
+                    </m:metricSet>
+                    <m:metricSet>
+                        <m:name>Xroad Processes</m:name>
+                        <m:metricSet>
+                            <m:name>1029</m:name>
+                            <m:stringMetric>
+                                <m:name>processId</m:name>
+                                <m:value>1029</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>command</m:name>
+                                <m:value>/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -Xmx192m
+                                    -XX:MaxMetaspaceSize=100m -Djruby.compile.mode=OFF -Djna.tmpdir=/var/lib/xroad
+                                    -Djruby.native.enabled=true -Djruby.native.verbose=true -Djetty.admin.port=8083
+                                    -Djetty.public.port=8084 -Djruby.native.verbose=true
+                                    -Dlogback.configurationFile=/etc/xroad/conf.d/jetty-logback.xml -XX:+UseG1GC
+                                    -Dfile.encoding=UTF-8 -Xshare:auto -Djdk.tls.ephemeralDHKeySize=2048 -cp
+                                    /usr/share/xroad/jetty9/start.jar org.eclipse.jetty.start.Main
+                                    jetty.home=/usr/share/xroad/jetty9
+                                </m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>cpuLoad</m:name>
+                                <m:value>0.0</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>memUsed</m:name>
+                                <m:value>1.2</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>startTime</m:name>
+                                <m:value>07:30</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>userId</m:name>
+                                <m:value>xroad</m:value>
+                            </m:stringMetric>
+                        </m:metricSet>
+                        <m:metricSet>
+                            <m:name>1031</m:name>
+                            <m:stringMetric>
+                                <m:name>processId</m:name>
+                                <m:value>1031</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>command</m:name>
+                                <m:value>/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -Xmx50m -XX:MaxMetaspaceSize=30m
+                                    -Dlogback.configurationFile=/etc/xroad/conf.d/confclient-logback-service.xml
+                                    -XX:+UseG1GC -Dfile.encoding=UTF-8 -Xshare:auto -Djdk.tls.ephemeralDHKeySize=2048
+                                    -cp /usr/share/xroad/jlib/configuration-client.jar
+                                    ee.ria.xroad.common.conf.globalconf.ConfigurationClientMain
+                                </m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>cpuLoad</m:name>
+                                <m:value>0.1</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>memUsed</m:name>
+                                <m:value>3.6</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>startTime</m:name>
+                                <m:value>07:30</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>userId</m:name>
+                                <m:value>xroad</m:value>
+                            </m:stringMetric>
+                        </m:metricSet>
+                        <m:metricSet>
+                            <m:name>1033</m:name>
+                            <m:stringMetric>
+                                <m:name>processId</m:name>
+                                <m:value>1033</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>command</m:name>
+                                <m:value>/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -Xmx50m -XX:MaxMetaspaceSize=50m
+                                    -Dlogback.configurationFile=/etc/xroad/conf.d/signer-logback.xml
+                                    -XX:NativeMemoryTracking=summary -XX:+UseG1GC -Dfile.encoding=UTF-8 -Xshare:auto
+                                    -Djdk.tls.ephemeralDHKeySize=2048 -cp /usr/share/xroad/jlib/signer.jar
+                                    ee.ria.xroad.signer.SignerMain
+                                </m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>cpuLoad</m:name>
+                                <m:value>0.6</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>memUsed</m:name>
+                                <m:value>5.1</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>startTime</m:name>
+                                <m:value>07:30</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>userId</m:name>
+                                <m:value>xroad</m:value>
+                            </m:stringMetric>
+                        </m:metricSet>
+                        <m:metricSet>
+                            <m:name>1035</m:name>
+                            <m:stringMetric>
+                                <m:name>processId</m:name>
+                                <m:value>1035</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>command</m:name>
+                                <m:value>/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -Xmx256m
+                                    -XX:MaxMetaspaceSize=50m
+                                    -Dlogback.configurationFile=/etc/xroad/conf.d/addons/monitor-logback.xml
+                                    -XX:+UseG1GC -Dfile.encoding=UTF-8 -Xshare:auto -Djdk.tls.ephemeralDHKeySize=2048
+                                    -cp /usr/share/xroad/jlib/monitor.jar ee.ria.xroad.monitor.MonitorMain
+                                </m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>cpuLoad</m:name>
+                                <m:value>0.5</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>memUsed</m:name>
+                                <m:value>3.9</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>startTime</m:name>
+                                <m:value>07:30</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>userId</m:name>
+                                <m:value>xroad</m:value>
+                            </m:stringMetric>
+                        </m:metricSet>
+                    </m:metricSet>
+                </m:metricSet>
+            </m:metricSet>
+        </m:getSecurityServerMetricsResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
