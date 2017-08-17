@@ -22,6 +22,7 @@
  */
 package fi.vrk.xroad.monitor.monitordata;
 
+import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -43,7 +44,7 @@ import static org.junit.Assert.assertTrue;
 public class MonitorDataResponseParserTest {
 
     String exampleResponseXmlFile = "src/test/resources/exampleResponse.xml";
-
+    String soapmessageStringFile = "src/test/resources/exampleResponse.json";
     @Test
     public void testEmpty() {
         // Placeholder for tests if parser features are extended.
@@ -53,17 +54,19 @@ public class MonitorDataResponseParserTest {
     @Test
     public void parseResponseMetricsToJsonTest() throws IOException {
         String responseString;
+        SecurityServerInfo info = new SecurityServerInfo("gdev-ss1.i.palveluvayla.com",
+                "gdev-ss1.i.palveluvayla.com", "GOV", "1710128-9");
         try (FileInputStream inputStream = new FileInputStream(exampleResponseXmlFile)) {
             responseString = IOUtils.toString(inputStream);
             MonitorDataResponseParser monitorDataResponseParser = new MonitorDataResponseParser();
-            String json = monitorDataResponseParser.getMetricInformation(responseString);
+            String json = monitorDataResponseParser.getMetricInformation(responseString, info);
 
             String soapmessageString;
-            try (FileInputStream inputStream = new FileInputStream("src/test/resources/envmonitor.xml")) {
-                soapmessageString = IOUtils.toString(inputStream);
+            try (FileInputStream is = new FileInputStream(soapmessageStringFile)) {
+                soapmessageString = IOUtils.toString(is);
             }
 
-            assertTrue(json.equals());
+            assertTrue(json.equals(soapmessageString));
         }
     }
 }
