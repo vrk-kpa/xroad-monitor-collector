@@ -62,6 +62,10 @@
                         <m:name>DiskSpaceTotal_/</m:name>
                         <m:value>8309932032</m:value>
                     </m:numericMetric>
+                    <m:numericMetric>
+                        <m:name>MaxFileDescriptorCount</m:name>
+                        <m:value>4096</m:value>
+                    </m:numericMetric>
                     <m:stringMetric>
                         <m:name>OperatingSystem</m:name>
                         <m:value>Linux version 3.13.0-128-generic (buildd@lgw01-39) (gcc version 4.8.4 (Ubuntu
@@ -266,6 +270,114 @@
                                 <m:value>xroad</m:value>
                             </m:stringMetric>
                         </m:metricSet>
+                    </m:metricSet>
+                    <m:metricSet>
+                        <m:name>Certificates</m:name>
+                        <m:metricSet>
+                            <m:name>certificate-452B765797ABD3697283F35F7447FCF219915FA2</m:name>
+                            <m:stringMetric>
+                                <m:name>id</m:name>
+                                <m:value>452B765797ABD3697283F35F7447FCF219915FA2</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>subjectDN</m:name>
+                                <m:value>SERIALNUMBER=FI/gdev-ss1.i.palveluvayla.com/GOV, CN=1710128-9, O=Gofore,
+                                    L=9988, C=FI
+                                </m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>issuerDN</m:name>
+                                <m:value>CN=Palveluvayla Test CA, O=Palvelyvayla Test, C=FI</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>status</m:name>
+                                <m:value>registered</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>notBefore</m:name>
+                                <m:value>2016-08-17T09:29:20Z</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>notAfter</m:name>
+                                <m:value>2018-07-18T09:29:20Z</m:value>
+                            </m:stringMetric>
+                        </m:metricSet>
+                        <m:metricSet>
+                            <m:name>certificate-1FD8D07415414FC098B0B8124321F90AAE2771EA</m:name>
+                            <m:stringMetric>
+                                <m:name>id</m:name>
+                                <m:value>1FD8D07415414FC098B0B8124321F90AAE2771EA</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>subjectDN</m:name>
+                                <m:value>SERIALNUMBER=FI/gdev-ss1.i.palveluvayla.com/GOV,
+                                    CN=gdev-ss1.i.palveluvayla.com, O=Gofore, L=9988, C=FI
+                                </m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>issuerDN</m:name>
+                                <m:value>CN=Palveluvayla Test CA, O=Palvelyvayla Test, C=FI</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>status</m:name>
+                                <m:value>registered</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>notBefore</m:name>
+                                <m:value>2016-08-17T09:29:42Z</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>notAfter</m:name>
+                                <m:value>2018-07-18T09:29:42Z</m:value>
+                            </m:stringMetric>
+                        </m:metricSet>
+                        <m:metricSet>
+                            <m:name>certificate-49503164A35E727B7172A208C11848EF9917B3F3</m:name>
+                            <m:stringMetric>
+                                <m:name>id</m:name>
+                                <m:value>49503164A35E727B7172A208C11848EF9917B3F3</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>subjectDN</m:name>
+                                <m:value>SERIALNUMBER=FI/gdev-ss1.i.palveluvayla.com/GOV, CN=TEST, O=TEST, C=FI
+                                </m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>issuerDN</m:name>
+                                <m:value>CN=Palveluvayla Test CA, O=Palvelyvayla Test, C=FI</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>status</m:name>
+                                <m:value>registered</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>notBefore</m:name>
+                                <m:value>2017-07-05T11:05:10Z</m:value>
+                            </m:stringMetric>
+                            <m:stringMetric>
+                                <m:name>notAfter</m:name>
+                                <m:value>2019-06-05T11:05:10Z</m:value>
+                            </m:stringMetric>
+                        </m:metricSet>
+                    </m:metricSet>
+                    <m:metricSet>
+                        <m:name>Packages</m:name>
+                        <m:stringMetric>
+                            <m:name>accountsservice</m:name>
+                            <m:value>0.6.35-0ubuntu7.3</m:value>
+                        </m:stringMetric>
+                        <m:stringMetric>
+                            <m:name>acl</m:name>
+                            <m:value>2.2.52-1</m:value>
+                        </m:stringMetric>
+                        <m:stringMetric>
+                            <m:name>acpid</m:name>
+                            <m:value>1:2.0.21-1ubuntu2</m:value>
+                        </m:stringMetric>
+                        <m:stringMetric>
+                            <m:name>adduser</m:name>
+                            <m:value>3.113+nmu3ubuntu3</m:value>
+                        </m:stringMetric>
                     </m:metricSet>
                 </m:metricSet>
             </m:metricSet>
