@@ -111,55 +111,64 @@ public class MonitorDataResponseParser {
         json.put("memberCode", securityServerInfo.getMemberCode());
         json.put("memberClass", securityServerInfo.getMemberClass());
 
-        MetricSetType mrt = responseObject.getMetricSet();
-        json.put("name", mrt.getName());
+        MetricSetType rootMetric = responseObject.getMetricSet();
+        json.put("name", rootMetric.getName());
 
-        List<MetricType> metricList = mrt.getMetrics();
-        StringMetricType versio = (StringMetricType) metricList.get(0);
-        json.put(versio.getName(), versio.getValue());
+        List<MetricType> metricList = rootMetric.getMetrics();
+        StringMetricType version = (StringMetricType) metricList.get(0);
+        json.put(version.getName(), version.getValue());
 
-        mrt = (MetricSetType) metricList.get(1);
-        metricList = mrt.getMetrics();
+        rootMetric = (MetricSetType) metricList.get(1);
+        metricList = rootMetric.getMetrics();
 
         metricList.forEach(metric -> {
             if (metric instanceof HistogramMetricType) {
-                HistogramMetricType histogram = (HistogramMetricType) metric;
-                JSONObject histogramJson = new JSONObject();
-                histogramJson.put("updated", histogram.getUpdated());
-                histogramJson.put("min", histogram.getMin());
-                histogramJson.put("max", histogram.getMax());
-                histogramJson.put("mean", histogram.getMean());
-                histogramJson.put("median", histogram.getMean());
-                histogramJson.put("stddev", histogram.getStddev());
-                json.put(histogram.getName(), histogramJson);
+                json.put(metric.getName(), createHistogramJson((HistogramMetricType) metric));
             } else if (metric instanceof NumericMetricType) {
-                NumericMetricType numeric = (NumericMetricType) metric;
-                json.put(numeric.getName(), numeric.getValue());
+                json.put(metric.getName(), ((NumericMetricType) metric).getValue());
             } else if (metric instanceof StringMetricType) {
-                StringMetricType string = (StringMetricType) metric;
-                json.put(string.getName(), string.getValue());
+                json.put(metric.getName(), ((StringMetricType) metric).getValue());
             } else if (metric instanceof MetricSetType) {
-                MetricSetType metricSetType = (MetricSetType) metric;
-                ArrayList<JSONObject> arrayList = new ArrayList<>();
-                metricSetType.getMetrics().forEach(metricType -> {
-                    JSONObject metricJson = new JSONObject();
+
+                List<MetricType> list = ((MetricSetType) metric).getMetrics();
+                ArrayList<JSONObject> listOfJSONs = new ArrayList<>();
+                list.forEach(metricType -> {
+                    JSONObject metricJSON = new JSONObject();
                     if (metricType instanceof MetricSetType) {
                         ((MetricSetType) metricType).getMetrics().forEach(m -> {
                             StringMetricType stringMetricType = (StringMetricType) m;
-                            metricJson.put(stringMetricType.getName(), stringMetricType.getValue());
+                            metricJSON.put(stringMetricType.getName(), stringMetricType.getValue());
                         });
-                        arrayList.add(metricJson);
+                        listOfJSONs.add(metricJSON);
                     } else if (metricType instanceof StringMetricType) {
-                        metricJson.put(metricType.getName(), ((StringMetricType) metricType).getValue());
-                        arrayList.add(metricJson);
+                        metricJSON.put(metricType.getName(), ((StringMetricType) metricType).getValue());
+                        listOfJSONs.add(metricJSON);
                     }
                 });
-                json.put(metricSetType.getName(), arrayList);
+                json.put(metric.getName(), listOfJSONs);
+
             }
         });
 
 
         return json;
+    }
+
+    /**
+     * Helper method to create histogram json object
+     * @param metric HistogramMetricType
+     * @return histogram json object
+     */
+    private JSONObject createHistogramJson(HistogramMetricType metric) {
+        HistogramMetricType histogram = (HistogramMetricType) metric;
+        JSONObject histogramJson = new JSONObject();
+        histogramJson.put("updated", histogram.getUpdated());
+        histogramJson.put("min", histogram.getMin());
+        histogramJson.put("max", histogram.getMax());
+        histogramJson.put("mean", histogram.getMean());
+        histogramJson.put("median", histogram.getMean());
+        histogramJson.put("stddev", histogram.getStddev());
+        return histogramJson;
     }
 
     /**
