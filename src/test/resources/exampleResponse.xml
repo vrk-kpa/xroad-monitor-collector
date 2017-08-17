@@ -29,6 +29,7 @@
     <SOAP-ENV:Body>
         <m:getSecurityServerMetricsResponse>
             <m:metricSet>
+
                 <m:name>SERVER:FI/GOV/1710128-9/gdev-ss1.i.palveluvayla.com</m:name>
                 <m:stringMetric>
                     <m:name>proxyVersion</m:name>
@@ -45,6 +46,7 @@
                         <m:median>5938237440</m:median>
                         <m:stddev>1850199.6211931547</m:stddev>
                     </m:histogramMetric>
+
                     <m:histogramMetric>
                         <m:name>FreePhysicalMemory</m:name>
                         <m:updated>2017-08-17T07:14:58.797Z</m:updated>
