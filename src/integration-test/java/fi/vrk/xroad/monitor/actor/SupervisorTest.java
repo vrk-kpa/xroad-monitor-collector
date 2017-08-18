@@ -29,6 +29,7 @@ import akka.actor.Props;
 import akka.routing.SmallestMailboxPool;
 import akka.testkit.TestActorRef;
 import akka.testkit.javadsl.TestKit;
+import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageServiceImpl;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import fi.vrk.xroad.monitor.monitordata.MonitorDataHandler;
 import fi.vrk.xroad.monitor.monitordata.MonitorDataRequestBuilder;
@@ -61,7 +62,8 @@ import static org.junit.Assert.assertEquals;
         ResultCollectorActor.class,
         MonitorDataHandler.class,
         MonitorDataRequestBuilder.class,
-        MonitorDataResponseParser.class})
+        MonitorDataResponseParser.class,
+        EnvMonitorDataStorageServiceImpl.class})
 @RunWith(SpringRunner.class)
 public class SupervisorTest {
 
