@@ -36,7 +36,7 @@ To and run all tests
 
     $ ./gradlew clean test integrationTest
 
-Integration tests require that you are able to connect to the specified security server.
+Integration tests require that you are able to connect to the specified security server and Elasticsearch instance.
 
 
 ## Build RPM Packages on Non-RedHat Platform

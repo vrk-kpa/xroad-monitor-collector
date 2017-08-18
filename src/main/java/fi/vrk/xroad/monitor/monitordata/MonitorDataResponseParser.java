@@ -63,16 +63,16 @@ public class MonitorDataResponseParser {
     private String lastErrorDescription;
 
     /**
-     * Parse metric information from respose string
-     *
-     * @param response xml string what is gotten from securityserver
-     * @return metric data in xml string
+     * Parse metric information from xml response string and return json data
+     * @param xmlResponse xml string what is gotten from securityserver
+     * @return metric data in xml string, or null in case of fault
      */
-    public String getMetricInformation(String response, SecurityServerInfo securityServerInfo, String xroadInstance) {
+    public String getMetricInformation(String xmlResponse, SecurityServerInfo securityServerInfo,
+                                       String xroadInstance) {
         lastErrorDescription = "";
 
-        Document root = parseResponseDocument(response);
-        String resultString = "Empty";
+        Document root = parseResponseDocument(xmlResponse);
+        String resultString = null;
 
         if (root != null) {
             root.normalizeDocument();
@@ -82,30 +82,28 @@ public class MonitorDataResponseParser {
                 NodeList faultCode = root.getElementsByTagName("faultcode");
                 NodeList faultString = root.getElementsByTagName("faultstring");
                 log.error("Faultcode in responseParser: {} faultstring: {} responseParser: {}",
-                        nodeToString(faultCode.item(0)), nodeToString(faultString.item(0)), response);
+                        nodeToString(faultCode.item(0)), nodeToString(faultString.item(0)), xmlResponse);
                 lastErrorDescription = String.format("%s %s", nodeToString(faultCode.item(0)),
                     nodeToString(faultString.item(0)));
-                resultString = "This should be fauflt message in somekind, probably in JOSN or failure?";
             } else {
                 try {
                     Unmarshaller jaxbUnmarshaller =
                             JAXBContext.newInstance(GetSecurityServerMetricsResponse.class).createUnmarshaller();
                     GetSecurityServerMetricsResponse responseObject
                             = (GetSecurityServerMetricsResponse) jaxbUnmarshaller.unmarshal(nodeList.item(0));
-                    resultString = getFormatedJSONObject(responseObject, securityServerInfo, xroadInstance).toString();
+                    resultString = getFormattedJSONObject(responseObject, securityServerInfo, xroadInstance).toString();
                 } catch (JAXBException e) {
+                    log.error("Failed unmarshalling XML to POJO", e);
                     e.printStackTrace();
                 }
             }
-
-
             return resultString;
         }
         return null;
     }
 
-    private JSONObject getFormatedJSONObject(GetSecurityServerMetricsResponse responseObject,
-                                             SecurityServerInfo securityServerInfo, String xroadInstance) {
+    private JSONObject getFormattedJSONObject(GetSecurityServerMetricsResponse responseObject,
+                                              SecurityServerInfo securityServerInfo, String xroadInstance) {
         JSONObject json = new JSONObject();
         json.put("serverCode", securityServerInfo.getServerCode());
         json.put("memberCode", securityServerInfo.getMemberCode());

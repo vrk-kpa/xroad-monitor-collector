@@ -26,6 +26,7 @@ package fi.vrk.xroad.monitor.actor;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
+import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageService;
 import fi.vrk.xroad.monitor.monitordata.MonitorDataHandler;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.Getter;
@@ -48,6 +49,9 @@ public class MonitorDataActor extends AbstractActor {
     @Autowired
     MonitorDataHandler handler;
 
+    @Autowired
+    private EnvMonitorDataStorageService envMonitorDataStorageService;
+
     public MonitorDataActor(ActorRef resultCollectorActor) {
         this.resultCollectorActor = resultCollectorActor;
     }
@@ -62,10 +66,9 @@ public class MonitorDataActor extends AbstractActor {
 
     protected void handleMonitorDataRequest(MonitorDataRequest request) {
         log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
-        String xml = handler.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
-        log.info("Response metric: {}", xml);
-        if (xml.startsWith("<m:getSecurityServerMetricsResponse>")) {
-            saveMonitorData(xml, request.getSecurityServerInfo());
+        String json = handler.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
+        if (json != null) {
+            saveMonitorData(json, request.getSecurityServerInfo());
             resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(
                 request.getSecurityServerInfo()), getSelf());
         } else {
@@ -76,15 +79,13 @@ public class MonitorDataActor extends AbstractActor {
     }
 
     /**
-     * Will save monitordata as json to elasticsearch. With securityserverinfo
-     * @param xml
+     * Will save monitordata as json to Elasticsearch
+     * @param json
      * @param securityServerInfo
      */
-    private void saveMonitorData(String xml, SecurityServerInfo securityServerInfo) {
-        // TODO create json element wchich has all data elasticsearch wants
-        // TODO make post to elasticsearch API
+    private void saveMonitorData(String json, SecurityServerInfo securityServerInfo) {
+        envMonitorDataStorageService.save("111", "111", json);
     }
-
 
     /**
      * Request for fetching monitoring data from single security server
