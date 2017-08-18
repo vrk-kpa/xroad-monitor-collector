@@ -25,14 +25,20 @@ package fi.vrk.xroad.monitor.monitordata;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import scala.Char;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Iterator;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -43,8 +49,10 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringRunner.class)
 public class MonitorDataResponseParserTest {
 
-    String exampleResponseXmlFile = "src/test/resources/exampleResponse.xml";
-    String soapmessageStringFile = "src/test/resources/exampleResponse.json";
+    private static final String exampleResponseXmlFile = "src/test/resources/exampleResponse.xml";
+    private static final String exampleResponseJsonFile = "src/test/resources/exampleResponse.json";
+    private static final String xroadInstance = "FI";
+
     @Test
     public void testEmpty() {
         // Placeholder for tests if parser features are extended.
@@ -53,20 +61,18 @@ public class MonitorDataResponseParserTest {
 
     @Test
     public void parseResponseMetricsToJsonTest() throws IOException {
-        String responseString;
         SecurityServerInfo info = new SecurityServerInfo("gdev-ss1.i.palveluvayla.com",
                 "gdev-ss1.i.palveluvayla.com", "GOV", "1710128-9");
         try (FileInputStream inputStream = new FileInputStream(exampleResponseXmlFile)) {
-            responseString = IOUtils.toString(inputStream);
+            String responseString = IOUtils.toString(inputStream, Charset.defaultCharset());
             MonitorDataResponseParser monitorDataResponseParser = new MonitorDataResponseParser();
-            String json = monitorDataResponseParser.getMetricInformation(responseString, info);
+            String parsedJson = monitorDataResponseParser.getMetricInformation(responseString, info, xroadInstance);
 
-            String soapmessageString;
-            try (FileInputStream is = new FileInputStream(soapmessageStringFile)) {
-                soapmessageString = IOUtils.toString(is);
+            String jsonFromFile;
+            try (FileInputStream is = new FileInputStream(exampleResponseJsonFile)) {
+                jsonFromFile = IOUtils.toString(is, Charset.defaultCharset());
             }
-
-            assertTrue(json.equals(soapmessageString));
+            JSONAssert.assertEquals(jsonFromFile, parsedJson, true);
         }
     }
 }

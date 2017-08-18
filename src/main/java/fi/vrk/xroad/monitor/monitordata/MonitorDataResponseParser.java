@@ -68,7 +68,7 @@ public class MonitorDataResponseParser {
      * @param response xml string what is gotten from securityserver
      * @return metric data in xml string
      */
-    public String getMetricInformation(String response, SecurityServerInfo securityServerInfo) {
+    public String getMetricInformation(String response, SecurityServerInfo securityServerInfo, String xroadInstance) {
         lastErrorDescription = "";
 
         Document root = parseResponseDocument(response);
@@ -92,7 +92,7 @@ public class MonitorDataResponseParser {
                             JAXBContext.newInstance(GetSecurityServerMetricsResponse.class).createUnmarshaller();
                     GetSecurityServerMetricsResponse responseObject
                             = (GetSecurityServerMetricsResponse) jaxbUnmarshaller.unmarshal(nodeList.item(0));
-                    resultString = getFormatedJSONObject(responseObject, securityServerInfo).toString();
+                    resultString = getFormatedJSONObject(responseObject, securityServerInfo, xroadInstance).toString();
                 } catch (JAXBException e) {
                     e.printStackTrace();
                 }
@@ -105,11 +105,12 @@ public class MonitorDataResponseParser {
     }
 
     private JSONObject getFormatedJSONObject(GetSecurityServerMetricsResponse responseObject,
-                                             SecurityServerInfo securityServerInfo) {
+                                             SecurityServerInfo securityServerInfo, String xroadInstance) {
         JSONObject json = new JSONObject();
         json.put("serverCode", securityServerInfo.getServerCode());
         json.put("memberCode", securityServerInfo.getMemberCode());
         json.put("memberClass", securityServerInfo.getMemberClass());
+        json.put("xroadInstance", xroadInstance);
 
         MetricSetType rootMetric = responseObject.getMetricSet();
         json.put("name", rootMetric.getName());
@@ -166,7 +167,7 @@ public class MonitorDataResponseParser {
         histogramJson.put("min", histogram.getMin());
         histogramJson.put("max", histogram.getMax());
         histogramJson.put("mean", histogram.getMean());
-        histogramJson.put("median", histogram.getMean());
+        histogramJson.put("median", histogram.getMedian());
         histogramJson.put("stddev", histogram.getStddev());
         return histogramJson;
     }

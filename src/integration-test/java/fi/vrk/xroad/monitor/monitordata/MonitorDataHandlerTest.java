@@ -61,7 +61,7 @@ public class MonitorDataHandlerTest {
         String xmlRequest = request.getRequestXML(exampleInfo);
         String root = handler.makeRequest(xmlRequest);
         log.info("result: {}", root);
-        String metric = response.getMetricInformation(root);
+        String metric = response.getMetricInformation(root, exampleInfo);
         log.info("body: {}", metric);
         assertTrue(metric.contains("getSecurityServerMetricsResponse"));
     }

@@ -74,6 +74,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'com.typesafe.akka:akka-testkit_2.11:2.5.1'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
     // to add dependencies to integration tests only use format such as
     // integrationTestCompile 'org.assertj:assertj-core:3.0.0'
     xjc 'org.glassfish.jaxb:jaxb-runtime:2.2.11'

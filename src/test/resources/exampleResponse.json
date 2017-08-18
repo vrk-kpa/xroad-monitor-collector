@@ -23,12 +23,13 @@
   },
   "DiskSpaceFree_/": 3738570752,
   "DiskSpaceTotal_/": 8309932032,
+  "MaxFileDescriptorCount": 4096,
   "OperatingSystem": "Linux version 3.13.0-128-generic (buildd@lgw01-39) (gcc version 4.8.4 (Ubuntu 4.8.4-2ubuntu1~14.04.3) ) #177-Ubuntu SMP Tue Aug 8 11:40:23 UTC 2017",
   "TotalPhysicalMemory": 4143955968,
   "TotalSwapSpace": 4143955968,
   "Processes": [
     {
-      "processid": "1",
+      "processId": "1",
       "command": "init",
       "cpuLoad": "0.3",
       "memUsed": "0.0",
@@ -36,7 +37,7 @@
       "userId": "root"
     },
     {
-      "processid": "2",
+      "processId": "2",
       "command": "kthreadd",
       "cpuLoad": "0.0",
       "memUsed": "0.0",
