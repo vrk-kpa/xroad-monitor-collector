@@ -94,11 +94,11 @@ task integrationTest(type: Test) {
     classpath = sourceSets.integrationTest.runtimeClasspath
 }
 
-task createDirs(type: DefaultTask) {
+task createDirs << {
     project.ext.schemaTargetDir.mkdirs()
 }
 
-task xjc(type: DefaultTask) {
+task xjc << {
     ant.taskdef(name: 'xjc',
             classname: 'com.sun.tools.xjc.XJCTask',
             classpath: configurations.xjc.asPath)
@@ -110,7 +110,6 @@ task xjc(type: DefaultTask) {
             schema: 'src/main/resources/monitoring.xsd',
             binding: 'src/main/resources/jaxb-bindings.xml'
     )
-
 }
 
 check.dependsOn integrationTest
