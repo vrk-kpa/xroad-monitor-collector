@@ -25,21 +25,15 @@ package fi.vrk.xroad.monitor.monitordata;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import scala.Char;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Iterator;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for {@link MonitorDataResponseParser}
@@ -49,9 +43,9 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringRunner.class)
 public class MonitorDataResponseParserTest {
 
-    private static final String exampleResponseXmlFile = "src/test/resources/exampleResponse.xml";
-    private static final String exampleResponseJsonFile = "src/test/resources/exampleResponse.json";
-    private static final String xroadInstance = "FI";
+    private static final String RESPONSE_XML_FILE = "src/test/resources/exampleResponse.xml";
+    private static final String RESPONSE_JSON_FILE = "src/test/resources/exampleResponse.json";
+    private static final String XROAD_INSTANCE = "FI";
 
     @Test
     public void testEmpty() {
@@ -63,13 +57,13 @@ public class MonitorDataResponseParserTest {
     public void parseResponseMetricsToJsonTest() throws IOException {
         SecurityServerInfo info = new SecurityServerInfo("gdev-ss1.i.palveluvayla.com",
                 "gdev-ss1.i.palveluvayla.com", "GOV", "1710128-9");
-        try (FileInputStream inputStream = new FileInputStream(exampleResponseXmlFile)) {
+        try (FileInputStream inputStream = new FileInputStream(RESPONSE_XML_FILE)) {
             String responseString = IOUtils.toString(inputStream, Charset.defaultCharset());
             MonitorDataResponseParser monitorDataResponseParser = new MonitorDataResponseParser();
-            String parsedJson = monitorDataResponseParser.getMetricInformation(responseString, info, xroadInstance);
+            String parsedJson = monitorDataResponseParser.getMetricInformation(responseString, info, XROAD_INSTANCE);
 
             String jsonFromFile;
-            try (FileInputStream is = new FileInputStream(exampleResponseJsonFile)) {
+            try (FileInputStream is = new FileInputStream(RESPONSE_JSON_FILE)) {
                 jsonFromFile = IOUtils.toString(is, Charset.defaultCharset());
             }
             JSONAssert.assertEquals(jsonFromFile, parsedJson, true);
