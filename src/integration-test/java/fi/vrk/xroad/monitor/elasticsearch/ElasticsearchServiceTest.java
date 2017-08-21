@@ -47,7 +47,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 public class ElasticsearchServiceTest {
 
-  private static final String COMPLEX_JSON_FILE ="src/test/resources/data.json";
+  private static final String COMPLEX_JSON_FILE = "src/test/resources/data.json";
 
   @Autowired
   private EnvMonitorDataStorageService envMonitorDataStorageService;
