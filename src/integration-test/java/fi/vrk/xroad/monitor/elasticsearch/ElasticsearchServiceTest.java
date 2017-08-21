@@ -23,6 +23,7 @@
 package fi.vrk.xroad.monitor.elasticsearch;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
@@ -31,6 +32,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 import static org.junit.Assert.assertEquals;
 
@@ -41,6 +46,8 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest(classes = {EnvMonitorDataStorageService.class, EnvMonitorDataStorageServiceImpl.class})
 @RunWith(SpringRunner.class)
 public class ElasticsearchServiceTest {
+
+  private static final String COMPLEX_JSON_FILE ="src/test/resources/data.json";
 
   @Autowired
   private EnvMonitorDataStorageService envMonitorDataStorageService;
@@ -58,5 +65,18 @@ public class ElasticsearchServiceTest {
     GetResponse load = envMonitorDataStorageService.load("twitter", "tweet", save.getId());
     log.info("load: {}", load);
     assertEquals(load.getId(), save.getId());
+  }
+
+  @Test
+  public void shouldSaveAndLoadComplexJson() throws IOException {
+    try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE)) {
+      String json = IOUtils.toString(inputStream, Charset.defaultCharset());
+      IndexResponse save = envMonitorDataStorageService.save("test", "test", json);
+      log.info("save: {}", save);
+      assertEquals(save.getResult(), DocWriteResponse.Result.CREATED);
+      GetResponse load = envMonitorDataStorageService.load("test", "test", save.getId());
+      log.info("load: {}", load);
+      assertEquals(load.getId(), save.getId());
+    }
   }
 }
