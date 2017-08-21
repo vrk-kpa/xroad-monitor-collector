@@ -103,6 +103,13 @@ public class MonitorDataResponseParser {
         return null;
     }
 
+    /**
+     * Function for formating JSON object to more usable form
+     * @param responseObject response object to be formated
+     * @param securityServerInfo information of security server
+     * @param xroadInstance xroadInstance identifier
+     * @return formated JSON object
+     */
     private JSONObject getFormattedJSONObject(GetSecurityServerMetricsResponse responseObject,
                                               SecurityServerInfo securityServerInfo, String xroadInstance) {
         JSONObject json = new JSONObject();
@@ -119,6 +126,12 @@ public class MonitorDataResponseParser {
         return makeJSONObject(json, metricList);
     }
 
+    /**
+     * Function what will create wanted json object
+     * @param json object to formated
+     * @param metricList rest of object not to formated
+     * @return formated json
+     */
     private JSONObject makeJSONObject(JSONObject json, List<MetricType> metricList) {
         for(MetricType metricType : metricList) {
             if (metricType instanceof HistogramMetricType) {
@@ -131,21 +144,19 @@ public class MonitorDataResponseParser {
                 List<MetricType> subList = ((MetricSetType) metricType).getMetrics();
                 if (Arrays.asList("Processes", "Xroad Processes", "Certificates", "Packages")
                         .contains(metricType.getName())) {
-                    json.put(metricType.getName(), subList.stream().map(m -> helper(m)).toArray());
+                    json.put(metricType.getName(), subList.stream().map(m -> {
+                        if (m instanceof StringMetricType) {
+                            return new JSONObject().put(m.getName(), ((StringMetricType) m).getValue());
+                        } else {
+                            return makeJSONObject(new JSONObject(), ((MetricSetType) m).getMetrics());
+                        }
+                    }).toArray());
                 } else {
                     json = makeJSONObject(json, subList);
                 }
             }
         }
         return json;
-    }
-
-    private JSONObject helper(MetricType m) {
-        if (m instanceof StringMetricType) {
-            return new JSONObject().put(m.getName(), ((StringMetricType) m).getValue());
-        } else {
-            return makeJSONObject(new JSONObject(), ((MetricSetType) m).getMetrics());
-        }
     }
 
     /**
