@@ -66,6 +66,8 @@ public class MonitorDataResponseParserTest {
             try (FileInputStream is = new FileInputStream(RESPONSE_JSON_FILE)) {
                 jsonFromFile = IOUtils.toString(is, Charset.defaultCharset());
             }
+
+            log.info(parsedJson);
             
             JSONAssert.assertEquals(jsonFromFile, parsedJson, true);
 
