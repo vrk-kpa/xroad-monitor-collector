@@ -131,21 +131,19 @@ public class MonitorDataResponseParser {
                 List<MetricType> subList = ((MetricSetType) metricType).getMetrics();
                 if (Arrays.asList("Processes", "Xroad Processes", "Certificates", "Packages")
                         .contains(metricType.getName())) {
-                    json.put(metricType.getName(), subList.stream().map(m -> helper(m)).toArray());
+                    json.put(metricType.getName(), subList.stream().map(m -> {
+                        if (m instanceof StringMetricType) {
+                            return new JSONObject().put(m.getName(), ((StringMetricType) m).getValue());
+                        } else {
+                            return makeJSONObject(new JSONObject(), ((MetricSetType) m).getMetrics());
+                        }
+                    }).toArray());
                 } else {
                     json = makeJSONObject(json, subList);
                 }
             }
         }
         return json;
-    }
-
-    private JSONObject helper(MetricType m) {
-        if (m instanceof StringMetricType) {
-            return new JSONObject().put(m.getName(), ((StringMetricType) m).getValue());
-        } else {
-            return makeJSONObject(new JSONObject(), ((MetricSetType) m).getMetrics());
-        }
     }
 
     /**
