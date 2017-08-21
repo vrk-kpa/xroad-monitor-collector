@@ -145,7 +145,7 @@ public class MonitorDataResponseParser {
                         .contains(metricType.getName())) {
                     json.put(metricType.getName(), subList.stream().map(m -> {
                         if (m instanceof StringMetricType) {
-                            return new JSONObject().put(m.getName(), ((StringMetricType) m).getValue());
+                            return m.getName() + " " + ((StringMetricType) m).getValue();
                         } else {
                             return makeJSONObject(new JSONObject(), ((MetricSetType) m).getMetrics());
                         }
