@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -114,43 +115,37 @@ public class MonitorDataResponseParser {
         json.put("name", rootMetric.getName());
 
         List<MetricType> metricList = rootMetric.getMetrics();
-        StringMetricType version = (StringMetricType) metricList.get(0);
-        json.put(version.getName(), version.getValue());
 
-        rootMetric = (MetricSetType) metricList.get(1);
-        metricList = rootMetric.getMetrics();
+        return makeJSONObject(json, metricList);
+    }
 
-        metricList.forEach(metric -> {
-            if (metric instanceof HistogramMetricType) {
-                json.put(metric.getName(), createHistogramJson((HistogramMetricType) metric));
-            } else if (metric instanceof NumericMetricType) {
-                json.put(metric.getName(), ((NumericMetricType) metric).getValue());
-            } else if (metric instanceof StringMetricType) {
-                json.put(metric.getName(), ((StringMetricType) metric).getValue());
-            } else if (metric instanceof MetricSetType) {
-
-                List<MetricType> list = ((MetricSetType) metric).getMetrics();
-                ArrayList<JSONObject> listOfJSONs = new ArrayList<>();
-                list.forEach(metricType -> {
-                    JSONObject metricJSON = new JSONObject();
-                    if (metricType instanceof MetricSetType) {
-                        ((MetricSetType) metricType).getMetrics().forEach(m -> {
-                            StringMetricType stringMetricType = (StringMetricType) m;
-                            metricJSON.put(stringMetricType.getName(), stringMetricType.getValue());
-                        });
-                        listOfJSONs.add(metricJSON);
-                    } else if (metricType instanceof StringMetricType) {
-                        metricJSON.put(metricType.getName(), ((StringMetricType) metricType).getValue());
-                        listOfJSONs.add(metricJSON);
-                    }
-                });
-                json.put(metric.getName(), listOfJSONs);
-
+    private JSONObject makeJSONObject(JSONObject json, List<MetricType> metricList) {
+        for(MetricType metricType : metricList) {
+            if (metricType instanceof HistogramMetricType) {
+                json.put(metricType.getName(), createHistogramJson((HistogramMetricType) metricType));
+            } else if (metricType instanceof NumericMetricType) {
+                json.put(metricType.getName(), ((NumericMetricType) metricType).getValue());
+            } else if (metricType instanceof StringMetricType) {
+                json.put(metricType.getName(), ((StringMetricType) metricType).getValue());
+            } else if (metricType instanceof MetricSetType) {
+                List<MetricType> subList = ((MetricSetType) metricType).getMetrics();
+                if (Arrays.asList("Processes", "Xroad Processes", "Certificates", "Packages")
+                        .contains(metricType.getName())) {
+                    json.put(metricType.getName(), subList.stream().map(m -> helper(m)).toArray());
+                } else {
+                    json = makeJSONObject(json, subList);
+                }
             }
-        });
-
-
+        }
         return json;
+    }
+
+    private JSONObject helper(MetricType m) {
+        if (m instanceof StringMetricType) {
+            return new JSONObject().put(m.getName(), ((StringMetricType) m).getValue());
+        } else {
+            return makeJSONObject(new JSONObject(), ((MetricSetType) m).getMetrics());
+        }
     }
 
     /**
