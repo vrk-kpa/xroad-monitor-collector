@@ -58,7 +58,9 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
    */
   @PostConstruct
   public void init() throws UnknownHostException {
-    client = new PreBuiltTransportClient(Settings.EMPTY)
+    Settings settings = Settings.builder()
+        .put("cluster.name", "aws-elk").build();
+    client = new PreBuiltTransportClient(settings)
         .addTransportAddress(new InetSocketTransportAddress(
             InetAddress.getByName(environment.getProperty("xroad-monitor-collector-elasticsearch.host")),
             Integer.parseInt(environment.getProperty("xroad-monitor-collector-elasticsearch.port"))));
