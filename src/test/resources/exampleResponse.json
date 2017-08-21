@@ -106,9 +106,9 @@
     }
   ],
   "Packages": [
-    {"accountsservice": "0.6.35-0ubuntu7.3"},
-    {"acl": "2.2.52-1"},
-    {"acpid": "1:2.0.21-1ubuntu2"},
-    {"adduser": "3.113+nmu3ubuntu3"}
+    "accountsservice 0.6.35-0ubuntu7.3",
+    "acl 2.2.52-1",
+    "acpid 1:2.0.21-1ubuntu2",
+    "adduser 3.113+nmu3ubuntu3"
   ]
 }
