@@ -49,7 +49,6 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -133,7 +132,7 @@ public class MonitorDataResponseParser {
      * @return formated json
      */
     private JSONObject makeJSONObject(JSONObject json, List<MetricType> metricList) {
-        for(MetricType metricType : metricList) {
+        for (MetricType metricType : metricList) {
             if (metricType instanceof HistogramMetricType) {
                 json.put(metricType.getName(), createHistogramJson((HistogramMetricType) metricType));
             } else if (metricType instanceof NumericMetricType) {
