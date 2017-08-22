@@ -25,8 +25,8 @@ package fi.vrk.xroad.monitor.configuration;
 import akka.actor.ActorSystem;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageService;
-import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageServiceImpl;
+import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageDao;
+import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageDaoImpl;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -70,7 +70,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public EnvMonitorDataStorageService envMonitorDataStorageService() {
-        return new EnvMonitorDataStorageServiceImpl();
+    public EnvMonitorDataStorageDao envMonitorDataStorageService() {
+        return new EnvMonitorDataStorageDaoImpl();
     }
 }

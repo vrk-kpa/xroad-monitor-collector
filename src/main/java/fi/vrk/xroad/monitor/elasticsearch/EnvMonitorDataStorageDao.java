@@ -26,9 +26,9 @@ import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 
 /**
- * Service interface for loading/saving env monitor data
+ * Interface for loading/saving env monitor data
  */
-public interface EnvMonitorDataStorageService {
+public interface EnvMonitorDataStorageDao {
 
   /**
    * Save data

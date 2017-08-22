@@ -26,7 +26,7 @@ package fi.vrk.xroad.monitor.actor;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
-import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageService;
+import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageDao;
 import fi.vrk.xroad.monitor.monitordata.MonitorDataHandler;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.Getter;
@@ -50,7 +50,7 @@ public class MonitorDataActor extends AbstractActor {
     MonitorDataHandler handler;
 
     @Autowired
-    private EnvMonitorDataStorageService envMonitorDataStorageService;
+    private EnvMonitorDataStorageDao envMonitorDataStorageDao;
 
     public MonitorDataActor(ActorRef resultCollectorActor) {
         this.resultCollectorActor = resultCollectorActor;
@@ -84,7 +84,7 @@ public class MonitorDataActor extends AbstractActor {
      * @param securityServerInfo
      */
     private void saveMonitorData(String json, SecurityServerInfo securityServerInfo) {
-        envMonitorDataStorageService.save("111", "111", json);
+        envMonitorDataStorageDao.save("111", "111", json);
     }
 
     /**

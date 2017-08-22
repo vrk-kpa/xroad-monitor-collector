@@ -43,14 +43,14 @@ import static org.junit.Assert.assertEquals;
  * Tests for Elasticsearch data access
  */
 @Slf4j
-@SpringBootTest(classes = {EnvMonitorDataStorageService.class, EnvMonitorDataStorageServiceImpl.class})
+@SpringBootTest(classes = {EnvMonitorDataStorageDao.class, EnvMonitorDataStorageDaoImpl.class})
 @RunWith(SpringRunner.class)
 public class ElasticsearchServiceTest {
 
   private static final String COMPLEX_JSON_FILE = "src/test/resources/data.json";
 
   @Autowired
-  private EnvMonitorDataStorageService envMonitorDataStorageService;
+  private EnvMonitorDataStorageDao envMonitorDataStorageDao;
 
   @Test
   public void shouldSaveAndLoadJson() {
@@ -59,10 +59,10 @@ public class ElasticsearchServiceTest {
         + "\"postDate\":\"2013-01-30\","
         + "\"message\":\"trying out Elasticsearch\""
         + "}";
-    IndexResponse save = envMonitorDataStorageService.save("twitter", "tweet", json);
+    IndexResponse save = envMonitorDataStorageDao.save("twitter", "tweet", json);
     log.info("save: {}", save);
     assertEquals(save.getResult(), DocWriteResponse.Result.CREATED);
-    GetResponse load = envMonitorDataStorageService.load("twitter", "tweet", save.getId());
+    GetResponse load = envMonitorDataStorageDao.load("twitter", "tweet", save.getId());
     log.info("load: {}", load);
     assertEquals(load.getId(), save.getId());
   }
@@ -71,10 +71,10 @@ public class ElasticsearchServiceTest {
   public void shouldSaveAndLoadComplexJson() throws IOException {
     try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE)) {
       String json = IOUtils.toString(inputStream, Charset.defaultCharset());
-      IndexResponse save = envMonitorDataStorageService.save("test", "test", json);
+      IndexResponse save = envMonitorDataStorageDao.save("test", "test", json);
       log.info("save: {}", save);
       assertEquals(save.getResult(), DocWriteResponse.Result.CREATED);
-      GetResponse load = envMonitorDataStorageService.load("test", "test", save.getId());
+      GetResponse load = envMonitorDataStorageDao.load("test", "test", save.getId());
       log.info("load: {}", load);
       assertEquals(load.getId(), save.getId());
     }

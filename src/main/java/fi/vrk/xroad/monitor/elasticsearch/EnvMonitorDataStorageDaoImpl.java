@@ -40,12 +40,12 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * Default implementation for {@link EnvMonitorDataStorageService} interface
+ * Default implementation for {@link EnvMonitorDataStorageDao} interface
  * Loads and saves data to Elasticsearch
  */
 @Slf4j
 @Service
-public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageService {
+public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
 
   @Autowired
   private Environment environment;
