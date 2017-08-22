@@ -32,7 +32,7 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -44,7 +44,7 @@ import java.net.UnknownHostException;
  * Loads and saves data to Elasticsearch
  */
 @Slf4j
-@Service
+@Repository
 public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
 
   @Autowired

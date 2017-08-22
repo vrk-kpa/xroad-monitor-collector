@@ -59,10 +59,10 @@ public class ElasticsearchServiceTest {
         + "\"postDate\":\"2013-01-30\","
         + "\"message\":\"trying out Elasticsearch\""
         + "}";
-    IndexResponse save = envMonitorDataStorageDao.save("twitter", "tweet", json);
+    IndexResponse save = envMonitorDataStorageDao.save("integrationtest-twitter", "tweet", json);
     log.info("save: {}", save);
     assertEquals(save.getResult(), DocWriteResponse.Result.CREATED);
-    GetResponse load = envMonitorDataStorageDao.load("twitter", "tweet", save.getId());
+    GetResponse load = envMonitorDataStorageDao.load("integrationtest-twitter", "tweet", save.getId());
     log.info("load: {}", load);
     assertEquals(load.getId(), save.getId());
   }
@@ -71,10 +71,10 @@ public class ElasticsearchServiceTest {
   public void shouldSaveAndLoadComplexJson() throws IOException {
     try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE)) {
       String json = IOUtils.toString(inputStream, Charset.defaultCharset());
-      IndexResponse save = envMonitorDataStorageDao.save("test", "test", json);
+      IndexResponse save = envMonitorDataStorageDao.save("integrationtest-envdata", "envdata", json);
       log.info("save: {}", save);
       assertEquals(save.getResult(), DocWriteResponse.Result.CREATED);
-      GetResponse load = envMonitorDataStorageDao.load("test", "test", save.getId());
+      GetResponse load = envMonitorDataStorageDao.load("integrationtest-envdata", "test", save.getId());
       log.info("load: {}", load);
       assertEquals(load.getId(), save.getId());
     }
