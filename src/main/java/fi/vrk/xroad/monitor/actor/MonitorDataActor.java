@@ -68,7 +68,7 @@ public class MonitorDataActor extends AbstractActor {
 
     protected void handleMonitorDataRequest(MonitorDataRequest request)
         throws ExecutionException, InterruptedException {
-        log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
+        log.debug("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
         String json = handler.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
         if (json != null) {
             saveMonitorData(json, request.getSecurityServerInfo());
@@ -78,7 +78,7 @@ public class MonitorDataActor extends AbstractActor {
             resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createError(
                 request.getSecurityServerInfo(), handler.getLastErrorDescription()), getSelf());
         }
-        log.info("end handleMonitorDataRequest");
+        log.debug("end handleMonitorDataRequest");
     }
 
     /**

@@ -56,8 +56,6 @@ public class MonitorCollectorApplication {
      * @param args
      */
     public static void main(String[] args) {
-
-
         log.info("X-Road Monitor Collector started");
         ApplicationContext context = SpringApplication.run(MonitorCollectorApplication.class, args);
         ActorSystem system = context.getBean(ActorSystem.class);
@@ -66,8 +64,9 @@ public class MonitorCollectorApplication {
         SharedParamsParser parser = context.getBean(SharedParamsParser.class);
         Set<SecurityServerInfo> securityServerInfos;
         try {
+            log.info("Parse global configuration");
             securityServerInfos = parser.parse();
-            log.info("Parsed results: {}", securityServerInfos.toString());
+            log.debug("Parsed results: {}", securityServerInfos.toString());
         } catch (ParserConfigurationException | IOException | SAXException e) {
             log.error("Failed parsing", e);
             throw new RuntimeException(e);

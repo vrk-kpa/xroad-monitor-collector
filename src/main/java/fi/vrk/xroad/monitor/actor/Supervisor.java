@@ -83,8 +83,7 @@ public class Supervisor extends AbstractActor {
 
     @Override
     public void preStart() throws Exception {
-        log.info("preStart");
-
+        log.debug("preStart");
         resultCollectorActor = getContext().actorOf(ext.props("resultCollectorActor"));
         monitorDataRequestPoolRouter = getContext()
                 .actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
@@ -94,7 +93,7 @@ public class Supervisor extends AbstractActor {
 
     @Override
     public Receive createReceive() {
-        log.info("createReceive");
+        log.debug("createReceive");
         return receiveBuilder()
                 .match(StartCollectingMonitorDataCommand.class, this::handleMonitorDataRequest)
                 .matchAny(obj -> log.error("Unhandled message: {}", obj))
@@ -103,7 +102,6 @@ public class Supervisor extends AbstractActor {
 
     private void handleMonitorDataRequest(StartCollectingMonitorDataCommand request) {
         Timeout timeout = new Timeout(1, TimeUnit.MINUTES);
-
         try {
             Await.ready(Patterns.ask(resultCollectorActor, request.getSecurityServerInfos(), timeout),
                 timeout.duration());
@@ -117,7 +115,6 @@ public class Supervisor extends AbstractActor {
         } catch (TimeoutException | InterruptedException e) {
             log.error("Failed to initialize the ResultCollectorActor, {}", e);
         }
-
     }
 
     /**

@@ -58,8 +58,7 @@ public class ResultCollectorActor extends AbstractActor {
   }
 
   private void handleInitialization(Set<SecurityServerInfo> infos) {
-    log.info("Initializing resultCollerActor: {}", infos);
-
+    log.debug("Initializing resultCollerActor: {}", infos);
     this.startTime = System.nanoTime();
     this.awaitedResults = new HashSet<>(infos);
     this.numAwaitedResults = infos.size();

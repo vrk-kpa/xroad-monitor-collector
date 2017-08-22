@@ -81,7 +81,7 @@ public class MonitorDataHandler {
 
         String clientUrl = environment != null
             ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_URL) : null;
-        log.info("posting soap request, clientUrl: {} request: {}", clientUrl, xmlRequest);
+        log.debug("posting soap request, clientUrl: {} request: {}", clientUrl, xmlRequest);
         return rt.postForObject(clientUrl, entity, String.class);
     }
 

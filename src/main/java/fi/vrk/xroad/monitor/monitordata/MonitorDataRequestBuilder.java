@@ -66,7 +66,7 @@ public class MonitorDataRequestBuilder {
      * Makes xml string what is request for securityserver monitoring metrics
      *
      * @param serverInfo server information what is target of request
-     * @retur xml string request
+     * @return xml string request
      */
     public String getRequestXML(SecurityServerInfo serverInfo) {
 
@@ -167,7 +167,7 @@ public class MonitorDataRequestBuilder {
             transformer.transform(domSource, result);
             return writer.toString();
         } catch (TransformerException ex) {
-            ex.printStackTrace();
+            log.error("Error parsing document to string", ex);
             return "";
         }
     }
