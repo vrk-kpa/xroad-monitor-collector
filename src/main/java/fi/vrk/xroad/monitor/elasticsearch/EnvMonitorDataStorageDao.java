@@ -22,8 +22,14 @@
  */
 package fi.vrk.xroad.monitor.elasticsearch;
 
+import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
+import org.elasticsearch.action.admin.indices.alias.exists.AliasesExistResponse;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * Interface for loading/saving env monitor data
@@ -39,5 +45,40 @@ public interface EnvMonitorDataStorageDao {
    * Load data
    */
   GetResponse load(String index, String type, String key);
+
+  /**
+   * Create alias for given index
+   * @param index
+   * @param alias
+   */
+  IndicesAliasesResponse addIndexToAlias(String index, String alias) throws ExecutionException, InterruptedException;
+
+  /**
+   * Remove all indexes from alias
+   * @param alias
+   * @return
+   */
+  IndicesAliasesResponse removeAllIndexesFromAlias(String alias);
+
+  /**
+   * Tests if given alias exists
+   * @param alias
+   * @return
+   */
+  AliasesExistResponse aliasExists(String alias) throws ExecutionException, InterruptedException;
+
+  /**
+   * Tests if given index exists
+   * @param index
+   * @return
+   */
+  IndicesExistsResponse indexExists(String index);
+
+  /**
+   * Removes given index
+   * @param index
+   * @return
+   */
+  DeleteIndexResponse removeIndex(String index);
 
 }

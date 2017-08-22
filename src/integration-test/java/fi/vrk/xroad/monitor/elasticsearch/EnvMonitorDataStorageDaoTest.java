@@ -27,6 +27,8 @@ import org.apache.commons.io.IOUtils;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +38,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.concurrent.ExecutionException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Tests for Elasticsearch data access
@@ -45,12 +48,32 @@ import static org.junit.Assert.assertEquals;
 @Slf4j
 @SpringBootTest(classes = {EnvMonitorDataStorageDao.class, EnvMonitorDataStorageDaoImpl.class})
 @RunWith(SpringRunner.class)
-public class ElasticsearchServiceTest {
+public class EnvMonitorDataStorageDaoTest {
 
   private static final String COMPLEX_JSON_FILE = "src/test/resources/data.json";
+  private static final String INDEXTYPE_TWITTER = "integrationtest-twitter";
+  private static final String INDEXTYPE_ENVDATA = "integrationtest-envdata";
+  private static final String INDEXTYPE_ALIAS = "integrationtest-alias";
 
   @Autowired
   private EnvMonitorDataStorageDao envMonitorDataStorageDao;
+
+  /**
+   * Cleanup test data
+   */
+  @Before
+  @After
+  public void cleanup() {
+    if (envMonitorDataStorageDao.indexExists(INDEXTYPE_TWITTER).isExists()) {
+      envMonitorDataStorageDao.removeIndex(INDEXTYPE_TWITTER);
+    }
+    if (envMonitorDataStorageDao.indexExists(INDEXTYPE_ENVDATA).isExists()) {
+      envMonitorDataStorageDao.removeIndex(INDEXTYPE_ENVDATA);
+    }
+    if (envMonitorDataStorageDao.indexExists(INDEXTYPE_ALIAS).isExists()) {
+      envMonitorDataStorageDao.removeIndex(INDEXTYPE_ALIAS);
+    }
+  }
 
   @Test
   public void shouldSaveAndLoadJson() {
@@ -59,10 +82,10 @@ public class ElasticsearchServiceTest {
         + "\"postDate\":\"2013-01-30\","
         + "\"message\":\"trying out Elasticsearch\""
         + "}";
-    IndexResponse save = envMonitorDataStorageDao.save("integrationtest-twitter", "tweet", json);
-    log.info("save: {}", save);
+    IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_TWITTER, INDEXTYPE_TWITTER, json);
+    log.info("saveAndUpdateAlias: {}", save);
     assertEquals(save.getResult(), DocWriteResponse.Result.CREATED);
-    GetResponse load = envMonitorDataStorageDao.load("integrationtest-twitter", "tweet", save.getId());
+    GetResponse load = envMonitorDataStorageDao.load(INDEXTYPE_TWITTER, INDEXTYPE_TWITTER, save.getId());
     log.info("load: {}", load);
     assertEquals(load.getId(), save.getId());
   }
@@ -71,12 +94,28 @@ public class ElasticsearchServiceTest {
   public void shouldSaveAndLoadComplexJson() throws IOException {
     try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE)) {
       String json = IOUtils.toString(inputStream, Charset.defaultCharset());
-      IndexResponse save = envMonitorDataStorageDao.save("integrationtest-envdata", "envdata", json);
-      log.info("save: {}", save);
+      IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_ENVDATA, INDEXTYPE_ENVDATA, json);
+      log.info("saveAndUpdateAlias: {}", save);
       assertEquals(save.getResult(), DocWriteResponse.Result.CREATED);
-      GetResponse load = envMonitorDataStorageDao.load("integrationtest-envdata", "test", save.getId());
+      GetResponse load = envMonitorDataStorageDao.load(INDEXTYPE_ENVDATA, INDEXTYPE_ENVDATA, save.getId());
       log.info("load: {}", load);
       assertEquals(load.getId(), save.getId());
     }
+  }
+
+  @Test
+  public void shouldCreateAndRemoveAlias() throws ExecutionException, InterruptedException {
+    final String testAlias = "testAlias";
+    String json = "{"
+        + "\"user\":\"kimchy\","
+        + "\"postDate\":\"2013-01-30\","
+        + "\"message\":\"trying out Elasticsearch\""
+        + "}";
+    envMonitorDataStorageDao.save(INDEXTYPE_ALIAS, INDEXTYPE_ALIAS, json);
+    envMonitorDataStorageDao.addIndexToAlias(INDEXTYPE_ALIAS, testAlias);
+    assertTrue(envMonitorDataStorageDao.aliasExists(testAlias).exists());
+    envMonitorDataStorageDao.removeAllIndexesFromAlias(testAlias);
+    assertFalse(envMonitorDataStorageDao.aliasExists(testAlias).exists());
+    assertTrue(envMonitorDataStorageDao.indexExists(INDEXTYPE_ALIAS).isExists());
   }
 }

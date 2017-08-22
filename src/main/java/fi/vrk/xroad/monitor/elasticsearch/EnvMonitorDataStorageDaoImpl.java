@@ -23,6 +23,11 @@
 package fi.vrk.xroad.monitor.elasticsearch;
 
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
+import org.elasticsearch.action.admin.indices.alias.exists.AliasesExistResponse;
+import org.elasticsearch.action.admin.indices.alias.get.GetAliasesRequest;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -38,6 +43,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Default implementation for {@link EnvMonitorDataStorageDao} interface
@@ -89,6 +95,32 @@ public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
   @Override
   public GetResponse load(String index, String type, String json) {
     return client.prepareGet(index, type, json).get();
+  }
+
+  @Override
+  public IndicesAliasesResponse addIndexToAlias(String index, String alias) {
+    return client.admin().indices().prepareAliases().addAlias(index, alias).get();
+  }
+
+  @Override
+  public IndicesAliasesResponse removeAllIndexesFromAlias(String alias) {
+    return client.admin().indices().prepareAliases().removeAlias("*", alias).get();
+  }
+
+  @Override
+  public AliasesExistResponse aliasExists(String alias) throws ExecutionException, InterruptedException {
+    IndicesExistsResponse foo = client.admin().indices().prepareExists("foo").get();
+    return client.admin().indices().aliasesExist(new GetAliasesRequest(alias)).get();
+  }
+
+  @Override
+  public IndicesExistsResponse indexExists(String index) {
+    return client.admin().indices().prepareExists(index).get();
+  }
+
+  @Override
+  public DeleteIndexResponse removeIndex(String index) {
+    return client.admin().indices().prepareDelete(index).get();
   }
 
   /**

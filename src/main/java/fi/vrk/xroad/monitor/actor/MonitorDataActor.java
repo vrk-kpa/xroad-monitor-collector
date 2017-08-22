@@ -36,6 +36,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * Actor for requesting monitoring data from security servers
  */
@@ -64,7 +66,8 @@ public class MonitorDataActor extends AbstractActor {
                 .build();
     }
 
-    protected void handleMonitorDataRequest(MonitorDataRequest request) {
+    protected void handleMonitorDataRequest(MonitorDataRequest request)
+        throws ExecutionException, InterruptedException {
         log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
         String json = handler.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
         if (json != null) {
@@ -79,12 +82,13 @@ public class MonitorDataActor extends AbstractActor {
     }
 
     /**
-     * Will save monitordata as json to Elasticsearch
+     * Saves monitordata as json to Elasticsearch
      * @param json
      * @param securityServerInfo
      */
-    private void saveMonitorData(String json, SecurityServerInfo securityServerInfo) {
-        envMonitorDataStorageService.save(json);
+    private void saveMonitorData(String json, SecurityServerInfo securityServerInfo)
+        throws ExecutionException, InterruptedException {
+        envMonitorDataStorageService.saveAndUpdateAlias(json);
     }
 
     /**
