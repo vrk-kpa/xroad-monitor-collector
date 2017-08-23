@@ -49,12 +49,17 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
     final String index = getIndexName();
     log.info("Store data to index: {}", index);
     boolean indexCreated = !envMonitorDataStorageDao.indexExists(index).isExists();
+    log.info("New index will be created: {}", indexCreated);
     IndexResponse save = envMonitorDataStorageDao.save(index, TYPE_NAME, json);
-    log.info("Response: {}", save);
-    if (indexCreated && envMonitorDataStorageDao.aliasExists(ALIAS_NAME).exists()) {
-      log.info("Remove all indexes from alias");
-      envMonitorDataStorageDao.removeAllIndexesFromAlias(ALIAS_NAME);
-      log.info("Add index {} to alias {}", index, ALIAS_NAME);
+    log.info("Save response: {}", save);
+    if (indexCreated) {
+      if (envMonitorDataStorageDao.aliasExists(ALIAS_NAME).exists()) {
+        log.info("Alias exists, remove all indexes from alias {}", ALIAS_NAME);
+        envMonitorDataStorageDao.removeAllIndexesFromAlias(ALIAS_NAME);
+      } else {
+        log.info("Alias {} does not yet exist", ALIAS_NAME);
+      }
+      log.info("Create alias, add index {} to alias {}", index, ALIAS_NAME);
       envMonitorDataStorageDao.addIndexToAlias(index, ALIAS_NAME);
     }
   }
