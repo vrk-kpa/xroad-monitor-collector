@@ -23,6 +23,7 @@
 package fi.vrk.xroad.monitor.elasticsearch;
 
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.index.IndexResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,15 +47,15 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
   @Override
   public void saveAndUpdateAlias(String json) throws ExecutionException, InterruptedException {
     final String index = getIndexName();
-    envMonitorDataStorageDao.save(index, getTypeName(), json);
-    if (envMonitorDataStorageDao.aliasExists(ALIAS_NAME).exists()) {
+    log.debug("Store data to index: {}", index);
+    IndexResponse save = envMonitorDataStorageDao.save(index, TYPE_NAME, json);
+    if (save.getResult().equals(IndexResponse.Result.CREATED)
+        && envMonitorDataStorageDao.aliasExists(ALIAS_NAME).exists()) {
+      log.info("Remove all indexes from alias");
       envMonitorDataStorageDao.removeAllIndexesFromAlias(ALIAS_NAME);
+      log.info("Add index {} to alias {}", index, ALIAS_NAME);
+      envMonitorDataStorageDao.addIndexToAlias(index, ALIAS_NAME);
     }
-    envMonitorDataStorageDao.addIndexToAlias(index, ALIAS_NAME);
-  }
-
-  private String getTypeName() {
-    return TYPE_NAME;
   }
 
   private String getIndexName() {

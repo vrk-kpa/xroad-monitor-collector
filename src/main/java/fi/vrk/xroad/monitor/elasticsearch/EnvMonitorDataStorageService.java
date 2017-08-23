@@ -30,7 +30,7 @@ import java.util.concurrent.ExecutionException;
 public interface EnvMonitorDataStorageService {
 
   /**
-   * Save json to Elasticsearch
+   * Save json to Elasticsearch and update alias
    * @param json
    */
   void saveAndUpdateAlias(String json) throws ExecutionException, InterruptedException;
