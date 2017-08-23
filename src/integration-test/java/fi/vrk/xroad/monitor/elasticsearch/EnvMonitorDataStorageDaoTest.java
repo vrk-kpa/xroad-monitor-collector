@@ -54,6 +54,7 @@ public class EnvMonitorDataStorageDaoTest {
   private static final String INDEXTYPE_TWITTER = "integrationtest-twitter";
   private static final String INDEXTYPE_ENVDATA = "integrationtest-envdata";
   private static final String INDEXTYPE_ALIAS = "integrationtest-alias";
+  private static final String INDEXTYPE_FOOBARBAZ = "integrationtest-foobarbaz";
 
   @Autowired
   private EnvMonitorDataStorageDao envMonitorDataStorageDao;
@@ -72,6 +73,9 @@ public class EnvMonitorDataStorageDaoTest {
     }
     if (envMonitorDataStorageDao.indexExists(INDEXTYPE_ALIAS).isExists()) {
       envMonitorDataStorageDao.removeIndex(INDEXTYPE_ALIAS);
+    }
+    if (envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ).isExists()) {
+      envMonitorDataStorageDao.removeIndex(INDEXTYPE_FOOBARBAZ);
     }
   }
 
@@ -117,5 +121,19 @@ public class EnvMonitorDataStorageDaoTest {
     envMonitorDataStorageDao.removeAllIndexesFromAlias(testAlias);
     assertFalse(envMonitorDataStorageDao.aliasExists(testAlias).exists());
     assertTrue(envMonitorDataStorageDao.indexExists(INDEXTYPE_ALIAS).isExists());
+  }
+
+  @Test
+  public void shouldFindExistingIndex() {
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ).isExists());
+    String json = "{"
+        + "\"user\":\"kimchy\","
+        + "\"postDate\":\"2013-01-30\","
+        + "\"message\":\"trying out Elasticsearch\""
+        + "}";
+    IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_FOOBARBAZ, INDEXTYPE_FOOBARBAZ, json);
+    assertTrue(envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ).isExists());
+    envMonitorDataStorageDao.removeIndex(INDEXTYPE_FOOBARBAZ);
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ).isExists());
   }
 }
