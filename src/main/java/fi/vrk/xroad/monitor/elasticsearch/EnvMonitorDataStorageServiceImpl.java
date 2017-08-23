@@ -60,7 +60,7 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
 
   private String getIndexName() {
     Calendar calendar = Calendar.getInstance();
-    return String.format("%s-%d-%02d-%02d", INDEX_NAME, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-        calendar.get(Calendar.DATE));
+    return String.format("%s-%d-%02d-%02d", INDEX_NAME, calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DATE));
   }
 }
