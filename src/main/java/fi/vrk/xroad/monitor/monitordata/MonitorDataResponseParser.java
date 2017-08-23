@@ -94,7 +94,6 @@ public class MonitorDataResponseParser {
                     resultString = getFormattedJSONObject(responseObject, securityServerInfo, xroadInstance).toString();
                 } catch (JAXBException e) {
                     log.error("Failed unmarshalling XML to POJO", e);
-                    e.printStackTrace();
                 }
             }
             return resultString;
