@@ -48,10 +48,10 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
   public void saveAndUpdateAlias(String json) throws ExecutionException, InterruptedException {
     final String index = getIndexName();
     log.info("Store data to index: {}", index);
+    boolean indexCreated = !envMonitorDataStorageDao.indexExists(index).isExists();
     IndexResponse save = envMonitorDataStorageDao.save(index, TYPE_NAME, json);
     log.info("Response: {}", save);
-    if (save.getResult().equals(IndexResponse.Result.CREATED)
-        && envMonitorDataStorageDao.aliasExists(ALIAS_NAME).exists()) {
+    if (indexCreated && envMonitorDataStorageDao.aliasExists(ALIAS_NAME).exists()) {
       log.info("Remove all indexes from alias");
       envMonitorDataStorageDao.removeAllIndexesFromAlias(ALIAS_NAME);
       log.info("Add index {} to alias {}", index, ALIAS_NAME);
