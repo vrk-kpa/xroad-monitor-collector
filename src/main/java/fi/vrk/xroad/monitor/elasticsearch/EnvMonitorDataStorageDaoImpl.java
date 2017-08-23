@@ -72,26 +72,12 @@ public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
             Integer.parseInt(environment.getProperty("xroad-monitor-collector-elasticsearch.port"))));
   }
 
-  /**
-   * Save json data
-   * @param index
-   * @param type
-   * @param json
-   * @return
-   */
   @Override
   public IndexResponse save(String index, String type, String json) {
     log.debug("Elasticsearch data: {}", json);
     return client.prepareIndex(index, type).setSource(json, XContentType.JSON).get();
   }
 
-  /**
-   * Load json data
-   * @param index
-   * @param type
-   * @param json
-   * @return
-   */
   @Override
   public GetResponse load(String index, String type, String json) {
     return client.prepareGet(index, type, json).get();
@@ -109,7 +95,6 @@ public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
 
   @Override
   public AliasesExistResponse aliasExists(String alias) throws ExecutionException, InterruptedException {
-    IndicesExistsResponse foo = client.admin().indices().prepareExists("foo").get();
     return client.admin().indices().aliasesExist(new GetAliasesRequest(alias)).get();
   }
 

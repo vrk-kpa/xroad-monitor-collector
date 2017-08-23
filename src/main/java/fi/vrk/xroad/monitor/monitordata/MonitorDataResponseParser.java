@@ -81,7 +81,7 @@ public class MonitorDataResponseParser {
             if (nodeList.getLength() == 0) {
                 NodeList faultCode = root.getElementsByTagName("faultcode");
                 NodeList faultString = root.getElementsByTagName("faultstring");
-                log.error("Faultcode in responseParser: {} faultstring: {} responseParser: {}",
+                log.debug("Faultcode in responseParser: {} faultstring: {} responseParser: {}",
                         nodeToString(faultCode.item(0)), nodeToString(faultString.item(0)), xmlResponse);
                 lastErrorDescription = String.format("%s %s", nodeToString(faultCode.item(0)),
                     nodeToString(faultString.item(0)));
