@@ -23,7 +23,10 @@
 
 package fi.vrk.xroad.monitor.actor;
 
-import akka.actor.*;
+import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
+import akka.actor.OneForOneStrategy;
+import akka.actor.SupervisorStrategy;
 import akka.japi.pf.DeciderBuilder;
 import akka.pattern.Patterns;
 import akka.routing.SmallestMailboxPool;
@@ -41,6 +44,7 @@ import scala.concurrent.Await;
 import scala.concurrent.duration.Duration;
 
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -142,6 +146,14 @@ public class Supervisor extends AbstractActor {
             new OneForOneStrategy(SUPERVISOR_RETRIES, Duration.create("1 minute"), DeciderBuilder
                     .match(RestClientException.class, e -> {
                         log.error("RestClientException ", e);
+                        return resume();
+                    })
+                    .match(ExecutionException.class, e -> {
+                        log.error("ExecutionException ", e);
+                        return resume();
+                    })
+                    .match(InterruptedException.class, e -> {
+                        log.error("InterruptedException ", e);
                         return resume();
                     })
                     .matchAny(e -> resume()).build());
