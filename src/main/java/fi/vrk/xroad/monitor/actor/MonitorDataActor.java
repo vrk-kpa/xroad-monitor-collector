@@ -71,7 +71,7 @@ public class MonitorDataActor extends AbstractActor {
         log.debug("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
         String json = handler.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
         if (json != null) {
-            saveMonitorData(json, request.getSecurityServerInfo());
+            saveMonitorData(json);
             resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(
                 request.getSecurityServerInfo()), getSelf());
         } else {
@@ -84,9 +84,8 @@ public class MonitorDataActor extends AbstractActor {
     /**
      * Saves monitordata as json to Elasticsearch
      * @param json
-     * @param securityServerInfo
      */
-    private void saveMonitorData(String json, SecurityServerInfo securityServerInfo)
+    private void saveMonitorData(String json)
         throws ExecutionException, InterruptedException {
         envMonitorDataStorageService.saveAndUpdateAlias(json);
     }
