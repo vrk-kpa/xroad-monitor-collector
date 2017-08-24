@@ -52,7 +52,7 @@ public class EnvMonitorDataStorageDaoTest {
 
   private static final String COMPLEX_JSON_FILE = "src/test/resources/data.json";
   private static final String INDEXTYPE_TWITTER = "integrationtest-twitter";
-  private static final String INDEXTYPE_ENVDATA = "integrationtest-envdata";
+  private static final String INDEXTYPE_ENVDATA = "integrationtest-complex";
   private static final String INDEXTYPE_ALIAS = "integrationtest-alias";
   private static final String INDEXTYPE_FOOBARBAZ = "integrationtest-foobarbaz";
 

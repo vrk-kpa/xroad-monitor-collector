@@ -25,6 +25,7 @@ package fi.vrk.xroad.monitor.elasticsearch;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.index.IndexResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
@@ -37,36 +38,38 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageService {
 
-  private static final String INDEX_NAME = "envdata";
-  private static final String TYPE_NAME = "envdata";
-  private static final String ALIAS_NAME = "envdata-latest";
-
   @Autowired
   private EnvMonitorDataStorageDao envMonitorDataStorageDao;
+
+  @Autowired
+  private Environment environment;
 
   @Override
   public void saveAndUpdateAlias(String json) throws ExecutionException, InterruptedException {
     final String index = getIndexName();
+    final String type = environment.getProperty("xroad-monitor-collector-elasticsearch.type");
+    final String alias = environment.getProperty("xroad-monitor-collector-elasticsearch.alias");
     log.debug("Store data to index: {}", index);
     boolean indexCreated = !envMonitorDataStorageDao.indexExists(index).isExists();
     log.debug("New index will be created: {}", indexCreated);
-    IndexResponse save = envMonitorDataStorageDao.save(index, TYPE_NAME, json);
+    IndexResponse save = envMonitorDataStorageDao.save(index, type, json);
     log.debug("Save response: {}", save);
     if (indexCreated) {
-      if (envMonitorDataStorageDao.aliasExists(ALIAS_NAME).exists()) {
-        log.info("Alias exists, remove all indexes from alias {}", ALIAS_NAME);
-        envMonitorDataStorageDao.removeAllIndexesFromAlias(ALIAS_NAME);
+      if (envMonitorDataStorageDao.aliasExists(alias).exists()) {
+        log.info("Alias exists, remove all indexes from alias {}", alias);
+        envMonitorDataStorageDao.removeAllIndexesFromAlias(alias);
       } else {
-        log.info("Alias {} does not yet exist", ALIAS_NAME);
+        log.info("Alias {} does not yet exist", alias);
       }
-      log.info("Create alias, add index {} to alias {}", index, ALIAS_NAME);
-      envMonitorDataStorageDao.addIndexToAlias(index, ALIAS_NAME);
+      log.info("Create alias, add index {} to alias {}", index, alias);
+      envMonitorDataStorageDao.addIndexToAlias(index, alias);
     }
   }
 
   private String getIndexName() {
     Calendar calendar = Calendar.getInstance();
-    return String.format("%s-%d-%02d-%02d", INDEX_NAME, calendar.get(Calendar.YEAR),
+    return String.format("%s-%d-%02d-%02d",
+        environment.getProperty("xroad-monitor-collector-elasticsearch.index"), calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DATE));
   }
 }
