@@ -31,6 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Tests for {@link MonitorDataHandler}
  */
@@ -56,12 +58,14 @@ public class MonitorDataHandlerTest {
             "1710128-9");
 
     @Test
-    public void makeRequest() {
+    public void shouldParseJsonDataFromXmlResponse() {
         String xmlRequest = request.getRequestXML(exampleInfo);
-        String root = handler.makeRequest(xmlRequest);
-        log.info("result: {}", root);
-        String metric = response.getMetricInformation(root, exampleInfo, "FI");
-        log.info("body: {}", metric);
-        Object jsonObject = JSONParser.parseJSON(metric);
+        String xmlResponse = handler.makeRequest(xmlRequest);
+        log.info("xmlResponse: {}", xmlResponse);
+        String jsonMetrics = response.getMetricInformation(xmlResponse, exampleInfo, "FI");
+        log.info("jsonMetrics: {}", jsonMetrics);
+        // test that it is valid json
+        Object jsonObject = JSONParser.parseJSON(jsonMetrics);
+        assertNotNull(jsonObject);
     }
 }

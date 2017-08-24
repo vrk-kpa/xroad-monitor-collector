@@ -76,8 +76,6 @@ public class MonitorDataActorTest {
       Set<SecurityServerInfo> infos = new HashSet<>();
       infos.add(new SecurityServerInfo("gdev-ss1.i.palveluvayla.com", "gdev-ss1.i.palveluvayla.com",
           "GOV", "1710128-9"));
-      infos.add(new SecurityServerInfo("gdev-ss2.i.palveluvayla.com", "gdev-ss2.i.palveluvayla.com",
-          "GOV", "1710128-9"));
 
       // Initialize resultcollertor
       resultCollectorRef.receive(infos);
@@ -87,8 +85,7 @@ public class MonitorDataActorTest {
           monitorDataRef.receive(new MonitorDataActor.MonitorDataRequest(info));
       }
 
-
       // assert that result collector actor has received 2 results
-      assertEquals(2, resultCollectorActor.getNumProcessedResults());
+      assertEquals(1, resultCollectorActor.getNumProcessedResults());
     }
 }

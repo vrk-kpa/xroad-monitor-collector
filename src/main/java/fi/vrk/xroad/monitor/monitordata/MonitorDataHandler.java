@@ -64,10 +64,9 @@ public class MonitorDataHandler {
     }
 
     /**
-     * Makes requestBuilder to get securityserver metric information
-     *
+     * Makes request to get securityserver metric information
      * @param xmlRequest to posted in body to securityserver
-     * @return securityserver metric information responseParser
+     * @return securityserver metric information response as xml string
      */
     public String makeRequest(String xmlRequest) {
 
