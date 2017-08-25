@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fi.vrk.xroad.monitor.monitordata;
+package fi.vrk.xroad.monitor.extractor;
 
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import fi.vrk.xroad.monitor.util.MonitorCollectorPropertyKeys;
@@ -36,11 +36,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Handler for monitordata requestBuilder, responseParser and parsing
+ * Handler for extractor requestBuilder, responseParser and parsing
  */
 @Slf4j
 @Component
-public class MonitorDataHandler {
+public class MonitorDataExtractor {
 
     private RestTemplate rt = new RestTemplate();
 
@@ -59,14 +59,14 @@ public class MonitorDataHandler {
      * @param securityServerInfo information of securityserver what metric to get
      */
     public String handleMonitorDataRequestAndResponse(SecurityServerInfo securityServerInfo) {
-        return responseParser.getMetricInformation(makeRequest(requestBuilder.getRequestXML(securityServerInfo)));
+        return responseParser.getMetricInformation(makeRequest(requestBuilder.getRequestXML(securityServerInfo)),
+            securityServerInfo, environment.getProperty(MonitorCollectorPropertyKeys.INSTANCE));
     }
 
     /**
-     * Makes requestBuilder to get securityserver metric information
-     *
+     * Makes request to get securityserver metric information
      * @param xmlRequest to posted in body to securityserver
-     * @return securityserver metric information responseParser
+     * @return securityserver metric information response as xml string
      */
     public String makeRequest(String xmlRequest) {
 
@@ -80,7 +80,7 @@ public class MonitorDataHandler {
 
         String clientUrl = environment != null
             ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_URL) : null;
-        log.info("posting soap request, clientUrl: {} request: {}", clientUrl, xmlRequest);
+        log.debug("posting soap request, clientUrl: {} request: {}", clientUrl, xmlRequest);
         return rt.postForObject(clientUrl, entity, String.class);
     }
 

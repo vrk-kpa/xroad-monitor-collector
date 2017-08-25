@@ -29,10 +29,12 @@ import akka.actor.Props;
 import akka.routing.SmallestMailboxPool;
 import akka.testkit.TestActorRef;
 import akka.testkit.javadsl.TestKit;
+import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageDaoImpl;
+import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageServiceImpl;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
-import fi.vrk.xroad.monitor.monitordata.MonitorDataHandler;
-import fi.vrk.xroad.monitor.monitordata.MonitorDataRequestBuilder;
-import fi.vrk.xroad.monitor.monitordata.MonitorDataResponseParser;
+import fi.vrk.xroad.monitor.extractor.MonitorDataExtractor;
+import fi.vrk.xroad.monitor.extractor.MonitorDataRequestBuilder;
+import fi.vrk.xroad.monitor.extractor.MonitorDataResponseParser;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.AfterClass;
@@ -57,11 +59,13 @@ import static org.junit.Assert.assertEquals;
         SpringExtension.class,
         Supervisor.class,
         ApplicationContext.class,
-        MonitorDataActor.class,
+        MonitorDataHandlerActor.class,
         ResultCollectorActor.class,
-        MonitorDataHandler.class,
+        MonitorDataExtractor.class,
         MonitorDataRequestBuilder.class,
-        MonitorDataResponseParser.class})
+        MonitorDataResponseParser.class,
+        EnvMonitorDataStorageDaoImpl.class,
+        EnvMonitorDataStorageServiceImpl.class})
 @RunWith(SpringRunner.class)
 public class SupervisorTest {
 
@@ -96,11 +100,10 @@ public class SupervisorTest {
         final TestActorRef<ResultCollectorActor> resultCollectorActor = TestActorRef.create(
                 system, Props.create(ResultCollectorActor.class));
 
-        final TestActorRef<MonitorDataActor> monitorDataRequestPoolRouter =
+        final TestActorRef<MonitorDataHandlerActor> monitorDataRequestPoolRouter =
                 TestActorRef.create(system, new SmallestMailboxPool(2).props(
                         springExtension.props(
-                                //MonitorDataActor.class.getName()
-                                "monitorDataActor",
+                                "monitorDataHandlerActor",
                                 resultCollectorActor))
                 );
 

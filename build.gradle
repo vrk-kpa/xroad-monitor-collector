@@ -18,6 +18,9 @@ apply plugin: 'checkstyle'
 apply plugin: 'org.springframework.boot'
 
 sourceSets {
+    main {
+        java.srcDirs = ["src/main/java", "$buildDir/generated-sources"]
+    }
     integrationTest {
         java {
             compileClasspath += main.output + test.output
@@ -28,7 +31,10 @@ sourceSets {
     }
 }
 
+project.ext.schemaTargetDir = new File("$buildDir/generated-sources")
+
 configurations {
+    xjc
     integrationTestCompile.extendsFrom testCompile
     integrationTestRuntime.extendsFrom testRuntime
 }
@@ -55,18 +61,24 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version:'1.5.3.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter', version:'1.5.3.RELEASE'
+    compile 'org.elasticsearch.client:transport:5.5.1'
+    compile 'org.elasticsearch:elasticsearch:5.5.1'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter', version:'1.5.6.RELEASE'
     compile("org.springframework:spring-web")
     compile group: 'com.typesafe.akka', name: 'akka-actor_2.11', version:'2.5.1'
     compile group: 'com.typesafe.akka', name: 'akka-slf4j_2.11', version: '2.5.1'
     compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.2.3'
     compile 'org.projectlombok:lombok:1.16.6'
+    compile group: 'org.json', name: 'json', version: '20170516'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
     testCompile 'junit:junit:4.12'
     testCompile 'com.typesafe.akka:akka-testkit_2.11:2.5.1'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
     // to add dependencies to integration tests only use format such as
     // integrationTestCompile 'org.assertj:assertj-core:3.0.0'
+    xjc 'org.glassfish.jaxb:jaxb-runtime:2.2.11'
+    xjc 'org.glassfish.jaxb:jaxb-xjc:2.2.11'
 }
 
 test {
@@ -82,9 +94,50 @@ task integrationTest(type: Test) {
     classpath = sourceSets.integrationTest.runtimeClasspath
 }
 
+task createDirs << {
+    project.ext.schemaTargetDir.mkdirs()
+}
+
+task xjc << {
+    ant.taskdef(name: 'xjc',
+            classname: 'com.sun.tools.xjc.XJCTask',
+            classpath: configurations.xjc.asPath)
+
+    // Generate classes for identifiers
+    ant.xjc(
+            destdir: project.ext.schemaTargetDir,
+            package: 'ee.ria.xroad.proxymonitor.message',
+            schema: 'src/main/resources/monitoring.xsd',
+            binding: 'src/main/resources/jaxb-bindings.xml'
+    )
+}
+
 check.dependsOn integrationTest
 integrationTest.mustRunAfter test
 
 tasks.withType(Test) {
     reports.html.destination = file("${reporting.baseDir}/${name}")
+}
+
+task licenseFormatJava(type:nl.javadude.gradle.plugins.license.License) {
+    source = fileTree('src/main/java')
+}
+
+task licenseTestJava(type:nl.javadude.gradle.plugins.license.License) {
+    source = fileTree('src/main/java')
+    check = true
+}
+
+licenseFormatMain.enabled = false
+licenseMain.enabled = false
+
+licenseFormat.dependsOn licenseFormatJava
+licenseTest.dependsOn licenseTestJava
+
+xjc.dependsOn createDirs
+compileJava.dependsOn xjc
+
+idea.module {
+    excludeDirs -= file(buildDir)
+    buildDir.listFiles({ d, f -> f != 'generated-sources' } as FilenameFilter).each { excludeDirs += it }
 }

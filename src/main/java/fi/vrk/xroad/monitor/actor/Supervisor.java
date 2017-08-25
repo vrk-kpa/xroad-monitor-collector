@@ -23,7 +23,10 @@
 
 package fi.vrk.xroad.monitor.actor;
 
-import akka.actor.*;
+import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
+import akka.actor.OneForOneStrategy;
+import akka.actor.SupervisorStrategy;
 import akka.japi.pf.DeciderBuilder;
 import akka.pattern.Patterns;
 import akka.routing.SmallestMailboxPool;
@@ -41,6 +44,7 @@ import scala.concurrent.Await;
 import scala.concurrent.duration.Duration;
 
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -83,18 +87,17 @@ public class Supervisor extends AbstractActor {
 
     @Override
     public void preStart() throws Exception {
-        log.info("preStart");
-
+        log.debug("preStart");
         resultCollectorActor = getContext().actorOf(ext.props("resultCollectorActor"));
         monitorDataRequestPoolRouter = getContext()
                 .actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
-                        .props(ext.props("monitorDataActor", resultCollectorActor)));
+                        .props(ext.props("monitorDataHandlerActor", resultCollectorActor)));
         super.preStart();
     }
 
     @Override
     public Receive createReceive() {
-        log.info("createReceive");
+        log.debug("createReceive");
         return receiveBuilder()
                 .match(StartCollectingMonitorDataCommand.class, this::handleMonitorDataRequest)
                 .matchAny(obj -> log.error("Unhandled message: {}", obj))
@@ -103,7 +106,6 @@ public class Supervisor extends AbstractActor {
 
     private void handleMonitorDataRequest(StartCollectingMonitorDataCommand request) {
         Timeout timeout = new Timeout(1, TimeUnit.MINUTES);
-
         try {
             Await.ready(Patterns.ask(resultCollectorActor, request.getSecurityServerInfos(), timeout),
                 timeout.duration());
@@ -111,13 +113,13 @@ public class Supervisor extends AbstractActor {
             request.getSecurityServerInfos().stream()
                     .forEach(info -> {
                         log.info("Process SecurityServerInfo {}", info);
-                        monitorDataRequestPoolRouter.tell(new MonitorDataActor.MonitorDataRequest(info), getSelf());
+                        monitorDataRequestPoolRouter.tell(new MonitorDataHandlerActor.MonitorDataRequest(info),
+                            getSelf());
                     });
 
         } catch (TimeoutException | InterruptedException e) {
             log.error("Failed to initialize the ResultCollectorActor, {}", e);
         }
-
     }
 
     /**
@@ -145,6 +147,14 @@ public class Supervisor extends AbstractActor {
             new OneForOneStrategy(SUPERVISOR_RETRIES, Duration.create("1 minute"), DeciderBuilder
                     .match(RestClientException.class, e -> {
                         log.error("RestClientException ", e);
+                        return resume();
+                    })
+                    .match(ExecutionException.class, e -> {
+                        log.error("ExecutionException ", e);
+                        return resume();
+                    })
+                    .match(InterruptedException.class, e -> {
+                        log.error("InterruptedException ", e);
                         return resume();
                     })
                     .matchAny(e -> resume()).build());

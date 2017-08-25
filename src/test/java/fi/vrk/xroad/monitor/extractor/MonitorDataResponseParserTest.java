@@ -20,13 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fi.vrk.xroad.monitor.monitordata;
+package fi.vrk.xroad.monitor.extractor;
 
+import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * Tests for {@link MonitorDataResponseParser}
@@ -36,9 +43,34 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 public class MonitorDataResponseParserTest {
 
+    private static final String RESPONSE_XML_FILE = "src/test/resources/exampleResponse.xml";
+    private static final String RESPONSE_JSON_FILE = "src/test/resources/exampleResponse.json";
+    private static final String XROAD_INSTANCE = "FI";
+
     @Test
     public void testEmpty() {
         // Placeholder for tests if parser features are extended.
         // No use testing Java's DocumentBuilderFactory converting String -> Document -> String
+    }
+
+    @Test
+    public void parseResponseMetricsToJsonTest() throws IOException {
+        SecurityServerInfo info = new SecurityServerInfo("gdev-ss1.i.palveluvayla.com",
+                "gdev-ss1.i.palveluvayla.com", "GOV", "1710128-9");
+        try (FileInputStream inputStream = new FileInputStream(RESPONSE_XML_FILE)) {
+            String responseString = IOUtils.toString(inputStream, Charset.defaultCharset());
+            MonitorDataResponseParser monitorDataResponseParser = new MonitorDataResponseParser();
+            String parsedJson = monitorDataResponseParser.getMetricInformation(responseString, info, XROAD_INSTANCE);
+
+            String jsonFromFile;
+            try (FileInputStream is = new FileInputStream(RESPONSE_JSON_FILE)) {
+                jsonFromFile = IOUtils.toString(is, Charset.defaultCharset());
+            }
+
+            log.info(parsedJson);
+            
+            JSONAssert.assertEquals(jsonFromFile, parsedJson, true);
+
+        }
     }
 }

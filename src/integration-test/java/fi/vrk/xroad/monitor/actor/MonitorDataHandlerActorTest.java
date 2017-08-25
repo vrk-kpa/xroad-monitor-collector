@@ -28,9 +28,9 @@ import akka.actor.Props;
 import akka.testkit.TestActorRef;
 import fi.vrk.xroad.monitor.MonitorCollectorApplication;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
-import fi.vrk.xroad.monitor.monitordata.MonitorDataHandler;
-import fi.vrk.xroad.monitor.monitordata.MonitorDataRequestBuilder;
-import fi.vrk.xroad.monitor.monitordata.MonitorDataResponseParser;
+import fi.vrk.xroad.monitor.extractor.MonitorDataExtractor;
+import fi.vrk.xroad.monitor.extractor.MonitorDataRequestBuilder;
+import fi.vrk.xroad.monitor.extractor.MonitorDataResponseParser;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -45,13 +45,13 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Tests for {@link MonitorDataActor}
+ * Tests for {@link MonitorDataHandlerActor}
  */
 @Slf4j
-@SpringBootTest(classes = {MonitorCollectorApplication.class, MonitorDataHandler.class,
+@SpringBootTest(classes = {MonitorCollectorApplication.class, MonitorDataExtractor.class,
     MonitorDataRequestBuilder.class, MonitorDataResponseParser.class})
 @RunWith(SpringRunner.class)
-public class MonitorDataActorTest {
+public class MonitorDataHandlerActorTest {
 
   @Autowired
   ActorSystem system;
@@ -71,12 +71,11 @@ public class MonitorDataActorTest {
       ResultCollectorActor resultCollectorActor = resultCollectorRef.underlyingActor();
 
       // create monitor data actor
-      final Props monitorDataActorProps = ext.props("monitorDataActor", resultCollectorRef);
-      final TestActorRef<MonitorDataActor> monitorDataRef = TestActorRef.create(system, monitorDataActorProps, "testB");
+      final Props monitorDataActorProps = ext.props("monitorDataHandlerActor", resultCollectorRef);
+      final TestActorRef<MonitorDataHandlerActor> monitorDataRef = TestActorRef.create(system, monitorDataActorProps,
+          "testB");
       Set<SecurityServerInfo> infos = new HashSet<>();
       infos.add(new SecurityServerInfo("gdev-ss1.i.palveluvayla.com", "gdev-ss1.i.palveluvayla.com",
-          "GOV", "1710128-9"));
-      infos.add(new SecurityServerInfo("gdev-ss2.i.palveluvayla.com", "gdev-ss2.i.palveluvayla.com",
           "GOV", "1710128-9"));
 
       // Initialize resultcollertor
@@ -84,11 +83,10 @@ public class MonitorDataActorTest {
 
       // process all requests
       for (SecurityServerInfo info : infos) {
-          monitorDataRef.receive(new MonitorDataActor.MonitorDataRequest(info));
+          monitorDataRef.receive(new MonitorDataHandlerActor.MonitorDataRequest(info));
       }
 
-
       // assert that result collector actor has received 2 results
-      assertEquals(2, resultCollectorActor.getNumProcessedResults());
+      assertEquals(1, resultCollectorActor.getNumProcessedResults());
     }
 }

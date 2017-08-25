@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fi.vrk.xroad.monitor.monitordata;
+package fi.vrk.xroad.monitor.extractor;
 
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import fi.vrk.xroad.monitor.util.MonitorCollectorPropertyKeys;
@@ -42,7 +42,7 @@ import java.io.StringWriter;
 import java.util.UUID;
 
 /**
- * Creates monitordata request xml.
+ * Creates extractor request xml.
  */
 @Slf4j
 @Component
@@ -66,7 +66,7 @@ public class MonitorDataRequestBuilder {
      * Makes xml string what is request for securityserver monitoring metrics
      *
      * @param serverInfo server information what is target of request
-     * @retur xml string request
+     * @return xml string request
      */
     public String getRequestXML(SecurityServerInfo serverInfo) {
 
@@ -167,7 +167,7 @@ public class MonitorDataRequestBuilder {
             transformer.transform(domSource, result);
             return writer.toString();
         } catch (TransformerException ex) {
-            ex.printStackTrace();
+            log.error("Error parsing document to string", ex);
             return "";
         }
     }

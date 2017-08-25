@@ -26,7 +26,8 @@ package fi.vrk.xroad.monitor.actor;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
-import fi.vrk.xroad.monitor.monitordata.MonitorDataHandler;
+import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageService;
+import fi.vrk.xroad.monitor.extractor.MonitorDataExtractor;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -35,20 +36,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.ExecutionException;
+
 /**
- * Actor for requesting monitoring data from security servers
+ * Actor for requesting and saving monitoring data from single security server
  */
 @Component
 @Scope("prototype")
 @Slf4j
-public class MonitorDataActor extends AbstractActor {
+public class MonitorDataHandlerActor extends AbstractActor {
 
     protected final ActorRef resultCollectorActor;
 
     @Autowired
-    MonitorDataHandler handler;
+    MonitorDataExtractor extractor;
 
-    public MonitorDataActor(ActorRef resultCollectorActor) {
+    @Autowired
+    private EnvMonitorDataStorageService envMonitorDataStorageService;
+
+    public MonitorDataHandlerActor(ActorRef resultCollectorActor) {
         this.resultCollectorActor = resultCollectorActor;
     }
 
@@ -60,31 +66,29 @@ public class MonitorDataActor extends AbstractActor {
                 .build();
     }
 
-    protected void handleMonitorDataRequest(MonitorDataRequest request) {
-        log.info("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
-        String xml = handler.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
-        log.info("Response metric: {}", xml);
-        if (xml.startsWith("<m:getSecurityServerMetricsResponse>")) {
-            saveMonitorData(xml, request.getSecurityServerInfo());
-            resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(
+    protected void handleMonitorDataRequest(MonitorDataRequest request)
+        throws ExecutionException, InterruptedException {
+        log.debug("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
+        String json = extractor.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
+        if (json != null) {
+            saveMonitorData(json);
+            resultCollectorActor.tell(ResultCollectorActor.Result.createSuccess(
                 request.getSecurityServerInfo()), getSelf());
         } else {
-            resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createError(
-                request.getSecurityServerInfo(), handler.getLastErrorDescription()), getSelf());
+            resultCollectorActor.tell(ResultCollectorActor.Result.createError(
+                request.getSecurityServerInfo(), extractor.getLastErrorDescription()), getSelf());
         }
-        log.info("end handleMonitorDataRequest");
+        log.debug("end handleMonitorDataRequest");
     }
 
     /**
-     * Will save monitordata as json to elasticsearch. With securityserverinfo
-     * @param xml
-     * @param securityServerInfo
+     * Saves extractor as json to Elasticsearch
+     * @param json
      */
-    private void saveMonitorData(String xml, SecurityServerInfo securityServerInfo) {
-        // TODO create json element wchich has all data elasticsearch wants
-        // TODO make post to elasticsearch API
+    private void saveMonitorData(String json)
+        throws ExecutionException, InterruptedException {
+        envMonitorDataStorageService.saveAndUpdateAlias(json);
     }
-
 
     /**
      * Request for fetching monitoring data from single security server
