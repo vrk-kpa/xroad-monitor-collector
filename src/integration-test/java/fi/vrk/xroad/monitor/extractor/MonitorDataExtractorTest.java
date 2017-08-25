@@ -37,7 +37,8 @@ import static org.junit.Assert.assertNotNull;
  * Tests for {@link MonitorDataExtractor}
  */
 @Slf4j
-@SpringBootTest(classes = {MonitorDataRequestBuilder.class, MonitorDataExtractor.class, MonitorDataResponseParser.class})
+@SpringBootTest(classes = {MonitorDataRequestBuilder.class, MonitorDataExtractor.class,
+    MonitorDataResponseParser.class})
 @RunWith(SpringRunner.class)
 public class MonitorDataExtractorTest {
 

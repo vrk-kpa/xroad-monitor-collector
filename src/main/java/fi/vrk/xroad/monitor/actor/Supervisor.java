@@ -91,7 +91,7 @@ public class Supervisor extends AbstractActor {
         resultCollectorActor = getContext().actorOf(ext.props("resultCollectorActor"));
         monitorDataRequestPoolRouter = getContext()
                 .actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
-                        .props(ext.props("monitorDataActor", resultCollectorActor)));
+                        .props(ext.props("monitorDataHandlerActor", resultCollectorActor)));
         super.preStart();
     }
 
@@ -113,7 +113,8 @@ public class Supervisor extends AbstractActor {
             request.getSecurityServerInfos().stream()
                     .forEach(info -> {
                         log.info("Process SecurityServerInfo {}", info);
-                        monitorDataRequestPoolRouter.tell(new MonitorDataHandlerActor.MonitorDataRequest(info), getSelf());
+                        monitorDataRequestPoolRouter.tell(new MonitorDataHandlerActor.MonitorDataRequest(info),
+                            getSelf());
                     });
 
         } catch (TimeoutException | InterruptedException e) {

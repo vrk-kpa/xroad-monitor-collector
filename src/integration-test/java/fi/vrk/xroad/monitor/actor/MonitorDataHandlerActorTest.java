@@ -71,8 +71,9 @@ public class MonitorDataHandlerActorTest {
       ResultCollectorActor resultCollectorActor = resultCollectorRef.underlyingActor();
 
       // create monitor data actor
-      final Props monitorDataActorProps = ext.props("monitorDataActor", resultCollectorRef);
-      final TestActorRef<MonitorDataHandlerActor> monitorDataRef = TestActorRef.create(system, monitorDataActorProps, "testB");
+      final Props monitorDataActorProps = ext.props("monitorDataHandlerActor", resultCollectorRef);
+      final TestActorRef<MonitorDataHandlerActor> monitorDataRef = TestActorRef.create(system, monitorDataActorProps,
+          "testB");
       Set<SecurityServerInfo> infos = new HashSet<>();
       infos.add(new SecurityServerInfo("gdev-ss1.i.palveluvayla.com", "gdev-ss1.i.palveluvayla.com",
           "GOV", "1710128-9"));

@@ -103,7 +103,7 @@ public class SupervisorTest {
         final TestActorRef<MonitorDataHandlerActor> monitorDataRequestPoolRouter =
                 TestActorRef.create(system, new SmallestMailboxPool(2).props(
                         springExtension.props(
-                                "monitorDataActor",
+                                "monitorDataHandlerActor",
                                 resultCollectorActor))
                 );
 
