@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fi.vrk.xroad.monitor.monitordata;
+package fi.vrk.xroad.monitor.extractor;
 
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import fi.vrk.xroad.monitor.util.MonitorCollectorPropertyKeys;
@@ -42,7 +42,7 @@ import java.io.StringWriter;
 import java.util.UUID;
 
 /**
- * Creates monitordata request xml.
+ * Creates extractor request xml.
  */
 @Slf4j
 @Component

@@ -20,37 +20,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fi.vrk.xroad.monitor.monitordata;
+package fi.vrk.xroad.monitor.extractor;
 
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skyscreamer.jsonassert.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Tests for {@link MonitorDataHandler}
+ * Tests for {@link MonitorDataRequestBuilder}
  */
 @Slf4j
-@SpringBootTest(classes = {MonitorDataRequestBuilder.class, MonitorDataHandler.class, MonitorDataResponseParser.class})
+@SpringBootTest(classes = MonitorDataRequestBuilder.class)
 @RunWith(SpringRunner.class)
-public class MonitorDataHandlerTest {
-
-    @Autowired
-    private MonitorDataHandler handler;
+public class MonitorDataRequestBuilderTest {
 
     @Autowired
     private MonitorDataRequestBuilder request;
 
-    @Autowired
-    private MonitorDataResponseParser response;
-
-    // Test requires this to be valid and accessible server
     private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
             "gdev-ss1.i.palveluvayla.com",
             "http://gdev-ss1.i.palveluvayla.com",
@@ -58,14 +50,13 @@ public class MonitorDataHandlerTest {
             "1710128-9");
 
     @Test
-    public void shouldParseJsonDataFromXmlResponse() {
+    public void getRequestXMLTest() {
+        // Runtime exceptions (DOMException) are thrown if DOM creation fails.
         String xmlRequest = request.getRequestXML(exampleInfo);
-        String xmlResponse = handler.makeRequest(xmlRequest);
-        log.info("xmlResponse: {}", xmlResponse);
-        String jsonMetrics = response.getMetricInformation(xmlResponse, exampleInfo, "FI");
-        log.info("jsonMetrics: {}", jsonMetrics);
-        // test that it is valid json
-        Object jsonObject = JSONParser.parseJSON(jsonMetrics);
-        assertNotNull(jsonObject);
+        log.info(xmlRequest);
+        // Assert that request contains member class, member code and server code
+        assertTrue(xmlRequest.contains("GOV"));
+        assertTrue(xmlRequest.contains("1710128-9"));
+        assertTrue(xmlRequest.contains("gdev-ss1.i.palveluvayla.com"));
     }
 }

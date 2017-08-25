@@ -27,7 +27,7 @@ package fi.vrk.xroad.monitor.actor;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageService;
-import fi.vrk.xroad.monitor.monitordata.MonitorDataHandler;
+import fi.vrk.xroad.monitor.extractor.MonitorDataExtractor;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -39,22 +39,22 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Actor for requesting monitoring data from security servers
+ * Actor for requesting and saving monitoring data from single security server
  */
 @Component
 @Scope("prototype")
 @Slf4j
-public class MonitorDataActor extends AbstractActor {
+public class MonitorDataHandlerActor extends AbstractActor {
 
     protected final ActorRef resultCollectorActor;
 
     @Autowired
-    MonitorDataHandler handler;
+    MonitorDataExtractor extractor;
 
     @Autowired
     private EnvMonitorDataStorageService envMonitorDataStorageService;
 
-    public MonitorDataActor(ActorRef resultCollectorActor) {
+    public MonitorDataHandlerActor(ActorRef resultCollectorActor) {
         this.resultCollectorActor = resultCollectorActor;
     }
 
@@ -69,20 +69,20 @@ public class MonitorDataActor extends AbstractActor {
     protected void handleMonitorDataRequest(MonitorDataRequest request)
         throws ExecutionException, InterruptedException {
         log.debug("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
-        String json = handler.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
+        String json = extractor.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
         if (json != null) {
             saveMonitorData(json);
-            resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createSuccess(
+            resultCollectorActor.tell(ResultCollectorActor.Result.createSuccess(
                 request.getSecurityServerInfo()), getSelf());
         } else {
-            resultCollectorActor.tell(ResultCollectorActor.MonitorDataResult.createError(
-                request.getSecurityServerInfo(), handler.getLastErrorDescription()), getSelf());
+            resultCollectorActor.tell(ResultCollectorActor.Result.createError(
+                request.getSecurityServerInfo(), extractor.getLastErrorDescription()), getSelf());
         }
         log.debug("end handleMonitorDataRequest");
     }
 
     /**
-     * Saves monitordata as json to Elasticsearch
+     * Saves extractor as json to Elasticsearch
      * @param json
      */
     private void saveMonitorData(String json)

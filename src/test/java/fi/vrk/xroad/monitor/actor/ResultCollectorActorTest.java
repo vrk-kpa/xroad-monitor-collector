@@ -86,7 +86,7 @@ public class ResultCollectorActorTest {
 
         // send results
         securityServerInfos.stream().forEach(
-                info -> ref.receive(ResultCollectorActor.MonitorDataResult.createSuccess(info))
+                info -> ref.receive(ResultCollectorActor.Result.createSuccess(info))
         );
         assertEquals(securityServerInfos.size(), actor.getNumProcessedResults());
 

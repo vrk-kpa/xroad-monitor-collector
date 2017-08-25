@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fi.vrk.xroad.monitor.monitordata;
+package fi.vrk.xroad.monitor.extractor;
 
 import ee.ria.xroad.proxymonitor.message.*;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;

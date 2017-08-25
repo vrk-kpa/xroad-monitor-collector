@@ -52,7 +52,7 @@ public class ResultCollectorActor extends AbstractActor {
   public Receive createReceive() {
     return receiveBuilder()
         .match(Set.class, this::handleInitialization)
-        .match(MonitorDataResult.class, this::handleMonitorDataResult)
+        .match(Result.class, this::handleMonitorDataResult)
         .matchAny(obj -> log.error("Unhandled message: {}", obj))
         .build();
   }
@@ -65,7 +65,7 @@ public class ResultCollectorActor extends AbstractActor {
     getSender().tell("Initializing done", getSelf());
   }
 
-  private void handleMonitorDataResult(MonitorDataResult result) {
+  private void handleMonitorDataResult(Result result) {
     awaitedResults.remove(result.getSecurityServerInfo());
     if (!(awaitedResults.size() > 0)) {
       log.info("All request handled in time of: {} seconds",
@@ -118,22 +118,22 @@ public class ResultCollectorActor extends AbstractActor {
   @Getter
   @ToString
   @EqualsAndHashCode
-  public static final class MonitorDataResult {
+  public static final class Result {
 
     private final SecurityServerInfo securityServerInfo;
     private final boolean success;
     private final String errorMsg;
 
-    private MonitorDataResult(SecurityServerInfo securityServerInfo, boolean success, String errorMsg) {
+    private Result(SecurityServerInfo securityServerInfo, boolean success, String errorMsg) {
       this.securityServerInfo = securityServerInfo;
       this.success = success;
       this.errorMsg = errorMsg;
     }
-    public static MonitorDataResult createSuccess(SecurityServerInfo securityServerInfo) {
-      return new MonitorDataResult(securityServerInfo, true, "");
+    public static Result createSuccess(SecurityServerInfo securityServerInfo) {
+      return new Result(securityServerInfo, true, "");
     }
-    public static MonitorDataResult createError(SecurityServerInfo securityServerInfo, String error) {
-      return new MonitorDataResult(securityServerInfo, false, error);
+    public static Result createError(SecurityServerInfo securityServerInfo, String error) {
+      return new Result(securityServerInfo, false, error);
     }
   }
 }

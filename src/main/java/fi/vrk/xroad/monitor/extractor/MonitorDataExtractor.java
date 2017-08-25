@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fi.vrk.xroad.monitor.monitordata;
+package fi.vrk.xroad.monitor.extractor;
 
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import fi.vrk.xroad.monitor.util.MonitorCollectorPropertyKeys;
@@ -36,11 +36,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Handler for monitordata requestBuilder, responseParser and parsing
+ * Handler for extractor requestBuilder, responseParser and parsing
  */
 @Slf4j
 @Component
-public class MonitorDataHandler {
+public class MonitorDataExtractor {
 
     private RestTemplate rt = new RestTemplate();
 

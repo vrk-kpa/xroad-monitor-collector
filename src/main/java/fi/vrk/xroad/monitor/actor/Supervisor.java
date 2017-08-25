@@ -113,7 +113,7 @@ public class Supervisor extends AbstractActor {
             request.getSecurityServerInfos().stream()
                     .forEach(info -> {
                         log.info("Process SecurityServerInfo {}", info);
-                        monitorDataRequestPoolRouter.tell(new MonitorDataActor.MonitorDataRequest(info), getSelf());
+                        monitorDataRequestPoolRouter.tell(new MonitorDataHandlerActor.MonitorDataRequest(info), getSelf());
                     });
 
         } catch (TimeoutException | InterruptedException e) {
