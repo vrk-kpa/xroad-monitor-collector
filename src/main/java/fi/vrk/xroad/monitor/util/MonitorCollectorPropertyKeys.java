@@ -36,5 +36,7 @@ public final class MonitorCollectorPropertyKeys {
 
     public static final String INSTANCE = "xroad-monitor-collector-client.instance";
 
+    public static final String QUERY_PARAMETERS = "xroad-monitor-collector.query-parameters";
+
     private MonitorCollectorPropertyKeys() { }
 }
