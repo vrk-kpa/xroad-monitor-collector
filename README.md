@@ -51,3 +51,15 @@ Integration tests require that you are able to connect to the specified security
 This will add license header to all *.java files.
 
     $ ./gradlew licenseFormat
+    
+## Using getSecurityServerMetricDataRequest parameters
+Using metricdatarequest parameters happens by altering application.properties and for production application-production.properties file. In properties file next line should be edited:
+```
+   xroad-monitor-collector.query-parameters=
+```
+Line what is shown up will request all metricdata, if only some of metric data is wanted. To that line should be added names of metric data like here:
+```
+   xroad-monitor-collector.query-parameters=OperatingSystem,Processes
+```
+Names should be seperated with ',' and there should not be any spaces.
+You can find more information from here: [X-Road EnvironmentalMonitoring](https://github.com/vrk-kpa/X-Road/tree/develop/doc/EnvironmentalMonitoring)
