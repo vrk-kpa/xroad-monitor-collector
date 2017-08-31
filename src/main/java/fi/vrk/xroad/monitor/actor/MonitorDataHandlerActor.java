@@ -75,6 +75,7 @@ public class MonitorDataHandlerActor extends AbstractActor {
             resultCollectorActor.tell(ResultCollectorActor.Result.createSuccess(
                 request.getSecurityServerInfo()), getSelf());
         } else {
+            saveMonitorData(extractor.getDefaultJSON(request.getSecurityServerInfo()));
             resultCollectorActor.tell(ResultCollectorActor.Result.createError(
                 request.getSecurityServerInfo(), extractor.getLastErrorDescription()), getSelf());
         }

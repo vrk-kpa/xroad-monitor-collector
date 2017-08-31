@@ -64,6 +64,15 @@ public class MonitorDataExtractor {
     }
 
     /**
+     * Get default environmental monitoring data for security server as JSON
+     * @param info security server information
+     * @return default JSON
+     */
+    public String getDefaultJSON(SecurityServerInfo info) {
+        return responseParser.getDefaultJSON(info, environment.getProperty(MonitorCollectorPropertyKeys.INSTANCE));
+    }
+
+    /**
      * Makes request to get securityserver metric information
      * @param xmlRequest to posted in body to securityserver
      * @return securityserver metric information response as xml string
