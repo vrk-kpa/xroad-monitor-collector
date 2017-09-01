@@ -39,12 +39,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientException;
 import scala.concurrent.Await;
 import scala.concurrent.duration.Duration;
 
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -145,18 +143,6 @@ public class Supervisor extends AbstractActor {
     //  strategy defined above.`
     private static SupervisorStrategy strategy =
             new OneForOneStrategy(SUPERVISOR_RETRIES, Duration.create("1 minute"), DeciderBuilder
-                    .match(RestClientException.class, e -> {
-                        log.error("RestClientException ", e);
-                        return resume();
-                    })
-                    .match(ExecutionException.class, e -> {
-                        log.error("ExecutionException ", e);
-                        return resume();
-                    })
-                    .match(InterruptedException.class, e -> {
-                        log.error("InterruptedException ", e);
-                        return resume();
-                    })
                     .match(Exception.class, e -> {
                         log.error("Exception ", e);
                         return resume();
