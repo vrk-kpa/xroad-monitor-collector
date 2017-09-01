@@ -157,6 +157,10 @@ public class Supervisor extends AbstractActor {
                         log.error("InterruptedException ", e);
                         return resume();
                     })
+                    .match(Exception.class, e -> {
+                        log.error("Exception ", e);
+                        return resume();
+                    })
                     .matchAny(e -> resume()).build());
 
     @Override
