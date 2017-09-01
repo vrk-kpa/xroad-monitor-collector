@@ -28,8 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
+
+import static fi.vrk.xroad.monitor.util.MonitorCollectorDataUtils.getIndexName;
 
 /**
  * Elasticsearch data storage service implementation
@@ -46,7 +47,7 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
 
   @Override
   public void saveAndUpdateAlias(String json) throws ExecutionException, InterruptedException {
-    final String index = getIndexName();
+    final String index = getIndexName(environment);
     final String type = environment.getProperty("xroad-monitor-collector-elasticsearch.type");
     final String alias = environment.getProperty("xroad-monitor-collector-elasticsearch.alias");
     log.debug("Store data to index: {}", index);
@@ -64,12 +65,5 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
       log.info("Create alias, add index {} to alias {}", index, alias);
       envMonitorDataStorageDao.addIndexToAlias(index, alias);
     }
-  }
-
-  private String getIndexName() {
-    Calendar calendar = Calendar.getInstance();
-    return String.format("%s-%d-%02d-%02d",
-        environment.getProperty("xroad-monitor-collector-elasticsearch.index"), calendar.get(Calendar.YEAR),
-        calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DATE));
   }
 }

@@ -22,16 +22,17 @@
  */
 package fi.vrk.xroad.monitor.elasticsearch;
 
+import fi.vrk.xroad.monitor.base.ElasticsearchTestBase;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -48,16 +49,14 @@ import static org.junit.Assert.*;
 @Slf4j
 @SpringBootTest(classes = {EnvMonitorDataStorageDao.class, EnvMonitorDataStorageDaoImpl.class})
 @RunWith(SpringRunner.class)
-public class EnvMonitorDataStorageDaoTest {
+public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
 
   private static final String COMPLEX_JSON_FILE = "src/test/resources/data.json";
   private static final String INDEXTYPE_TWITTER = "integrationtest-twitter";
   private static final String INDEXTYPE_ENVDATA = "integrationtest-complex";
   private static final String INDEXTYPE_ALIAS = "integrationtest-alias";
   private static final String INDEXTYPE_FOOBARBAZ = "integrationtest-foobarbaz";
-
-  @Autowired
-  private EnvMonitorDataStorageDao envMonitorDataStorageDao;
+  private static final String INDEXTYPE_SIMPLESEARCH = "integrationtest-simplesearch";
 
   /**
    * Cleanup test data
@@ -65,18 +64,11 @@ public class EnvMonitorDataStorageDaoTest {
   @Before
   @After
   public void cleanup() {
-    if (envMonitorDataStorageDao.indexExists(INDEXTYPE_TWITTER).isExists()) {
-      envMonitorDataStorageDao.removeIndex(INDEXTYPE_TWITTER);
-    }
-    if (envMonitorDataStorageDao.indexExists(INDEXTYPE_ENVDATA).isExists()) {
-      envMonitorDataStorageDao.removeIndex(INDEXTYPE_ENVDATA);
-    }
-    if (envMonitorDataStorageDao.indexExists(INDEXTYPE_ALIAS).isExists()) {
-      envMonitorDataStorageDao.removeIndex(INDEXTYPE_ALIAS);
-    }
-    if (envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ).isExists()) {
-      envMonitorDataStorageDao.removeIndex(INDEXTYPE_FOOBARBAZ);
-    }
+    removeIndex(INDEXTYPE_TWITTER);
+    removeIndex(INDEXTYPE_ENVDATA);
+    removeIndex(INDEXTYPE_ALIAS);
+    removeIndex(INDEXTYPE_FOOBARBAZ);
+    removeIndex(INDEXTYPE_SIMPLESEARCH);
   }
 
   @Test
@@ -135,5 +127,19 @@ public class EnvMonitorDataStorageDaoTest {
     assertTrue(envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ).isExists());
     envMonitorDataStorageDao.removeIndex(INDEXTYPE_FOOBARBAZ);
     assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ).isExists());
+  }
+
+  @Test
+  public void shouldGetSearchHits() throws ExecutionException, InterruptedException {
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_SIMPLESEARCH).isExists());
+    String json = "{"
+        + "\"user\":\"kimchy\","
+        + "\"postDate\":\"2013-01-30\","
+        + "\"message\":\"trying out Elasticsearch\""
+        + "}";
+    IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_SIMPLESEARCH, INDEXTYPE_SIMPLESEARCH, json);
+    envMonitorDataStorageDao.flush();
+    SearchResponse searchResponse = envMonitorDataStorageDao.findAll(INDEXTYPE_SIMPLESEARCH, INDEXTYPE_SIMPLESEARCH);
+    assertEquals(1, searchResponse.getHits().getTotalHits());
   }
 }

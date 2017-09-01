@@ -29,6 +29,7 @@ import akka.actor.Props;
 import akka.routing.SmallestMailboxPool;
 import akka.testkit.TestActorRef;
 import akka.testkit.javadsl.TestKit;
+import fi.vrk.xroad.monitor.base.ElasticsearchTestBase;
 import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageDaoImpl;
 import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageServiceImpl;
 import fi.vrk.xroad.monitor.extensions.SpringExtension;
@@ -37,9 +38,7 @@ import fi.vrk.xroad.monitor.extractor.MonitorDataRequestBuilder;
 import fi.vrk.xroad.monitor.extractor.MonitorDataResponseParser;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,6 +47,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -67,7 +67,7 @@ import static org.junit.Assert.assertEquals;
         EnvMonitorDataStorageDaoImpl.class,
         EnvMonitorDataStorageServiceImpl.class})
 @RunWith(SpringRunner.class)
-public class SupervisorTest {
+public class SupervisorTest extends ElasticsearchTestBase {
 
     @Autowired
     SpringExtension springExtension;
@@ -83,6 +83,15 @@ public class SupervisorTest {
     public static void teardown() {
         TestKit.shutdownActorSystem(system);
         system = null;
+    }
+
+    /**
+     * Cleanup test data
+     */
+    @Before
+    @After
+    public void cleanup() throws ExecutionException, InterruptedException {
+        removeCurrentIndexAndAlias();
     }
 
     /**
