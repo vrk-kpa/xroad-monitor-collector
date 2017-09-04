@@ -72,6 +72,7 @@ public class MonitorDataHandlerActor extends AbstractActor {
         // query data from security server
         String json = extractor.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
         boolean shouldSaveDefaultData = false;
+        String errorString = "";
         if (json != null) {
             try {
                 // save security server's monitoring data
@@ -81,16 +82,18 @@ public class MonitorDataHandlerActor extends AbstractActor {
             } catch (Exception ex) {
                 log.error("Exception saving monitoring data ", ex);
                 shouldSaveDefaultData = true;
+                errorString = ex.toString();
             }
         } else {
             shouldSaveDefaultData = true;
+            errorString = extractor.getLastErrorDescription();
         }
         if (shouldSaveDefaultData) {
             // monitoring data was not received from security server or save operation failed
             // store only default data
             saveMonitorData(extractor.getDefaultJSON(request.getSecurityServerInfo()));
             resultCollectorActor.tell(ResultCollectorActor.Result.createError(
-                request.getSecurityServerInfo(), extractor.getLastErrorDescription()), getSelf());
+                request.getSecurityServerInfo(), errorString), getSelf());
         }
         log.debug("end handleMonitorDataRequest");
     }
