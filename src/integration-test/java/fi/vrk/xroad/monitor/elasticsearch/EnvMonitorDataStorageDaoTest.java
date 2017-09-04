@@ -52,11 +52,13 @@ import static org.junit.Assert.*;
 public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
 
   private static final String COMPLEX_JSON_FILE = "src/test/resources/data.json";
+  private static final String COMPLEX_JSON_FILE_2 = "src/test/resources/data2.json";
   private static final String INDEXTYPE_TWITTER = "integrationtest-twitter";
   private static final String INDEXTYPE_ENVDATA = "integrationtest-complex";
   private static final String INDEXTYPE_ALIAS = "integrationtest-alias";
   private static final String INDEXTYPE_FOOBARBAZ = "integrationtest-foobarbaz";
   private static final String INDEXTYPE_SIMPLESEARCH = "integrationtest-simplesearch";
+  private static final String INDEXTYPE_MAPPING = "integrationtest-mapping";
 
   /**
    * Cleanup test data
@@ -141,5 +143,22 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
     envMonitorDataStorageDao.flush();
     SearchResponse searchResponse = envMonitorDataStorageDao.findAll(INDEXTYPE_SIMPLESEARCH, INDEXTYPE_SIMPLESEARCH);
     assertEquals(1, searchResponse.getHits().getTotalHits());
+  }
+
+  @Test
+  public void shouldThrowMappingException() throws IOException, ExecutionException, InterruptedException {
+    removeIndex(INDEXTYPE_MAPPING);
+    envMonitorDataStorageDao.flush();
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_MAPPING).isExists());
+    try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE)) {
+      String json = IOUtils.toString(inputStream, Charset.defaultCharset());
+      IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_MAPPING, INDEXTYPE_MAPPING, json);
+    }
+    envMonitorDataStorageDao.flush();
+    try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE_2)) {
+      String json = IOUtils.toString(inputStream, Charset.defaultCharset());
+      IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_MAPPING, INDEXTYPE_MAPPING, json);
+    }
+    envMonitorDataStorageDao.flush();
   }
 }
