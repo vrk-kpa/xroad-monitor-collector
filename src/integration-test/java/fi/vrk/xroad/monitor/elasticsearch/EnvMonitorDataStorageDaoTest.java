@@ -71,6 +71,7 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
     removeIndex(INDEXTYPE_ALIAS);
     removeIndex(INDEXTYPE_FOOBARBAZ);
     removeIndex(INDEXTYPE_SIMPLESEARCH);
+    removeIndex(INDEXTYPE_MAPPING);
   }
 
   @Test
@@ -146,9 +147,7 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
   }
 
   @Test
-  public void shouldThrowMappingException() throws IOException, ExecutionException, InterruptedException {
-    removeIndex(INDEXTYPE_MAPPING);
-    envMonitorDataStorageDao.flush();
+  public void shouldNotThrowMappingException() throws IOException, ExecutionException, InterruptedException {
     assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_MAPPING).isExists());
     try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE)) {
       String json = IOUtils.toString(inputStream, Charset.defaultCharset());
