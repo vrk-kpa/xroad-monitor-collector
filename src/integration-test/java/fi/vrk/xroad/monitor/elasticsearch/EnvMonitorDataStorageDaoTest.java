@@ -29,7 +29,6 @@ import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,7 +63,6 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
    * Cleanup test data
    */
   @Before
-  @After
   public void cleanup() {
     removeIndex(INDEXTYPE_TWITTER);
     removeIndex(INDEXTYPE_ENVDATA);
