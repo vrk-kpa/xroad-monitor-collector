@@ -108,12 +108,15 @@ public class Supervisor extends AbstractActor {
             Await.ready(Patterns.ask(resultCollectorActor, request.getSecurityServerInfos(), timeout),
                 timeout.duration());
 
-            request.getSecurityServerInfos().stream()
+            final int loopSize = 10;
+            for (int i = 0; i < loopSize; i++) {
+                request.getSecurityServerInfos().stream()
                     .forEach(info -> {
                         log.info("Process SecurityServerInfo {}", info);
                         monitorDataRequestPoolRouter.tell(new MonitorDataHandlerActor.MonitorDataRequest(info),
                             getSelf());
                     });
+            }
 
         } catch (TimeoutException | InterruptedException e) {
             log.error("Failed to initialize the ResultCollectorActor, {}", e);
