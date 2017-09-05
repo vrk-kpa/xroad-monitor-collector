@@ -74,9 +74,11 @@ public class ResultCollectorActor extends AbstractActor {
               TimeUnit.SECONDS.convert(System.nanoTime() - startTime, TimeUnit.NANOSECONDS));
     }
     if (result.isSuccess()) {
-      log.info("received success with data {} result counter {}", result.toString(), ++resultCounter);
+      log.info("received success with data {} result counter {}/{}", result.toString(), ++resultCounter,
+          numAwaitedResults);
     } else {
-      log.error("received error with data {} result counter {}", result.toString(), ++resultCounter);
+      log.error("received error with data {} result counter {}/{}", result.toString(), ++resultCounter,
+          numAwaitedResults);
     }
   }
 
