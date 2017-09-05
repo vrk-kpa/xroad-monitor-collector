@@ -57,7 +57,8 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
   private static final String INDEXTYPE_ALIAS = "integrationtest-alias";
   private static final String INDEXTYPE_FOOBARBAZ = "integrationtest-foobarbaz";
   private static final String INDEXTYPE_SIMPLESEARCH = "integrationtest-simplesearch";
-  private static final String INDEXTYPE_MAPPING = "integrationtest-mapping";
+  private static final String INDEXTYPE_MAPPING1 = "integrationtest-mapping1";
+  private static final String INDEXTYPE_MAPPING2 = "integrationtest-mapping2";
 
   /**
    * Cleanup test data
@@ -69,7 +70,8 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
     removeIndex(INDEXTYPE_ALIAS);
     removeIndex(INDEXTYPE_FOOBARBAZ);
     removeIndex(INDEXTYPE_SIMPLESEARCH);
-    removeIndex(INDEXTYPE_MAPPING);
+    removeIndex(INDEXTYPE_MAPPING1);
+    removeIndex(INDEXTYPE_MAPPING2);
   }
 
   @Test
@@ -145,17 +147,35 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
   }
 
   @Test
-  public void shouldNotThrowMappingException() throws IOException, ExecutionException, InterruptedException {
-    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_MAPPING).isExists());
-    try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE)) {
-      String json = IOUtils.toString(inputStream, Charset.defaultCharset());
-      IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_MAPPING, INDEXTYPE_MAPPING, json);
+  public void shouldNotThrowMappingException1() throws IOException, ExecutionException, InterruptedException {
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_MAPPING1).isExists());
+    for (int i=0; i<100; i++) {
+      try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE)) {
+        String json = IOUtils.toString(inputStream, Charset.defaultCharset());
+        IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_MAPPING1, INDEXTYPE_MAPPING1, json);
+      }
+      try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE_2)) {
+        String json = IOUtils.toString(inputStream, Charset.defaultCharset());
+        IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_MAPPING1, INDEXTYPE_MAPPING1, json);
+      }
     }
     envMonitorDataStorageDao.flush();
-    try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE_2)) {
-      String json = IOUtils.toString(inputStream, Charset.defaultCharset());
-      IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_MAPPING, INDEXTYPE_MAPPING, json);
+    assertEquals(200, envMonitorDataStorageDao.findAll(INDEXTYPE_MAPPING1, INDEXTYPE_MAPPING1)
+        .getHits().getTotalHits());
+  }
+
+  @Test
+  public void shouldNotThrowMappingException2() throws IOException, ExecutionException, InterruptedException {
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_MAPPING2).isExists());
+    for (int i=1; i<9; i++) {
+      String filename = String.format("src/test/resources/test%d.json", i);
+      try (FileInputStream inputStream = new FileInputStream(filename)) {
+        String json = IOUtils.toString(inputStream, Charset.defaultCharset());
+        IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_MAPPING2, INDEXTYPE_MAPPING2, json);
+      }
+      envMonitorDataStorageDao.flush();
     }
-    envMonitorDataStorageDao.flush();
+    assertEquals(8, envMonitorDataStorageDao.findAll(INDEXTYPE_MAPPING2, INDEXTYPE_MAPPING2)
+        .getHits().getTotalHits());
   }
 }
