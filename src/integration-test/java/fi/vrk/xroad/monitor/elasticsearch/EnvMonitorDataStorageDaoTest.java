@@ -148,8 +148,9 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
 
   @Test
   public void shouldNotThrowMappingException1() throws IOException, ExecutionException, InterruptedException {
+    final int loopCount = 100;
     assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_MAPPING1).isExists());
-    for (int i=0; i<100; i++) {
+    for (int i = 0; i < loopCount; i++) {
       try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE)) {
         String json = IOUtils.toString(inputStream, Charset.defaultCharset());
         IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_MAPPING1, INDEXTYPE_MAPPING1, json);
@@ -160,22 +161,23 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
       }
     }
     envMonitorDataStorageDao.flush();
-    assertEquals(200, envMonitorDataStorageDao.findAll(INDEXTYPE_MAPPING1, INDEXTYPE_MAPPING1)
+    assertEquals(loopCount * 2, envMonitorDataStorageDao.findAll(INDEXTYPE_MAPPING1, INDEXTYPE_MAPPING1)
         .getHits().getTotalHits());
   }
 
   @Test
   public void shouldNotThrowMappingException2() throws IOException, ExecutionException, InterruptedException {
     assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_MAPPING2).isExists());
-    for (int i=1; i<9; i++) {
-      String filename = String.format("src/test/resources/test%d.json", i);
+    final int loopCount = 8;
+    for (int i = 0; i < loopCount; i++) {
+      String filename = String.format("src/test/resources/test%d.json", i + 1);
       try (FileInputStream inputStream = new FileInputStream(filename)) {
         String json = IOUtils.toString(inputStream, Charset.defaultCharset());
         IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_MAPPING2, INDEXTYPE_MAPPING2, json);
       }
       envMonitorDataStorageDao.flush();
     }
-    assertEquals(8, envMonitorDataStorageDao.findAll(INDEXTYPE_MAPPING2, INDEXTYPE_MAPPING2)
+    assertEquals(loopCount, envMonitorDataStorageDao.findAll(INDEXTYPE_MAPPING2, INDEXTYPE_MAPPING2)
         .getHits().getTotalHits());
   }
 }
