@@ -110,6 +110,7 @@ public class Supervisor extends AbstractActor {
 
             final int loopSize = 10;
             for (int i = 0; i < loopSize; i++) {
+                log.info("START REQUEST SENDING LOOP %D", i + 1);
                 request.getSecurityServerInfos().stream()
                     .forEach(info -> {
                         log.info("Process SecurityServerInfo {}", info);
