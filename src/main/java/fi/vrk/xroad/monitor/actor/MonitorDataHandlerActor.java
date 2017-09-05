@@ -68,7 +68,7 @@ public class MonitorDataHandlerActor extends AbstractActor {
 
     protected void handleMonitorDataRequest(MonitorDataRequest request)
         throws ExecutionException, InterruptedException {
-        log.debug("HANDLE REQUEST, OBJECT {} THREAD {}", this.toString(), Thread.currentThread().getId());
+        log.info("HANDLE REQUEST, OBJECT {} THREAD {}", this.toString(), Thread.currentThread().getId());
         // query data from security server
         String json = extractor.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
         boolean shouldSaveDefaultData = false;
