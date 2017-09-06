@@ -80,7 +80,8 @@ public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
   @Override
   public IndexResponse save(String index, String type, String json) {
     log.debug("Elasticsearch data: {}", json);
-    log.info("SAVING DATA with Object {} Thread {}", client.toString(), Thread.currentThread().getId());
+    log.info("SAVING DATA with Client {} Object {} Thread {}", client.toString(), this.toString(),
+        Thread.currentThread().getId());
     return client.prepareIndex(index, type).setSource(json, XContentType.JSON).get();
   }
 
