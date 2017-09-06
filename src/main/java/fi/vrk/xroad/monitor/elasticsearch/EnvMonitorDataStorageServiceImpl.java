@@ -25,6 +25,7 @@ package fi.vrk.xroad.monitor.elasticsearch;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.index.IndexResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,7 @@ import static fi.vrk.xroad.monitor.util.MonitorCollectorDataUtils.getIndexName;
  */
 @Slf4j
 @Service
+@Scope("prototype")
 public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageService {
 
   @Autowired
