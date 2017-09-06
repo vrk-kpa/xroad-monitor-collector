@@ -61,6 +61,7 @@ import static org.junit.Assert.assertEquals;
         ApplicationContext.class,
         MonitorDataHandlerActor.class,
         ResultCollectorActor.class,
+        ElasticsearchInitializerActor.class,
         MonitorDataExtractor.class,
         MonitorDataRequestBuilder.class,
         MonitorDataResponseParser.class,
@@ -116,12 +117,16 @@ public class SupervisorTest extends ElasticsearchTestBase {
                                 resultCollectorActor))
                 );
 
+        final TestActorRef<ElasticsearchInitializerActor> elasticsearchInitializerActor = TestActorRef.create(
+            system, Props.create(ElasticsearchInitializerActor.class));
+
         // create supervisor
         final Props supervisorProps = springExtension.props("supervisor");
         final TestActorRef<Supervisor> supervisorRef = TestActorRef.create(system, supervisorProps, "supervisor");
         Supervisor underlying = supervisorRef.underlyingActor();
         underlying.overrideResultCollectorActor(resultCollectorActor);
         underlying.overrideMonitorDataRequestPoolRouter(monitorDataRequestPoolRouter);
+        underlying.overrideElasticsearchInitializerActor(elasticsearchInitializerActor);
 
         // send message to supervisor to start processing
         supervisorRef.receive(new Supervisor.StartCollectingMonitorDataCommand(securityServerInfos),

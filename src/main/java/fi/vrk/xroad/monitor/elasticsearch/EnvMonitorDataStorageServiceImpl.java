@@ -25,6 +25,7 @@ package fi.vrk.xroad.monitor.elasticsearch;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.index.IndexResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,7 @@ import static fi.vrk.xroad.monitor.util.MonitorCollectorDataUtils.getIndexName;
  * Elasticsearch data storage service implementation
  */
 @Slf4j
+@Scope("prototype")
 @Service
 public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageService {
 
@@ -46,17 +48,22 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
   private Environment environment;
 
   @Override
-  public void saveAndUpdateAlias(String json) throws ExecutionException, InterruptedException {
+  public void save(String json) throws ExecutionException, InterruptedException {
     log.info("SERVICE Object {} Thread {}", this.toString(), Thread.currentThread().getId());
     final String index = getIndexName(environment);
     final String type = environment.getProperty("xroad-monitor-collector-elasticsearch.type");
-    final String alias = environment.getProperty("xroad-monitor-collector-elasticsearch.alias");
     log.debug("Store data to index: {}", index);
-    boolean indexCreated = !envMonitorDataStorageDao.indexExists(index).isExists();
-    log.debug("New index will be created: {}", indexCreated);
     IndexResponse save = envMonitorDataStorageDao.save(index, type, json);
     log.debug("Save response: {}", save);
-    if (indexCreated) {
+  }
+
+  @Override
+  public void createIndexAndUpdateAlias() throws ExecutionException, InterruptedException {
+    final String index = getIndexName(environment);
+    final String alias = environment.getProperty("xroad-monitor-collector-elasticsearch.alias");
+    if (!envMonitorDataStorageDao.indexExists(index).isExists()) {
+      log.info("Create index {}", index);
+      envMonitorDataStorageDao.createIndex(index);
       if (envMonitorDataStorageDao.aliasExists(alias).exists()) {
         log.info("Alias exists, remove all indexes from alias {}", alias);
         envMonitorDataStorageDao.removeAllIndexesFromAlias(alias);

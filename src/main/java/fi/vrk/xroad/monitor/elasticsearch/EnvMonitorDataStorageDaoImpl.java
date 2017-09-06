@@ -26,6 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
 import org.elasticsearch.action.admin.indices.alias.exists.AliasesExistResponse;
 import org.elasticsearch.action.admin.indices.alias.get.GetAliasesRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.admin.indices.flush.FlushRequest;
@@ -39,6 +41,7 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
@@ -55,6 +58,7 @@ import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
  * Loads and saves data to Elasticsearch
  */
 @Slf4j
+@Scope("prototype")
 @Repository
 public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
 
@@ -123,6 +127,11 @@ public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
   @Override
   public FlushResponse flush() throws ExecutionException, InterruptedException {
     return client.admin().indices().flush(new FlushRequest()).get();
+  }
+
+  @Override
+  public CreateIndexResponse createIndex(String index) throws ExecutionException, InterruptedException {
+    return client.admin().indices().create(new CreateIndexRequest(index)).get();
   }
 
   /**

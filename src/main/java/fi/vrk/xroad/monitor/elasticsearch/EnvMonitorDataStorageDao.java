@@ -24,6 +24,7 @@ package fi.vrk.xroad.monitor.elasticsearch;
 
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
 import org.elasticsearch.action.admin.indices.alias.exists.AliasesExistResponse;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.admin.indices.flush.FlushResponse;
@@ -96,5 +97,11 @@ public interface EnvMonitorDataStorageDao {
    * @return flush response
    */
   FlushResponse flush() throws ExecutionException, InterruptedException;
+
+  /**
+   * Create index
+   * @return create index response
+   */
+  CreateIndexResponse createIndex(String index) throws ExecutionException, InterruptedException;
 
 }

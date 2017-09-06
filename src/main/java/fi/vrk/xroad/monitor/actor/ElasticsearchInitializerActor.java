@@ -20,23 +20,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fi.vrk.xroad.monitor.elasticsearch;
+package fi.vrk.xroad.monitor.actor;
+
+import akka.actor.AbstractActor;
+import fi.vrk.xroad.monitor.elasticsearch.EnvMonitorDataStorageService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutionException;
 
 /**
- * Interface for Elasticsearch data storage service
+ * Actor for initializing Elasticsearch index and alias
  */
-public interface EnvMonitorDataStorageService {
+@Component
+@Scope("prototype")
+@Slf4j
+public class ElasticsearchInitializerActor extends AbstractActor {
 
-  /**
-   * Save json to Elasticsearch
-   * @param json
-   */
-  void save(String json) throws ExecutionException, InterruptedException;
+  @Autowired
+  private EnvMonitorDataStorageService envMonitorDataStorageService;
 
-  /**
-   * Update alias
-   */
-  void createIndexAndUpdateAlias() throws ExecutionException, InterruptedException;
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(String.class, this::handleInitialization)
+        .matchAny(obj -> log.error("Unhandled message: {}", obj))
+        .build();
+  }
+
+  private void handleInitialization(String s) throws ExecutionException, InterruptedException {
+    if (envMonitorDataStorageService != null) {
+      log.info("Create index and update alias");
+      envMonitorDataStorageService.createIndexAndUpdateAlias();
+    } else {
+      log.info("Skipping index and alias creation");
+    }
+    getSender().tell("Initializing done", getSelf());
+  }
 }

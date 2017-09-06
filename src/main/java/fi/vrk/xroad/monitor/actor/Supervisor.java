@@ -60,6 +60,7 @@ public class Supervisor extends AbstractActor {
     @Getter
     private ActorRef resultCollectorActor;
     private ActorRef monitorDataRequestPoolRouter;
+    private ActorRef elasticsearchInitializerActor;
 
     private static final int SUPERVISOR_RETRIES = 3;
 
@@ -83,6 +84,13 @@ public class Supervisor extends AbstractActor {
         this.monitorDataRequestPoolRouter = testingMonitorDataRequestPoolRouter;
     }
 
+    /**
+     * For testing purposes
+     */
+    void overrideElasticsearchInitializerActor(ActorRef testingElasticsearchInitializerActor) {
+        this.elasticsearchInitializerActor = testingElasticsearchInitializerActor;
+    }
+
     @Override
     public void preStart() throws Exception {
         log.debug("preStart");
@@ -90,6 +98,7 @@ public class Supervisor extends AbstractActor {
         monitorDataRequestPoolRouter = getContext()
                 .actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
                         .props(ext.props("monitorDataHandlerActor", resultCollectorActor)));
+        elasticsearchInitializerActor = getContext().actorOf(ext.props("elasticsearchInitializerActor"));
         super.preStart();
     }
 
@@ -106,6 +115,9 @@ public class Supervisor extends AbstractActor {
         Timeout timeout = new Timeout(1, TimeUnit.MINUTES);
         try {
             Await.ready(Patterns.ask(resultCollectorActor, request.getSecurityServerInfos(), timeout),
+                timeout.duration());
+
+            Await.ready(Patterns.ask(elasticsearchInitializerActor, "init", timeout),
                 timeout.duration());
 
             final int loopSize = 10;

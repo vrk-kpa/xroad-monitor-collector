@@ -59,6 +59,7 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
   private static final String INDEXTYPE_SIMPLESEARCH = "integrationtest-simplesearch";
   private static final String INDEXTYPE_MAPPING1 = "integrationtest-mapping1";
   private static final String INDEXTYPE_MAPPING2 = "integrationtest-mapping2";
+  private static final String INDEXTYPE_CREATE = "integrationtest-create";
 
   /**
    * Cleanup test data
@@ -72,6 +73,14 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
     removeIndex(INDEXTYPE_SIMPLESEARCH);
     removeIndex(INDEXTYPE_MAPPING1);
     removeIndex(INDEXTYPE_MAPPING2);
+    removeIndex(INDEXTYPE_CREATE);
+  }
+
+  @Test
+  public void shouldCreateIndex() throws ExecutionException, InterruptedException {
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_CREATE).isExists());
+    envMonitorDataStorageDao.createIndex(INDEXTYPE_CREATE);
+    assertTrue(envMonitorDataStorageDao.indexExists(INDEXTYPE_CREATE).isExists());
   }
 
   @Test

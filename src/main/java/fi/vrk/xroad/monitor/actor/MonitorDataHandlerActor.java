@@ -76,7 +76,7 @@ public class MonitorDataHandlerActor extends AbstractActor {
         if (json != null) {
             try {
                 // save security server's monitoring data
-                saveMonitorData(json);
+                envMonitorDataStorageService.save(json);
                 resultCollectorActor.tell(ResultCollectorActor.Result.createSuccess(
                     request.getSecurityServerInfo()), getSelf());
             } catch (Exception ex) {
@@ -93,19 +93,10 @@ public class MonitorDataHandlerActor extends AbstractActor {
             // monitoring data was not received from security server or save operation failed
             // store only default data
             log.info("save default data for security server {}", request.getSecurityServerInfo());
-            saveMonitorData(extractor.getDefaultJSON(request.getSecurityServerInfo()));
+            envMonitorDataStorageService.save(extractor.getDefaultJSON(request.getSecurityServerInfo()));
             resultCollectorActor.tell(ResultCollectorActor.Result.createError(
                 request.getSecurityServerInfo(), errorString), getSelf());
         }
-    }
-
-    /**
-     * Saves extractor as json to Elasticsearch
-     * @param json
-     */
-    private void saveMonitorData(String json)
-        throws ExecutionException, InterruptedException {
-        envMonitorDataStorageService.saveAndUpdateAlias(json);
     }
 
     /**
