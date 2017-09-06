@@ -38,7 +38,6 @@ import static fi.vrk.xroad.monitor.util.MonitorCollectorDataUtils.getIndexName;
  */
 @Slf4j
 @Service
-@Scope("prototype")
 public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageService {
 
   @Autowired
