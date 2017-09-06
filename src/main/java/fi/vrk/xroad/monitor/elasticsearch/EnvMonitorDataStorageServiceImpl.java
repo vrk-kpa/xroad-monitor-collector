@@ -37,7 +37,6 @@ import static fi.vrk.xroad.monitor.util.MonitorCollectorDataUtils.getIndexName;
  * Elasticsearch data storage service implementation
  */
 @Slf4j
-@Scope("prototype")
 @Service
 public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageService {
 
@@ -48,7 +47,7 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
   private Environment environment;
 
   @Override
-  public void save(String json) throws ExecutionException, InterruptedException {
+  public synchronized void save(String json) throws ExecutionException, InterruptedException {
     log.info("SERVICE Object {} Thread {}", this.toString(), Thread.currentThread().getId());
     final String index = getIndexName(environment);
     final String type = environment.getProperty("xroad-monitor-collector-elasticsearch.type");
@@ -58,7 +57,7 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
   }
 
   @Override
-  public void createIndexAndUpdateAlias() throws ExecutionException, InterruptedException {
+  public synchronized void createIndexAndUpdateAlias() throws ExecutionException, InterruptedException {
     final String index = getIndexName(environment);
     final String alias = environment.getProperty("xroad-monitor-collector-elasticsearch.alias");
     if (!envMonitorDataStorageDao.indexExists(index).isExists()) {
@@ -72,6 +71,7 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
       }
       log.info("Create alias, add index {} to alias {}", index, alias);
       envMonitorDataStorageDao.addIndexToAlias(index, alias);
+      envMonitorDataStorageDao.flush();
     }
   }
 }

@@ -58,7 +58,6 @@ import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
  * Loads and saves data to Elasticsearch
  */
 @Slf4j
-@Scope("prototype")
 @Repository
 public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
 
