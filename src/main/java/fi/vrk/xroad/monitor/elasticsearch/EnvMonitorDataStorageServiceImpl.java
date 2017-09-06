@@ -49,7 +49,6 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
 
   @Override
   public synchronized void save(String json) throws ExecutionException, InterruptedException {
-    log.info("SERVICE Object {} Thread {}", this.toString(), Thread.currentThread().getId());
     final String index = getIndexName(environment);
     final String type = environment.getProperty("xroad-monitor-collector-elasticsearch.type");
     log.debug("Store data to index: {}", index);
@@ -73,6 +72,8 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
       log.info("Create alias, add index {} to alias {}", index, alias);
       envMonitorDataStorageDao.addIndexToAlias(index, alias);
       envMonitorDataStorageDao.flush();
+    } else {
+      log.info("Index already exists");
     }
   }
 }

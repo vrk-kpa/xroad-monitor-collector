@@ -67,6 +67,9 @@ public class Supervisor extends AbstractActor {
     @Autowired
     SpringExtension ext;
 
+    /**
+     * Constructor
+     */
     public Supervisor() {
     }
 
@@ -114,26 +117,27 @@ public class Supervisor extends AbstractActor {
     private void handleMonitorDataRequest(StartCollectingMonitorDataCommand request) {
         Timeout timeout = new Timeout(1, TimeUnit.MINUTES);
         try {
+            // init result collector with expected results
             Await.ready(Patterns.ask(resultCollectorActor, request.getSecurityServerInfos(), timeout),
                 timeout.duration());
-
-            Await.ready(Patterns.ask(elasticsearchInitializerActor, "init", timeout),
-                timeout.duration());
-
-            final int loopSize = 10;
-            for (int i = 0; i < loopSize; i++) {
-                log.info("START REQUEST SENDING LOOP {}", i + 1);
-                request.getSecurityServerInfos().stream()
-                    .forEach(info -> {
-                        log.info("Process SecurityServerInfo {}", info);
-                        monitorDataRequestPoolRouter.tell(new MonitorDataHandlerActor.MonitorDataRequest(info),
-                            getSelf());
-                    });
-            }
-
         } catch (TimeoutException | InterruptedException e) {
             log.error("Failed to initialize the ResultCollectorActor, {}", e);
         }
+
+        try {
+            // init Elasticsearch
+            Await.ready(Patterns.ask(elasticsearchInitializerActor, "init", timeout),
+                timeout.duration());
+        } catch (TimeoutException | InterruptedException e) {
+            log.error("Failed to initialize the ElasticsearchInitializerActor, {}", e);
+        }
+
+        request.getSecurityServerInfos().stream()
+            .forEach(info -> {
+                log.info("Process SecurityServerInfo {}", info);
+                monitorDataRequestPoolRouter.tell(new MonitorDataHandlerActor.MonitorDataRequest(info),
+                    getSelf());
+            });
     }
 
     /**

@@ -59,7 +59,6 @@ import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
  */
 @Slf4j
 @Repository
-@Scope("prototype")
 public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
 
   @Autowired
@@ -84,8 +83,6 @@ public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
   @Override
   public IndexResponse save(String index, String type, String json) {
     log.debug("Elasticsearch data: {}", json);
-    log.info("SAVING DATA with Client {} Object {} Thread {}", client.toString(), this.toString(),
-        Thread.currentThread().getId());
     return client.prepareIndex(index, type).setSource(json, XContentType.JSON).get();
   }
 

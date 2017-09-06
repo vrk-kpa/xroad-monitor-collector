@@ -51,6 +51,7 @@ public class ElasticsearchInitializerActor extends AbstractActor {
   }
 
   private void handleInitialization(String s) throws ExecutionException, InterruptedException {
+    // for tests it is ok for envMonitorDataStorageService to be null
     if (envMonitorDataStorageService != null) {
       log.info("Create index and update alias");
       envMonitorDataStorageService.createIndexAndUpdateAlias();
