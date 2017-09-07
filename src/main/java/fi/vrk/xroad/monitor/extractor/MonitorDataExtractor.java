@@ -44,8 +44,6 @@ import org.springframework.web.client.RestTemplate;
 @Scope("prototype")
 public class MonitorDataExtractor {
 
-    private RestTemplate rt = new RestTemplate();
-
     @Autowired
     private Environment environment;
 
@@ -80,6 +78,8 @@ public class MonitorDataExtractor {
      * @return securityserver metric information response as xml string
      */
     public String makeRequest(String xmlRequest) {
+
+        RestTemplate rt = new RestTemplate();
 
         log.info("EXTRACTOR: {} RT: {} THREAD: {}", System.identityHashCode(this), System.identityHashCode(rt),
             Thread.currentThread().getId());
