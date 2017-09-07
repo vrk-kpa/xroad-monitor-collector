@@ -26,6 +26,7 @@ import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import fi.vrk.xroad.monitor.util.MonitorCollectorPropertyKeys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -40,6 +41,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Slf4j
 @Component
+@Scope("prototype")
 public class MonitorDataExtractor {
 
     private RestTemplate rt = new RestTemplate();
