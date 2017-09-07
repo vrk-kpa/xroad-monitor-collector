@@ -132,7 +132,7 @@ public class Supervisor extends AbstractActor {
             log.error("Failed to initialize the ElasticsearchInitializerActor, {}", e);
         }
 
-        final int loopCount = 20;
+        final int loopCount = 50;
         for (int i = 0; i < loopCount; i++) {
             request.getSecurityServerInfos().stream()
                 .forEach(info -> {
