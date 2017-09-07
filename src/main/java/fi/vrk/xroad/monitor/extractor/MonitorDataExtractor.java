@@ -26,7 +26,6 @@ import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import fi.vrk.xroad.monitor.util.MonitorCollectorPropertyKeys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -41,8 +40,9 @@ import org.springframework.web.client.RestTemplate;
  */
 @Slf4j
 @Component
-@Scope("prototype")
 public class MonitorDataExtractor {
+
+    private RestTemplate rt;
 
     @Autowired
     private Environment environment;
@@ -52,6 +52,15 @@ public class MonitorDataExtractor {
 
     @Autowired
     private MonitorDataResponseParser responseParser;
+
+    /**
+     * Constructor
+     */
+    public MonitorDataExtractor() {
+        rt = new RestTemplate();
+        rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
+        rt.getMessageConverters().add(new StringHttpMessageConverter());
+    }
 
     /**
      * Will handle getting metric data and saving it to elasticseach
@@ -79,13 +88,8 @@ public class MonitorDataExtractor {
      */
     public String makeRequest(String xmlRequest) {
 
-        RestTemplate rt = new RestTemplate();
-
         log.info("EXTRACTOR: {} RT: {} THREAD: {}", System.identityHashCode(this), System.identityHashCode(rt),
             Thread.currentThread().getId());
-
-        rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
-        rt.getMessageConverters().add(new StringHttpMessageConverter());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_XML);
