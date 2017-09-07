@@ -132,12 +132,15 @@ public class Supervisor extends AbstractActor {
             log.error("Failed to initialize the ElasticsearchInitializerActor, {}", e);
         }
 
-        request.getSecurityServerInfos().stream()
-            .forEach(info -> {
-                log.info("Process SecurityServerInfo {}", info);
-                monitorDataRequestPoolRouter.tell(new MonitorDataHandlerActor.MonitorDataRequest(info),
-                    getSelf());
-            });
+        final int loopCount = 50;
+        for (int i = 0; i < loopCount; i++) {
+            request.getSecurityServerInfos().stream()
+                .forEach(info -> {
+                    log.info("Process SecurityServerInfo {}", info);
+                    monitorDataRequestPoolRouter.tell(new MonitorDataHandlerActor.MonitorDataRequest(info),
+                        getSelf());
+                });
+        }
     }
 
     /**
