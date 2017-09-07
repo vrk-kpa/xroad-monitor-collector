@@ -42,7 +42,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class MonitorDataExtractor {
 
-    private RestTemplate rt = new RestTemplate();
+    private RestTemplate rt;
 
     @Autowired
     private Environment environment;
@@ -52,6 +52,15 @@ public class MonitorDataExtractor {
 
     @Autowired
     private MonitorDataResponseParser responseParser;
+
+    /**
+     * Constructor
+     */
+    public MonitorDataExtractor() {
+        rt = new RestTemplate();
+        rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
+        rt.getMessageConverters().add(new StringHttpMessageConverter());
+    }
 
     /**
      * Will handle getting metric data and saving it to elasticseach
@@ -78,15 +87,9 @@ public class MonitorDataExtractor {
      * @return securityserver metric information response as xml string
      */
     public String makeRequest(String xmlRequest) {
-
-        rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
-        rt.getMessageConverters().add(new StringHttpMessageConverter());
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_XML);
-
         HttpEntity<String> entity = new HttpEntity<>(xmlRequest, headers);
-
         String clientUrl = environment != null
             ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_URL) : null;
         log.debug("posting soap request, clientUrl: {} request: {}", clientUrl, xmlRequest);
