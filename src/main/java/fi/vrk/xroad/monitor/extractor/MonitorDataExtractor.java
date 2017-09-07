@@ -58,8 +58,6 @@ public class MonitorDataExtractor {
      */
     public MonitorDataExtractor() {
         rt = new RestTemplate();
-        rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
-        rt.getMessageConverters().add(new StringHttpMessageConverter());
     }
 
     /**
@@ -90,6 +88,9 @@ public class MonitorDataExtractor {
 
         log.info("EXTRACTOR: {} RT: {} THREAD: {}", System.identityHashCode(this), System.identityHashCode(rt),
             Thread.currentThread().getId());
+
+        rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
+        rt.getMessageConverters().add(new StringHttpMessageConverter());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_XML);
