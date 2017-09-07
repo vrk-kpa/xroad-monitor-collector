@@ -79,7 +79,7 @@ public class MonitorDataExtractor {
      */
     public String makeRequest(String xmlRequest) {
 
-        log.info("EXTRACTOR: {} RT: {} THREAD: {}",System.identityHashCode(this), System.identityHashCode(rt),
+        log.info("EXTRACTOR: {} RT: {} THREAD: {}", System.identityHashCode(this), System.identityHashCode(rt),
             Thread.currentThread().getId());
 
         rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
