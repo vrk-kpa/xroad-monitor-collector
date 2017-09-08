@@ -142,11 +142,11 @@ public class MonitorDataRequestBuilder {
     }
 
     /**
-     * Helper function for building metricdata request body.
+     * Helper function for building metricdata request body. For testing purposes this is protected.
      * @param document
      * @return
      */
-    private Node metricRequestPayload(Document document) {
+    protected Node metricRequestPayload(Document document) {
         Element metricRequestRoot = document.createElement("m:getSecurityServerMetrics");
         if (!queryParameters[0].equals("")) {
             Element outputSpec = document.createElement("m:outputSpec");

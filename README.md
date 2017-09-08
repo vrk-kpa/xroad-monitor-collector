@@ -62,4 +62,4 @@ Line what is shown up will request all metricdata, if only some of metric data i
    xroad-monitor-collector.query-parameters=OperatingSystem,Processes
 ```
 Names should be seperated with ',' and there should not be any spaces.
-You can find more information from here: [X-Road EnvironmentalMonitoring](https://github.com/vrk-kpa/X-Road/tree/develop/doc/EnvironmentalMonitoring)
+You can find the different monitoring data metric names from the document: [X-Road EnvironmentalMonitoring](https://github.com/vrk-kpa/X-Road/tree/develop/doc/EnvironmentalMonitoring)
