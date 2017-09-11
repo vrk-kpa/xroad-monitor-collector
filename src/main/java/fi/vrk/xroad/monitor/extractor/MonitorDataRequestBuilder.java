@@ -29,6 +29,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,6 +40,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -51,6 +53,7 @@ public class MonitorDataRequestBuilder {
     private final String instance;
     private final String clientMemberClass;
     private final String clientMemberCode;
+    private final String[] queryParameters;
 
     /**
      * Constructor
@@ -60,6 +63,7 @@ public class MonitorDataRequestBuilder {
         instance = environment.getProperty(MonitorCollectorPropertyKeys.INSTANCE);
         clientMemberClass = environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_MEMBER_CLASS);
         clientMemberCode = environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_MEMBER_CODE);
+        queryParameters = environment.getProperty(MonitorCollectorPropertyKeys.QUERY_PARAMETERS).split(",");
     }
 
     /**
@@ -130,11 +134,30 @@ public class MonitorDataRequestBuilder {
         Element bodyElement = document.createElement("SOAP-ENV:Body");
         rootElement.appendChild(bodyElement);
 
-        bodyElement.appendChild(document.createElement("m:getSecurityServerMetrics"));
+        bodyElement.appendChild(metricRequestPayload(document));
 
         document.normalizeDocument();
 
         return getStringFromDocument(document);
+    }
+
+    /**
+     * Helper function for building metricdata request body. For testing purposes this is protected.
+     * @param document
+     * @return
+     */
+    protected Node metricRequestPayload(Document document) {
+        Element metricRequestRoot = document.createElement("m:getSecurityServerMetrics");
+        if (!queryParameters[0].equals("")) {
+            Element outputSpec = document.createElement("m:outputSpec");
+            Arrays.stream(queryParameters).forEach(parameter -> {
+                outputSpec.appendChild(createElementWithValue(document, "m:outputField", parameter));
+            });
+            metricRequestRoot.appendChild(outputSpec);
+        } else {
+            log.info("No query parameters given, requesting full metric data.");
+        }
+        return metricRequestRoot;
     }
 
     /**
