@@ -30,16 +30,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import javax.print.Doc;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import java.io.File;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -51,7 +47,7 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 @SpringBootTest(classes = MonitorDataRequestBuilder.class)
 @RunWith(SpringRunner.class)
-@TestPropertySource(locations="classpath:monitorDataRequestBuilderTest.properties")
+@TestPropertySource(locations = "classpath:monitorDataRequestBuilderTest.properties")
 public class MonitorDataRequestBuilderTest {
 
     @Autowired
@@ -82,9 +78,9 @@ public class MonitorDataRequestBuilderTest {
 
         payload = payload.getChildNodes().item(0);
 
-        assertEquals( payload.getNodeName(), "m:outputSpec");
-        assertEquals( payload.getChildNodes().getLength(), 2);
-        assertEquals( payload.getChildNodes().item(0).getTextContent(), "OperatingSystem");
-        assertEquals( payload.getChildNodes().item(1).getTextContent(), "Processes");
+        assertEquals(payload.getNodeName(), "m:outputSpec");
+        assertEquals(payload.getChildNodes().getLength(), 2);
+        assertEquals(payload.getChildNodes().item(0).getTextContent(), "OperatingSystem");
+        assertEquals(payload.getChildNodes().item(1).getTextContent(), "Processes");
     }
 }
