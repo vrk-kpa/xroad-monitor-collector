@@ -102,6 +102,23 @@ public class MonitorDataResponseParser {
     }
 
     /**
+     * Create default JSON format environmental monitoring data
+     * @param info security server information
+     * @param xroadInstance X-Road instance
+     * @return JSON formatted string containing the default data
+     */
+    public String getDefaultJSON(SecurityServerInfo info, String xroadInstance) {
+        JSONObject json = new JSONObject();
+        json.put("serverCode", info.getServerCode());
+        json.put("memberCode", info.getMemberCode());
+        json.put("memberClass", info.getMemberClass());
+        json.put("xroadInstance", xroadInstance);
+        json.put("name", String.format("SERVER:%s/%s/%s/%s", xroadInstance, info.getMemberClass(),
+            info.getMemberCode(), info.getServerCode()));
+        return json.toString();
+    }
+
+    /**
      * Function for formating JSON object to more usable form
      * @param responseObject response object to be formated
      * @param securityServerInfo information of security server

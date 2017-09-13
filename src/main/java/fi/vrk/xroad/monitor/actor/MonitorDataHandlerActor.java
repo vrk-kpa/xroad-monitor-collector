@@ -68,26 +68,34 @@ public class MonitorDataHandlerActor extends AbstractActor {
 
     protected void handleMonitorDataRequest(MonitorDataRequest request)
         throws ExecutionException, InterruptedException {
-        log.debug("start handleMonitorDataRequest {}", request.getSecurityServerInfo().toString());
+        // query data from security server
         String json = extractor.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
+        boolean shouldSaveDefaultData = false;
+        String errorString = "";
         if (json != null) {
-            saveMonitorData(json);
-            resultCollectorActor.tell(ResultCollectorActor.Result.createSuccess(
-                request.getSecurityServerInfo()), getSelf());
+            try {
+                // save security server's monitoring data
+                envMonitorDataStorageService.save(json);
+                resultCollectorActor.tell(ResultCollectorActor.Result.createSuccess(
+                    request.getSecurityServerInfo()), getSelf());
+            } catch (Exception ex) {
+                log.error("Exception saving monitoring data ", ex);
+                log.error("Data: {}", json);
+                shouldSaveDefaultData = true;
+                errorString = ex.toString();
+            }
         } else {
-            resultCollectorActor.tell(ResultCollectorActor.Result.createError(
-                request.getSecurityServerInfo(), extractor.getLastErrorDescription()), getSelf());
+            shouldSaveDefaultData = true;
+            errorString = extractor.getLastErrorDescription();
         }
-        log.debug("end handleMonitorDataRequest");
-    }
-
-    /**
-     * Saves extractor as json to Elasticsearch
-     * @param json
-     */
-    private void saveMonitorData(String json)
-        throws ExecutionException, InterruptedException {
-        envMonitorDataStorageService.saveAndUpdateAlias(json);
+        if (shouldSaveDefaultData) {
+            // monitoring data was not received from security server or save operation failed
+            // store only default data
+            log.info("save default data for security server {}", request.getSecurityServerInfo());
+            envMonitorDataStorageService.save(extractor.getDefaultJSON(request.getSecurityServerInfo()));
+            resultCollectorActor.tell(ResultCollectorActor.Result.createError(
+                request.getSecurityServerInfo(), errorString), getSelf());
+        }
     }
 
     /**

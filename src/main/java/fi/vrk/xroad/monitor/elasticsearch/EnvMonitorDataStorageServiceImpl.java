@@ -28,8 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
+
+import static fi.vrk.xroad.monitor.util.MonitorCollectorDataUtils.getIndexName;
 
 /**
  * Elasticsearch data storage service implementation
@@ -45,16 +46,21 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
   private Environment environment;
 
   @Override
-  public void saveAndUpdateAlias(String json) throws ExecutionException, InterruptedException {
-    final String index = getIndexName();
+  public synchronized void save(String json) throws ExecutionException, InterruptedException {
+    final String index = getIndexName(environment);
     final String type = environment.getProperty("xroad-monitor-collector-elasticsearch.type");
-    final String alias = environment.getProperty("xroad-monitor-collector-elasticsearch.alias");
     log.debug("Store data to index: {}", index);
-    boolean indexCreated = !envMonitorDataStorageDao.indexExists(index).isExists();
-    log.debug("New index will be created: {}", indexCreated);
     IndexResponse save = envMonitorDataStorageDao.save(index, type, json);
     log.debug("Save response: {}", save);
-    if (indexCreated) {
+  }
+
+  @Override
+  public synchronized void createIndexAndUpdateAlias() throws ExecutionException, InterruptedException {
+    final String index = getIndexName(environment);
+    final String alias = environment.getProperty("xroad-monitor-collector-elasticsearch.alias");
+    if (!envMonitorDataStorageDao.indexExists(index).isExists()) {
+      log.info("Create index {}", index);
+      envMonitorDataStorageDao.createIndex(index);
       if (envMonitorDataStorageDao.aliasExists(alias).exists()) {
         log.info("Alias exists, remove all indexes from alias {}", alias);
         envMonitorDataStorageDao.removeAllIndexesFromAlias(alias);
@@ -63,13 +69,9 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
       }
       log.info("Create alias, add index {} to alias {}", index, alias);
       envMonitorDataStorageDao.addIndexToAlias(index, alias);
+      envMonitorDataStorageDao.flush();
+    } else {
+      log.info("Index already exists");
     }
-  }
-
-  private String getIndexName() {
-    Calendar calendar = Calendar.getInstance();
-    return String.format("%s-%d-%02d-%02d",
-        environment.getProperty("xroad-monitor-collector-elasticsearch.index"), calendar.get(Calendar.YEAR),
-        calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DATE));
   }
 }

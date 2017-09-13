@@ -22,16 +22,16 @@
  */
 package fi.vrk.xroad.monitor.elasticsearch;
 
+import fi.vrk.xroad.monitor.base.ElasticsearchTestBase;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
-import org.junit.After;
+import org.elasticsearch.action.search.SearchResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -48,35 +48,39 @@ import static org.junit.Assert.*;
 @Slf4j
 @SpringBootTest(classes = {EnvMonitorDataStorageDao.class, EnvMonitorDataStorageDaoImpl.class})
 @RunWith(SpringRunner.class)
-public class EnvMonitorDataStorageDaoTest {
+public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
 
   private static final String COMPLEX_JSON_FILE = "src/test/resources/data.json";
+  private static final String COMPLEX_JSON_FILE_2 = "src/test/resources/data2.json";
   private static final String INDEXTYPE_TWITTER = "integrationtest-twitter";
   private static final String INDEXTYPE_ENVDATA = "integrationtest-complex";
   private static final String INDEXTYPE_ALIAS = "integrationtest-alias";
   private static final String INDEXTYPE_FOOBARBAZ = "integrationtest-foobarbaz";
-
-  @Autowired
-  private EnvMonitorDataStorageDao envMonitorDataStorageDao;
+  private static final String INDEXTYPE_SIMPLESEARCH = "integrationtest-simplesearch";
+  private static final String INDEXTYPE_MAPPING1 = "integrationtest-mapping1";
+  private static final String INDEXTYPE_MAPPING2 = "integrationtest-mapping2";
+  private static final String INDEXTYPE_CREATE = "integrationtest-create";
 
   /**
    * Cleanup test data
    */
   @Before
-  @After
   public void cleanup() {
-    if (envMonitorDataStorageDao.indexExists(INDEXTYPE_TWITTER).isExists()) {
-      envMonitorDataStorageDao.removeIndex(INDEXTYPE_TWITTER);
-    }
-    if (envMonitorDataStorageDao.indexExists(INDEXTYPE_ENVDATA).isExists()) {
-      envMonitorDataStorageDao.removeIndex(INDEXTYPE_ENVDATA);
-    }
-    if (envMonitorDataStorageDao.indexExists(INDEXTYPE_ALIAS).isExists()) {
-      envMonitorDataStorageDao.removeIndex(INDEXTYPE_ALIAS);
-    }
-    if (envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ).isExists()) {
-      envMonitorDataStorageDao.removeIndex(INDEXTYPE_FOOBARBAZ);
-    }
+    removeIndex(INDEXTYPE_TWITTER);
+    removeIndex(INDEXTYPE_ENVDATA);
+    removeIndex(INDEXTYPE_ALIAS);
+    removeIndex(INDEXTYPE_FOOBARBAZ);
+    removeIndex(INDEXTYPE_SIMPLESEARCH);
+    removeIndex(INDEXTYPE_MAPPING1);
+    removeIndex(INDEXTYPE_MAPPING2);
+    removeIndex(INDEXTYPE_CREATE);
+  }
+
+  @Test
+  public void shouldCreateIndex() throws ExecutionException, InterruptedException {
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_CREATE).isExists());
+    envMonitorDataStorageDao.createIndex(INDEXTYPE_CREATE);
+    assertTrue(envMonitorDataStorageDao.indexExists(INDEXTYPE_CREATE).isExists());
   }
 
   @Test
@@ -135,5 +139,54 @@ public class EnvMonitorDataStorageDaoTest {
     assertTrue(envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ).isExists());
     envMonitorDataStorageDao.removeIndex(INDEXTYPE_FOOBARBAZ);
     assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ).isExists());
+  }
+
+  @Test
+  public void shouldGetSearchHits() throws ExecutionException, InterruptedException {
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_SIMPLESEARCH).isExists());
+    String json = "{"
+        + "\"user\":\"kimchy\","
+        + "\"postDate\":\"2013-01-30\","
+        + "\"message\":\"trying out Elasticsearch\""
+        + "}";
+    IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_SIMPLESEARCH, INDEXTYPE_SIMPLESEARCH, json);
+    envMonitorDataStorageDao.flush();
+    SearchResponse searchResponse = envMonitorDataStorageDao.findAll(INDEXTYPE_SIMPLESEARCH, INDEXTYPE_SIMPLESEARCH);
+    assertEquals(1, searchResponse.getHits().getTotalHits());
+  }
+
+  @Test
+  public void shouldNotThrowMappingException1() throws IOException, ExecutionException, InterruptedException {
+    final int loopCount = 100;
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_MAPPING1).isExists());
+    for (int i = 0; i < loopCount; i++) {
+      try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE)) {
+        String json = IOUtils.toString(inputStream, Charset.defaultCharset());
+        IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_MAPPING1, INDEXTYPE_MAPPING1, json);
+      }
+      try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE_2)) {
+        String json = IOUtils.toString(inputStream, Charset.defaultCharset());
+        IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_MAPPING1, INDEXTYPE_MAPPING1, json);
+      }
+    }
+    envMonitorDataStorageDao.flush();
+    assertEquals(loopCount * 2, envMonitorDataStorageDao.findAll(INDEXTYPE_MAPPING1, INDEXTYPE_MAPPING1)
+        .getHits().getTotalHits());
+  }
+
+  @Test
+  public void shouldNotThrowMappingException2() throws IOException, ExecutionException, InterruptedException {
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_MAPPING2).isExists());
+    final int loopCount = 8;
+    for (int i = 0; i < loopCount; i++) {
+      String filename = String.format("src/test/resources/test%d.json", i + 1);
+      try (FileInputStream inputStream = new FileInputStream(filename)) {
+        String json = IOUtils.toString(inputStream, Charset.defaultCharset());
+        IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_MAPPING2, INDEXTYPE_MAPPING2, json);
+      }
+      envMonitorDataStorageDao.flush();
+    }
+    assertEquals(loopCount, envMonitorDataStorageDao.findAll(INDEXTYPE_MAPPING2, INDEXTYPE_MAPPING2)
+        .getHits().getTotalHits());
   }
 }

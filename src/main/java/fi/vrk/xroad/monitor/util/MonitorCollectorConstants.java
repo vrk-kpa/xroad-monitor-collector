@@ -28,7 +28,7 @@ package fi.vrk.xroad.monitor.util;
  */
 public final class MonitorCollectorConstants {
 
-  public static final int SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE = 5;
+  public static final int SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE = 3;
 
   private MonitorCollectorConstants() { }
 

@@ -24,10 +24,13 @@ package fi.vrk.xroad.monitor.elasticsearch;
 
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
 import org.elasticsearch.action.admin.indices.alias.exists.AliasesExistResponse;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.admin.indices.flush.FlushResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchResponse;
 
 import java.util.concurrent.ExecutionException;
 
@@ -80,5 +83,25 @@ public interface EnvMonitorDataStorageDao {
    * @return
    */
   DeleteIndexResponse removeIndex(String index);
+
+  /**
+   * Find all documents from given index and type
+   * @param index
+   * @param type
+   * @return search response
+   */
+  SearchResponse findAll(String index, String type);
+
+  /**
+   * Flush index operations
+   * @return flush response
+   */
+  FlushResponse flush() throws ExecutionException, InterruptedException;
+
+  /**
+   * Create index
+   * @return create index response
+   */
+  CreateIndexResponse createIndex(String index) throws ExecutionException, InterruptedException;
 
 }

@@ -26,10 +26,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
 import org.elasticsearch.action.admin.indices.alias.exists.AliasesExistResponse;
 import org.elasticsearch.action.admin.indices.alias.get.GetAliasesRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.admin.indices.flush.FlushRequest;
+import org.elasticsearch.action.admin.indices.flush.FlushResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
@@ -44,6 +49,8 @@ import javax.annotation.PreDestroy;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.ExecutionException;
+
+import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 
 /**
  * Default implementation for {@link EnvMonitorDataStorageDao} interface
@@ -106,6 +113,21 @@ public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
   @Override
   public DeleteIndexResponse removeIndex(String index) {
     return client.admin().indices().prepareDelete(index).get();
+  }
+
+  @Override
+  public SearchResponse findAll(String index, String type) {
+    return client.prepareSearch(index).setTypes(type).setQuery(matchAllQuery()).get();
+  }
+
+  @Override
+  public FlushResponse flush() throws ExecutionException, InterruptedException {
+    return client.admin().indices().flush(new FlushRequest()).get();
+  }
+
+  @Override
+  public CreateIndexResponse createIndex(String index) throws ExecutionException, InterruptedException {
+    return client.admin().indices().create(new CreateIndexRequest(index)).get();
   }
 
   /**

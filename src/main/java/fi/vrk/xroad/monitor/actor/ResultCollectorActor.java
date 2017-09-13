@@ -46,6 +46,7 @@ public class ResultCollectorActor extends AbstractActor {
 
   private Set<SecurityServerInfo> awaitedResults;
   private int numAwaitedResults;
+  private int resultCounter;
   private long startTime;
 
   @Override
@@ -58,10 +59,11 @@ public class ResultCollectorActor extends AbstractActor {
   }
 
   private void handleInitialization(Set<SecurityServerInfo> infos) {
-    log.debug("Initializing resultCollerActor: {}", infos);
+    log.debug("Initializing resultCollectorActor: {}", infos);
     this.startTime = System.nanoTime();
     this.awaitedResults = new HashSet<>(infos);
     this.numAwaitedResults = infos.size();
+    this.resultCounter = 0;
     getSender().tell("Initializing done", getSelf());
   }
 
@@ -72,9 +74,11 @@ public class ResultCollectorActor extends AbstractActor {
               TimeUnit.SECONDS.convert(System.nanoTime() - startTime, TimeUnit.NANOSECONDS));
     }
     if (result.isSuccess()) {
-      log.info("received success with data {}", result.toString());
+      log.info("received success with data {} result counter {}/{}", result.toString(), ++resultCounter,
+          numAwaitedResults);
     } else {
-      log.error("received error with data {}", result.toString());
+      log.error("received error with data {} result counter {}/{}", result.toString(), ++resultCounter,
+          numAwaitedResults);
     }
   }
 

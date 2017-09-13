@@ -42,7 +42,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class MonitorDataExtractor {
 
-    private RestTemplate rt = new RestTemplate();
+    private RestTemplate rt;
 
     @Autowired
     private Environment environment;
@@ -52,6 +52,15 @@ public class MonitorDataExtractor {
 
     @Autowired
     private MonitorDataResponseParser responseParser;
+
+    /**
+     * Constructor
+     */
+    public MonitorDataExtractor() {
+        rt = new RestTemplate();
+        rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
+        rt.getMessageConverters().add(new StringHttpMessageConverter());
+    }
 
     /**
      * Will handle getting metric data and saving it to elasticseach
@@ -64,20 +73,23 @@ public class MonitorDataExtractor {
     }
 
     /**
+     * Get default environmental monitoring data for security server as JSON
+     * @param info security server information
+     * @return default JSON
+     */
+    public String getDefaultJSON(SecurityServerInfo info) {
+        return responseParser.getDefaultJSON(info, environment.getProperty(MonitorCollectorPropertyKeys.INSTANCE));
+    }
+
+    /**
      * Makes request to get securityserver metric information
      * @param xmlRequest to posted in body to securityserver
      * @return securityserver metric information response as xml string
      */
     public String makeRequest(String xmlRequest) {
-
-        rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
-        rt.getMessageConverters().add(new StringHttpMessageConverter());
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_XML);
-
         HttpEntity<String> entity = new HttpEntity<>(xmlRequest, headers);
-
         String clientUrl = environment != null
             ? environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_URL) : null;
         log.debug("posting soap request, clientUrl: {} request: {}", clientUrl, xmlRequest);

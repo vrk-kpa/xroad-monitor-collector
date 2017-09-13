@@ -39,12 +39,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientException;
 import scala.concurrent.Await;
 import scala.concurrent.duration.Duration;
 
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -62,12 +60,16 @@ public class Supervisor extends AbstractActor {
     @Getter
     private ActorRef resultCollectorActor;
     private ActorRef monitorDataRequestPoolRouter;
+    private ActorRef elasticsearchInitializerActor;
 
     private static final int SUPERVISOR_RETRIES = 3;
 
     @Autowired
     SpringExtension ext;
 
+    /**
+     * Constructor
+     */
     public Supervisor() {
     }
 
@@ -85,6 +87,13 @@ public class Supervisor extends AbstractActor {
         this.monitorDataRequestPoolRouter = testingMonitorDataRequestPoolRouter;
     }
 
+    /**
+     * For testing purposes
+     */
+    void overrideElasticsearchInitializerActor(ActorRef testingElasticsearchInitializerActor) {
+        this.elasticsearchInitializerActor = testingElasticsearchInitializerActor;
+    }
+
     @Override
     public void preStart() throws Exception {
         log.debug("preStart");
@@ -92,6 +101,7 @@ public class Supervisor extends AbstractActor {
         monitorDataRequestPoolRouter = getContext()
                 .actorOf(new SmallestMailboxPool(SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE)
                         .props(ext.props("monitorDataHandlerActor", resultCollectorActor)));
+        elasticsearchInitializerActor = getContext().actorOf(ext.props("elasticsearchInitializerActor"));
         super.preStart();
     }
 
@@ -107,19 +117,27 @@ public class Supervisor extends AbstractActor {
     private void handleMonitorDataRequest(StartCollectingMonitorDataCommand request) {
         Timeout timeout = new Timeout(1, TimeUnit.MINUTES);
         try {
+            // init result collector with expected results
             Await.ready(Patterns.ask(resultCollectorActor, request.getSecurityServerInfos(), timeout),
                 timeout.duration());
-
-            request.getSecurityServerInfos().stream()
-                    .forEach(info -> {
-                        log.info("Process SecurityServerInfo {}", info);
-                        monitorDataRequestPoolRouter.tell(new MonitorDataHandlerActor.MonitorDataRequest(info),
-                            getSelf());
-                    });
-
         } catch (TimeoutException | InterruptedException e) {
             log.error("Failed to initialize the ResultCollectorActor, {}", e);
         }
+
+        try {
+            // init Elasticsearch
+            Await.ready(Patterns.ask(elasticsearchInitializerActor, "init", timeout),
+                timeout.duration());
+        } catch (TimeoutException | InterruptedException e) {
+            log.error("Failed to initialize the ElasticsearchInitializerActor, {}", e);
+        }
+
+        request.getSecurityServerInfos().stream()
+            .forEach(info -> {
+                log.info("Process SecurityServerInfo {}", info);
+                monitorDataRequestPoolRouter.tell(new MonitorDataHandlerActor.MonitorDataRequest(info),
+                    getSelf());
+            });
     }
 
     /**
@@ -145,16 +163,8 @@ public class Supervisor extends AbstractActor {
     //  strategy defined above.`
     private static SupervisorStrategy strategy =
             new OneForOneStrategy(SUPERVISOR_RETRIES, Duration.create("1 minute"), DeciderBuilder
-                    .match(RestClientException.class, e -> {
-                        log.error("RestClientException ", e);
-                        return resume();
-                    })
-                    .match(ExecutionException.class, e -> {
-                        log.error("ExecutionException ", e);
-                        return resume();
-                    })
-                    .match(InterruptedException.class, e -> {
-                        log.error("InterruptedException ", e);
+                    .match(Exception.class, e -> {
+                        log.error("Exception ", e);
                         return resume();
                     })
                     .matchAny(e -> resume()).build());

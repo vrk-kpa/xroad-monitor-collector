@@ -20,23 +20,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fi.vrk.xroad.monitor.elasticsearch;
+package fi.vrk.xroad.monitor.util;
 
-import java.util.concurrent.ExecutionException;
+import org.springframework.core.env.Environment;
+
+import java.util.Calendar;
 
 /**
- * Interface for Elasticsearch data storage service
+ * Utilities for data storage layer
  */
-public interface EnvMonitorDataStorageService {
+public final class MonitorCollectorDataUtils {
 
   /**
-   * Save json to Elasticsearch
-   * @param json
+   * Get current index name (prefix+date)
+   * @param environment
+   * @return index name
    */
-  void save(String json) throws ExecutionException, InterruptedException;
+  public static String getIndexName(Environment environment) {
+    Calendar calendar = Calendar.getInstance();
+    return String.format("%s-%d-%02d-%02d",
+        environment.getProperty("xroad-monitor-collector-elasticsearch.index"), calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DATE));
+  }
 
-  /**
-   * Update alias
-   */
-  void createIndexAndUpdateAlias() throws ExecutionException, InterruptedException;
+  private MonitorCollectorDataUtils() { }
+
 }

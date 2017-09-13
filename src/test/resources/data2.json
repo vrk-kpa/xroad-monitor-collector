@@ -3,19 +3,19 @@
   "OperatingSystem": "Linux version 3.13.0-128-generic (buildd@lgw01-39) (gcc version 4.8.4 (Ubuntu 4.8.4-2ubuntu1~14.04.3) ) #177-Ubuntu SMP Tue Aug 8 11:40:23 UTC 2017",
   "DiskSpaceFree_/": 3733094400,
   "FreeSwapSpace": {
-    "min": 1000,
-    "median": 1000,
-    "max": 1000,
-    "mean": 1000,
-    "stddev": 1000,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "stddev": 0,
     "updated": "2017-08-21T09:42:36.823Z"
   },
   "OpenFileDescriptorCount": {
     "min": 113,
     "median": 114,
     "max": 130,
-    "mean": 114,
-    "stddev": 2,
+    "mean": 114.985,
+    "stddev": 2.444309358736334,
     "updated": "2017-08-21T09:42:36.823Z"
   },
   "Certificates": [
@@ -1712,11 +1712,11 @@
   ],
   "memberClass": "GOV",
   "FreePhysicalMemory": {
-    "min": 957575168.55454,
-    "median": 978692096.55454,
-    "max": 1205714944.55454,
-    "mean": 1035583959.55454,
-    "stddev": 98283455.55454,
+    "min": 957575168.12,
+    "median": 978692096.45,
+    "max": 1205714944.99,
+    "mean": 1035583959.04,
+    "stddev": 98283455.6415305,
     "updated": "2017-08-21T09:42:36.823Z"
   },
   "Xroad Processes": [
@@ -1771,19 +1771,19 @@
   ],
   "serverCode": "gdev-ss1.i.palveluvayla.com",
   "CommittedVirtualMemory": {
-    "min": 5938352128,
-    "median": 5938352128,
-    "max": 5938352128,
-    "mean": 5938352128,
-    "stddev": 10000,
+    "min": 5938352128.56,
+    "median": 5938352128.933,
+    "max": 5938352128.23234,
+    "mean": 5938352128.11,
+    "stddev": 0,
     "updated": "2017-08-21T09:42:36.823Z"
   },
   "SystemCpuLoad": {
-    "min": 1000,
-    "median": 1000,
-    "max": 1029,
-    "mean": 1000,
-    "stddev": 3000,
+    "min": 0,
+    "median": 0,
+    "max": 29,
+    "mean": 1,
+    "stddev": 3.039108570703359,
     "updated": "2017-08-21T09:42:36.823Z"
   },
   "MaxFileDescriptorCount": 4096,
@@ -2574,7 +2574,7 @@
     "zerofree 1.0.2-1ubuntu1",
     "zlib1g 1:1.2.8.dfsg-1ubuntu1"
   ],
-  "name": "SERVER:FI/GOV/1710128-9/gdev-ss1.i.palveluvayla.com",
+  "name": "SERVER:FI/GOV/1710128-9/gdev-ss2.i.palveluvayla.com",
   "TotalPhysicalMemory": 4143955968,
   "TotalSwapSpace": 4143955968,
   "DiskSpaceTotal_/": 8309932032,
