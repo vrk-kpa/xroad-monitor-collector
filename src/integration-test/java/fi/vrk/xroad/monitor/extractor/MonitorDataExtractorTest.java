@@ -66,6 +66,7 @@ public class MonitorDataExtractorTest {
         String jsonMetrics = response.getMetricInformation(xmlResponse, exampleInfo, "FI");
         log.info("jsonMetrics: {}", jsonMetrics);
         // test that it is valid json
+        assertNotNull(jsonMetrics);
         Object jsonObject = JSONParser.parseJSON(jsonMetrics);
         assertNotNull(jsonObject);
     }
