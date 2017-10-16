@@ -31,6 +31,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -59,7 +66,8 @@ public class MonitorDataExtractorTest {
             "1710128-9");
 
     @Test
-    public void shouldParseJsonDataFromXmlResponse() {
+    public void shouldParseJsonDataFromXmlResponse() throws CertificateException, UnrecoverableKeyException,
+        NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
         String xmlRequest = request.getRequestXML(exampleInfo);
         String xmlResponse = handler.makeRequest(xmlRequest);
         log.info("xmlResponse: {}", xmlResponse);

@@ -36,6 +36,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -67,7 +73,8 @@ public class MonitorDataHandlerActor extends AbstractActor {
     }
 
     protected void handleMonitorDataRequest(MonitorDataRequest request)
-        throws ExecutionException, InterruptedException {
+        throws ExecutionException, InterruptedException, CertificateException, UnrecoverableKeyException,
+        NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
         // query data from security server
         String json = extractor.handleMonitorDataRequestAndResponse(request.getSecurityServerInfo());
         boolean shouldSaveDefaultData = false;
