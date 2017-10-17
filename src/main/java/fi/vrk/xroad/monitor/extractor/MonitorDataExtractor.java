@@ -69,15 +69,20 @@ public class MonitorDataExtractor {
     private void initRestTemplate() throws KeyStoreException, IOException, CertificateException,
         NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException {
         final String keystorePath = environment.getProperty("xroad-monitor-collector-client.ssl-keystore");
+        final String truststorePath = environment.getProperty("xroad-monitor-collector-client.ssl-truststore");
         File keystoreFile = new File(keystorePath);
-        if (keystoreFile.exists()) {
+        File truststoreFile = new File(truststorePath);
+        if (keystoreFile.exists() && truststoreFile.exists()) {
             final String keystorePassword =
                 environment.getProperty("xroad-monitor-collector-client.ssl-keystore-password");
+            final String truststorePassword =
+                environment.getProperty("xroad-monitor-collector-client.ssl-truststore-password");
             KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
             keyStore.load(new FileInputStream(new File(keystorePath)), keystorePassword.toCharArray());
             SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
                 new SSLContextBuilder()
                     .loadKeyMaterial(keyStore, keystorePassword.toCharArray())
+                    .loadTrustMaterial(truststoreFile, truststorePassword.toCharArray())
                     .build(),
                 NoopHostnameVerifier.INSTANCE);
             HttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
