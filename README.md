@@ -74,17 +74,17 @@ Create new keystore and keypair for xroad-monitor-collector
 Export the xroad-monitor-collector certificate to file
 `keytool -keystore /etc/xroad/xroad-monitor-collector/keystore -exportcert -rfc -alias xroad-monitor-collector > xroad-monitor-collector.cer`
 
-Configure the security server to use HTTPS connection and import the xroad-monitor-collector certificate to internal servers - internal TLS certificates list.
+Using the security server administrator interface configure the security server to use HTTPS connection and import the xroad-monitor-collector certificate from previous step to "Internal servers "- "Internal TLS certificates" list.
 
-Download the security server's certificate
+Download the security server's certificate with openssl
 `openssl s_client -showcerts -connect myserver.example.com:443  </dev/null`
 
-From the output extract the PEM certificate and save it to file myserver.cer
+From the output extract the PEM format certificate and save it to file myserver.cer
 
-Create new truststore for xroad-monitor-collector
+Create new truststore for xroad-monitor-collector and import the trusted certificate
 `keytool -import -file myserver.cer -alias myserver -keystore truststore`
 
-Configure the xroad-monitor-collector application to use the created keystore and truststore in the properties file
+Finally configure the xroad-monitor-collector application to use the created keystore and truststore in the properties file
 ```
 xroad-monitor-collector-client.ssl-keystore=/etc/xroad/xroad-monitor-collector/keystore
 xroad-monitor-collector-client.ssl-keystore-password=secret
