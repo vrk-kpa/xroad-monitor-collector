@@ -89,7 +89,7 @@ From the output extract the PEM format certificate and save it to file myserver.
 
 Create new truststore for xroad-monitor-collector and import the trusted certificate
 ```
-keytool -import -file myserver.cer -alias myserver -keystore truststore
+keytool -import -file myserver.cer -alias myserver -keystore /etc/xroad/xroad-monitor-collector/truststore
 ```
 
 Finally configure the xroad-monitor-collector application to use the created keystore and truststore in the properties file
