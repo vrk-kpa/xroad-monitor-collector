@@ -63,3 +63,31 @@ Line what is shown up will request all metricdata, if only some of metric data i
 ```
 Names should be seperated with ',' and there should not be any spaces.
 You can find the different monitoring data metric names from the document: [X-Road EnvironmentalMonitoring](https://github.com/vrk-kpa/X-Road/tree/develop/doc/EnvironmentalMonitoring)
+
+## SSL
+
+To enable secure HTTPS connection to security server with mutual authentication follow the steps below.
+
+Create new keystore and keypair for xroad-monitor-collector
+`keytool -alias xroad-monitor-collector -genkeypair -keystore /etc/xroad/xroad-monitor-collector/keystore -validity 7300 -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -dname C=FI,CN=xroad-monitor-collector`
+
+Export the xroad-monitor-collector certificate to file
+`keytool -keystore /etc/xroad/xroad-monitor-collector/keystore -exportcert -rfc -alias xroad-monitor-collector > xroad-monitor-collector.cer`
+
+Configure the security server to use HTTPS connection and import the xroad-monitor-collector certificate to internal servers - internal TLS certificates list.
+
+Download the security server's certificate
+`openssl s_client -showcerts -connect myserver.example.com:443  </dev/null`
+
+From the output extract the PEM certificate and save it to file myserver.cer
+
+Create new truststore for xroad-monitor-collector
+`keytool -import -file myserver.cer -alias myserver -keystore truststore`
+
+Configure the xroad-monitor-collector application to use the created keystore and truststore in the properties file
+```
+xroad-monitor-collector-client.ssl-keystore=/etc/xroad/xroad-monitor-collector/keystore
+xroad-monitor-collector-client.ssl-keystore-password=secret
+xroad-monitor-collector-client.ssl-truststore=/etc/xroad/xroad-monitor-collector/truststore
+xroad-monitor-collector-client.ssl-truststore-password=secret
+```
