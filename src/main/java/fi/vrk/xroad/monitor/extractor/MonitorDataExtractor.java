@@ -28,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,23 +66,26 @@ public class MonitorDataExtractor {
     @Autowired
     private MonitorDataResponseParser responseParser;
 
-
     private void initRestTemplate() throws KeyStoreException, IOException, CertificateException,
         NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException {
-        KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-        keyStore.load(new FileInputStream(new File(
-                environment.getProperty("xroad-monitor-collector-client.ssl-keystore"))),
-            environment.getProperty("xroad-monitor-collector-client.ssl-keystore-password").toCharArray());
-        SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
-            new SSLContextBuilder()
-                .loadTrustMaterial(null, new TrustSelfSignedStrategy())
-                .loadKeyMaterial(keyStore,
-                    environment.getProperty("xroad-monitor-collector-client.ssl-keystore-password").toCharArray())
-                .build(),
-            NoopHostnameVerifier.INSTANCE);
-        HttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
-        ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
-        rt = new RestTemplate(requestFactory);
+        final String keystorePath = environment.getProperty("xroad-monitor-collector-client.ssl-keystore");
+        File keystoreFile = new File(keystorePath);
+        if (keystoreFile.exists()) {
+            final String keystorePassword =
+                environment.getProperty("xroad-monitor-collector-client.ssl-keystore-password");
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(new FileInputStream(new File(keystorePath)), keystorePassword.toCharArray());
+            SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
+                new SSLContextBuilder()
+                    .loadKeyMaterial(keyStore, keystorePassword.toCharArray())
+                    .build(),
+                NoopHostnameVerifier.INSTANCE);
+            HttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
+            ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+            rt = new RestTemplate(requestFactory);
+        } else {
+            rt = new RestTemplate();
+        }
         rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
         rt.getMessageConverters().add(new StringHttpMessageConverter());
     }
