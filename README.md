@@ -92,10 +92,12 @@ Create new truststore for xroad-monitor-collector and import the trusted certifi
 keytool -import -file myserver.cer -alias myserver -keystore /etc/xroad/xroad-monitor-collector/truststore
 ```
 
-Finally configure the xroad-monitor-collector application to use the created keystore and truststore in the properties file
+By default the xroad-monitor-collector uses the following paths and passwords for the keystore and truststore
 ```
 xroad-monitor-collector-client.ssl-keystore=/etc/xroad/xroad-monitor-collector/keystore
 xroad-monitor-collector-client.ssl-keystore-password=secret
 xroad-monitor-collector-client.ssl-truststore=/etc/xroad/xroad-monitor-collector/truststore
 xroad-monitor-collector-client.ssl-truststore-password=secret
 ```
+
+Should you need to modify the default paths or passwords please refer to [Spring Boot external config documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html)
