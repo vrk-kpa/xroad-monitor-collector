@@ -69,20 +69,28 @@ You can find the different monitoring data metric names from the document: [X-Ro
 To enable secure HTTPS connection to central monitoring client security server with mutual authentication follow the steps below.
 
 Create new keystore and keypair for xroad-monitor-collector
-```keytool -alias xroad-monitor-collector -genkeypair -keystore /etc/xroad/xroad-monitor-collector/keystore -validity 7300 -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -dname C=FI,CN=xroad-monitor-collector```
+```
+keytool -alias xroad-monitor-collector -genkeypair -keystore /etc/xroad/xroad-monitor-collector/keystore -validity 7300 -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -dname C=FI,CN=xroad-monitor-collector
+```
 
 Export the xroad-monitor-collector certificate to file
-```keytool -keystore /etc/xroad/xroad-monitor-collector/keystore -exportcert -rfc -alias xroad-monitor-collector > xroad-monitor-collector.cer```
+```
+keytool -keystore /etc/xroad/xroad-monitor-collector/keystore -exportcert -rfc -alias xroad-monitor-collector > xroad-monitor-collector.cer
+```
 
 Using the security server administrator interface configure the security server to use HTTPS connection and import the xroad-monitor-collector certificate from previous step to "Internal servers "- "Internal TLS certificates" list.
 
 Download the security server's certificate with openssl
-```openssl s_client -showcerts -connect myserver.example.com:443  </dev/null```
+```
+openssl s_client -showcerts -connect myserver.example.com:443  </dev/null
+```
 
 From the output extract the PEM format certificate and save it to file myserver.cer
 
 Create new truststore for xroad-monitor-collector and import the trusted certificate
-```keytool -import -file myserver.cer -alias myserver -keystore truststore```
+```
+keytool -import -file myserver.cer -alias myserver -keystore truststore
+```
 
 Finally configure the xroad-monitor-collector application to use the created keystore and truststore in the properties file
 ```
