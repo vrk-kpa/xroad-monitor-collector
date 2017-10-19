@@ -99,11 +99,17 @@ public class MonitorDataHandlerActorTest extends ElasticsearchTestBase {
         "testB");
     Set<SecurityServerInfo> infos = new HashSet<>();
     // this is a fully functioning security server that gives monitoring data
-    infos.add(new SecurityServerInfo("gdev-ss1.i.palveluvayla.com", "gdev-ss1.i.palveluvayla.com",
-        "GOV", "1710128-9"));
+    infos.add(new SecurityServerInfo(
+        environment.getProperty("xroad-monitor-collector.test1.servercode"),
+        environment.getProperty("xroad-monitor-collector.test1.address"),
+        environment.getProperty("xroad-monitor-collector.test1.memberclass"),
+        environment.getProperty("xroad-monitor-collector.test1.membercode")));
     // this security server is registered to X-Road instance but does not give monitoring data
-    infos.add(new SecurityServerInfo("gdev-loadtest-ss1.i.palveluvayla.com",
-        "gdev-loadtest-ss1.i.palveluvayla.com", "GOV", "13775550"));
+    infos.add(new SecurityServerInfo(
+        environment.getProperty("xroad-monitor-collector.test2.servercode"),
+        environment.getProperty("xroad-monitor-collector.test2.address"),
+        environment.getProperty("xroad-monitor-collector.test2.memberclass"),
+        environment.getProperty("xroad-monitor-collector.test2.membercode")));
 
     // Initialize result collector
     resultCollectorRef.receive(infos);

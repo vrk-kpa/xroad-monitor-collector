@@ -29,6 +29,7 @@ import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
@@ -58,16 +59,18 @@ public class MonitorDataExtractorTest {
     @Autowired
     private MonitorDataResponseParser response;
 
-    // Test requires this to be valid and accessible server
-    private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
-            "gdev-ss1.i.palveluvayla.com",
-            "http://gdev-ss1.i.palveluvayla.com",
-            "GOV",
-            "1710128-9");
+    @Autowired
+    private Environment environment;
 
     @Test
     public void shouldParseJsonDataFromXmlResponse() throws CertificateException, UnrecoverableKeyException,
         NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
+        // Test requires this to be valid and accessible server
+        final SecurityServerInfo exampleInfo = new SecurityServerInfo(
+            environment.getProperty("xroad-monitor-collector.test1.servercode"),
+            environment.getProperty("xroad-monitor-collector.test1.address"),
+            environment.getProperty("xroad-monitor-collector.test1.memberclass"),
+            environment.getProperty("xroad-monitor-collector.test1.membercode"));
         String xmlRequest = request.getRequestXML(exampleInfo);
         String xmlResponse = handler.makeRequest(xmlRequest);
         log.info("xmlResponse: {}", xmlResponse);

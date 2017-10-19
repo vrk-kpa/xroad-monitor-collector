@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -50,21 +51,24 @@ public class MonitorDataRequestBuilderTest {
     @Autowired
     private MonitorDataRequestBuilder request;
 
-    private final SecurityServerInfo exampleInfo = new SecurityServerInfo(
-            "gdev-ss1.i.palveluvayla.com",
-            "http://gdev-ss1.i.palveluvayla.com",
-            "GOV",
-            "1710128-9");
+    @Autowired
+    private Environment environment;
 
     @Test
     public void getRequestXMLTest() {
+        // Test requires this to be valid and accessible server
+        final SecurityServerInfo exampleInfo = new SecurityServerInfo(
+            environment.getProperty("xroad-monitor-collector.test1.servercode"),
+            environment.getProperty("xroad-monitor-collector.test1.address"),
+            environment.getProperty("xroad-monitor-collector.test1.memberclass"),
+            environment.getProperty("xroad-monitor-collector.test1.membercode"));
         // Runtime exceptions (DOMException) are thrown if DOM creation fails.
         String xmlRequest = request.getRequestXML(exampleInfo);
         log.info(xmlRequest);
         // Assert that request contains member class, member code and server code
-        assertTrue(xmlRequest.contains("GOV"));
-        assertTrue(xmlRequest.contains("1710128-9"));
-        assertTrue(xmlRequest.contains("gdev-ss1.i.palveluvayla.com"));
+        assertTrue(xmlRequest.contains(environment.getProperty("xroad-monitor-collector.test1.membercode")));
+        assertTrue(xmlRequest.contains(environment.getProperty("xroad-monitor-collector.test1.membercode")));
+        assertTrue(xmlRequest.contains(environment.getProperty("xroad-monitor-collector.test1.servercode")));
     }
 
     @Test
