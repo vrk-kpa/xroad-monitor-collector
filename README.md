@@ -40,7 +40,7 @@ Integration tests require that you are able to connect to the specified security
 
 
 ## Build RPM Packages on Non-RedHat Platform
- 
+
     $ ./gradlew clean build
     $ docker build -t collector-rpm packages/xroad-monitor-collector/docker
     $ docker run -v $PWD/..:/workspace  -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro collector-rpm
@@ -51,7 +51,7 @@ Integration tests require that you are able to connect to the specified security
 This will add license header to all *.java files.
 
     $ ./gradlew licenseFormat
-    
+
 ## Using getSecurityServerMetricDataRequest parameters
 Using metricdatarequest parameters happens by altering application.properties and for production application-production.properties file. In properties file next line should be edited:
 ```
@@ -80,12 +80,7 @@ keytool -keystore /etc/xroad/xroad-monitor-collector/keystore -exportcert -rfc -
 
 Using the security server administrator interface configure the security server to use HTTPS connection and import the xroad-monitor-collector certificate from previous step to "Internal servers "- "Internal TLS certificates" list.
 
-Download the security server's certificate with openssl
-```
-openssl s_client -showcerts -connect myserver.example.com:443  </dev/null
-```
-
-From the output extract the PEM format certificate and save it to file myserver.cer
+From the security server's administrator user interface export the security server internal certificate "System Parameters" - "Internal TLS Certificate" - "Export" and save it to file e.g. myserver.cer
 
 Create new truststore for xroad-monitor-collector and import the trusted certificate
 ```
