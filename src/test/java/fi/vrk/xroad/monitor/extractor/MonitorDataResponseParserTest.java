@@ -55,8 +55,8 @@ public class MonitorDataResponseParserTest {
 
     @Test
     public void parseResponseMetricsToJsonTest() throws IOException {
-        SecurityServerInfo info = new SecurityServerInfo("gdev-ss1.i.palveluvayla.com",
-                "gdev-ss1.i.palveluvayla.com", "GOV", "1710128-9");
+        SecurityServerInfo info = new SecurityServerInfo("gdev-ss1.example.com",
+                "gdev-ss1.example.com", "GOV", "1710128-9");
         try (FileInputStream inputStream = new FileInputStream(RESPONSE_XML_FILE)) {
             String responseString = IOUtils.toString(inputStream, Charset.defaultCharset());
             MonitorDataResponseParser monitorDataResponseParser = new MonitorDataResponseParser();

@@ -1,7 +1,7 @@
 {
   "memberCode": "1710128-9",
-  "serverCode": "gdev-ss2.i.palveluvayla.com",
-  "name": "SERVER:FI/GOV/1710128-9/gdev-ss2.i.palveluvayla.com",
+  "serverCode": "gdev-ss2.example.com",
+  "name": "SERVER:FI/GOV/1710128-9/gdev-ss2.example.com",
   "xroadInstance": "FI",
   "memberClass": "GOV"
 }

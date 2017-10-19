@@ -1031,7 +1031,7 @@
       "command": "su -l -c /usr/share/aux-xroad/autologin.expect xroad"
     }
   ],
-  "serverCode": "gdev-ss3.i.palveluvayla.com",
+  "serverCode": "gdev-ss3.example.com",
   "CommittedVirtualMemory": {
     "min": 2331676672,
     "median": 2331676672,
@@ -1556,7 +1556,7 @@
     "zerofree 1.0.2-1ubuntu1",
     "zlib1g 1:1.2.8.dfsg-1ubuntu1"
   ],
-  "name": "SERVER:FI/GOV/7777/gdev-ss3.i.palveluvayla.com",
+  "name": "SERVER:FI/GOV/7777/gdev-ss3.example.com",
   "TotalPhysicalMemory": 2097639424,
   "TotalSwapSpace": 2097639424,
   "DiskSpaceTotal_/": 8309932032,
