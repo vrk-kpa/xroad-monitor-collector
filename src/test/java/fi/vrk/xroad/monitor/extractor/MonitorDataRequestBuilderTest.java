@@ -47,7 +47,6 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 @SpringBootTest(classes = MonitorDataRequestBuilder.class)
 @RunWith(SpringRunner.class)
-@TestPropertySource(locations = "classpath:monitorDataRequestBuilderTest.properties")
 public class MonitorDataRequestBuilderTest {
 
     @Autowired
