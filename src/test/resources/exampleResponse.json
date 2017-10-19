@@ -1,9 +1,9 @@
 {
-  "name": "SERVER:FI/GOV/1710128-9/gdev-ss1.i.palveluvayla.com",
+  "name": "SERVER:FI/GOV/1710128-9/gdev-ss1.example.com",
   "xroadInstance": "FI",
   "memberClass": "GOV",
   "memberCode": "1710128-9",
-  "serverCode": "gdev-ss1.i.palveluvayla.com",
+  "serverCode": "gdev-ss1.example.com",
   "proxyVersion": "6.16.0-0.20170808060834gitea867c6",
   "CommittedVirtualMemory": {
     "updated": "2017-08-17T07:14:58.797Z",
@@ -82,7 +82,7 @@
   "Certificates": [
     {
       "id": "452B765797ABD3697283F35F7447FCF219915FA2",
-      "subjectDN": "SERIALNUMBER=FI/gdev-ss1.i.palveluvayla.com/GOV, CN=1710128-9, O=Gofore, L=9988, C=FI",
+      "subjectDN": "SERIALNUMBER=FI/gdev-ss1.example.com/GOV, CN=1710128-9, O=Gofore, L=9988, C=FI",
       "issuerDN": "CN=Palveluvayla Test CA, O=Palvelyvayla Test, C=FI",
       "status": "registered",
       "notBefore": "2016-08-17T09:29:20Z",
@@ -90,7 +90,7 @@
     },
     {
       "id": "1FD8D07415414FC098B0B8124321F90AAE2771EA",
-      "subjectDN": "SERIALNUMBER=FI/gdev-ss1.i.palveluvayla.com/GOV, CN=gdev-ss1.i.palveluvayla.com, O=Gofore, L=9988, C=FI",
+      "subjectDN": "SERIALNUMBER=FI/gdev-ss1.example.com/GOV, CN=gdev-ss1.example.com, O=Gofore, L=9988, C=FI",
       "issuerDN": "CN=Palveluvayla Test CA, O=Palvelyvayla Test, C=FI",
       "status": "registered",
       "notBefore": "2016-08-17T09:29:42Z",
@@ -98,7 +98,7 @@
     },
     {
       "id": "49503164A35E727B7172A208C11848EF9917B3F3",
-      "subjectDN": "SERIALNUMBER=FI/gdev-ss1.i.palveluvayla.com/GOV, CN=TEST, O=TEST, C=FI",
+      "subjectDN": "SERIALNUMBER=FI/gdev-ss1.example.com/GOV, CN=TEST, O=TEST, C=FI",
       "issuerDN": "CN=Palveluvayla Test CA, O=Palvelyvayla Test, C=FI",
       "status": "registered",
       "notBefore": "2017-07-05T11:05:10Z",

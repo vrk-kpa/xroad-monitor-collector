@@ -28,14 +28,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -47,7 +45,6 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 @SpringBootTest(classes = MonitorDataRequestBuilder.class)
 @RunWith(SpringRunner.class)
-@TestPropertySource(locations = "classpath:monitorDataRequestBuilderTest.properties")
 public class MonitorDataRequestBuilderTest {
 
     @Autowired

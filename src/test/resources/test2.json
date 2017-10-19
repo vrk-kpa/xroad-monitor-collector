@@ -1739,7 +1739,7 @@
       "command": "/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -Xms100m -Xmx512m -XX:MaxMetaspaceSize=80m -Dlogback.configurationFile=/etc/xroad/conf.d/proxy-logback.xml -Dxroad.proxy.clientHandlers=ee.ria.xroad.proxy.clientproxy.AsicContainerHandler,ee.ria.xroad.proxy.clientproxy.MetadataHandler -Dxroad.proxy.serverServiceHandlers=ee.ria.xroad.proxy.serverproxy.MetadataServiceHandlerImpl,ee.ria.xroad.proxy.serverproxy.ProxyMonitorServiceHandlerImpl -XX:+UseG1GC -Dfile.encoding=UTF-8 -Xshare:auto -Djdk.tls.ephemeralDHKeySize=2048 -cp /usr/share/xroad/jlib/proxy.jar:/usr/share/xroad/jlib/addon/proxy/messagelog-1.0.jar:/usr/share/xroad/jlib/addon/proxy/metaservice-1.0.jar:/usr/share/xroad/jlib/addon/proxy/proxymonitor-metaservice-1.0.jar -Dxroad.proxy.messageLogManagerImpl=ee.ria.xroad.proxy.messagelog.LogManager ee.ria.xroad.proxy.ProxyMain"
     }
   ],
-  "serverCode": "gdev-ss2.i.palveluvayla.com",
+  "serverCode": "gdev-ss2.example.com",
   "CommittedVirtualMemory": {
     "min": 6330916864,
     "median": 6333014016,
@@ -2325,7 +2325,7 @@
     "zerofree 1.0.2-1ubuntu1",
     "zlib1g 1:1.2.8.dfsg-1ubuntu1"
   ],
-  "name": "SERVER:FI/GOV/1710128-9/gdev-ss2.i.palveluvayla.com",
+  "name": "SERVER:FI/GOV/1710128-9/gdev-ss2.example.com",
   "TotalPhysicalMemory": 4143955968,
   "TotalSwapSpace": 0,
   "DiskSpaceTotal_/": 8309932032,

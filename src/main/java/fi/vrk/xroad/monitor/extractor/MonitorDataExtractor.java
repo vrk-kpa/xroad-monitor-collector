@@ -25,15 +25,28 @@ package fi.vrk.xroad.monitor.extractor;
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
 import fi.vrk.xroad.monitor.util.MonitorCollectorPropertyKeys;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.*;
+import java.security.cert.CertificateException;
 
 /**
  * Handler for extractor requestBuilder, responseParser and parsing
@@ -53,11 +66,31 @@ public class MonitorDataExtractor {
     @Autowired
     private MonitorDataResponseParser responseParser;
 
-    /**
-     * Constructor
-     */
-    public MonitorDataExtractor() {
-        rt = new RestTemplate();
+    private void initRestTemplate() throws KeyStoreException, IOException, CertificateException,
+        NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException {
+        final String keystorePath = environment.getProperty("xroad-monitor-collector-client.ssl-keystore");
+        final String truststorePath = environment.getProperty("xroad-monitor-collector-client.ssl-truststore");
+        File keystoreFile = new File(keystorePath);
+        File truststoreFile = new File(truststorePath);
+        if (keystoreFile.exists() && truststoreFile.exists()) {
+            final String keystorePassword =
+                environment.getProperty("xroad-monitor-collector-client.ssl-keystore-password");
+            final String truststorePassword =
+                environment.getProperty("xroad-monitor-collector-client.ssl-truststore-password");
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(new FileInputStream(new File(keystorePath)), keystorePassword.toCharArray());
+            SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
+                new SSLContextBuilder()
+                    .loadKeyMaterial(keyStore, keystorePassword.toCharArray())
+                    .loadTrustMaterial(truststoreFile, truststorePassword.toCharArray())
+                    .build(),
+                NoopHostnameVerifier.INSTANCE);
+            HttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
+            ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+            rt = new RestTemplate(requestFactory);
+        } else {
+            rt = new RestTemplate();
+        }
         rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
         rt.getMessageConverters().add(new StringHttpMessageConverter());
     }
@@ -67,7 +100,9 @@ public class MonitorDataExtractor {
      *
      * @param securityServerInfo information of securityserver what metric to get
      */
-    public String handleMonitorDataRequestAndResponse(SecurityServerInfo securityServerInfo) {
+    public String handleMonitorDataRequestAndResponse(SecurityServerInfo securityServerInfo) throws
+        CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException,
+        KeyManagementException, IOException {
         return responseParser.getMetricInformation(makeRequest(requestBuilder.getRequestXML(securityServerInfo)),
             securityServerInfo, environment.getProperty(MonitorCollectorPropertyKeys.INSTANCE));
     }
@@ -86,7 +121,11 @@ public class MonitorDataExtractor {
      * @param xmlRequest to posted in body to securityserver
      * @return securityserver metric information response as xml string
      */
-    public String makeRequest(String xmlRequest) {
+    public String makeRequest(String xmlRequest) throws CertificateException, UnrecoverableKeyException,
+        NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
+        if (rt == null) {
+            initRestTemplate();
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_XML);
         HttpEntity<String> entity = new HttpEntity<>(xmlRequest, headers);
