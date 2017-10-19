@@ -1,5 +1,5 @@
 <m:metricSet>
-    <m:name>SERVER:FI/GOV/1710128-9/gdev-ss1.i.palveluvayla.com</m:name>
+    <m:name>SERVER:FI/GOV/1710128-9/gdev-ss1.example.com</m:name>
     <m:stringMetric>
         <m:name>proxyVersion</m:name>
         <m:value>6.16.0-0.20170804075233git4f7fde6</m:value>
