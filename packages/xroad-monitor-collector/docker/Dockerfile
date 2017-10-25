@@ -6,4 +6,3 @@ RUN yum clean all
 RUN sed -i 's/requiretty/!requiretty/' /etc/sudoers
 
 USER root
-CMD ["sh", "-c", "/workspace/xroad-monitor-collector/build_rpm.sh" ]
