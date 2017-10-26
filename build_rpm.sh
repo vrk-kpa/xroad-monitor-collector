@@ -17,9 +17,10 @@ fi
 CMD="-ba"
 
 rm -rf ${ROOT}/RPMS/*
+rm -rf ${ROOT}/SRPMS/*
 
 rpmbuild \
-    --define "xroad_monitor_collector_version 0.1.0" \
+    --define "xroad_monitor_collector_version 1.0.0" \
     --define "rel $RELEASE" \
     --define "snapshot $SNAPSHOT" \
     --define "_topdir $ROOT" \
