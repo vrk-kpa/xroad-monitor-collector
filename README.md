@@ -39,12 +39,21 @@ To and run all tests
 Integration tests require that you are able to connect to the specified security server and Elasticsearch instance.
 
 
-## Build RPM Packages on Non-RedHat Platform
+## Build RPM Packages
 
-    $ ./gradlew clean build
-    $ docker build -t collector-rpm packages/xroad-monitor-collector/docker
-    $ docker run -v $PWD/..:/workspace  -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro collector-rpm
+The packaging uses Docker and the packages can also be built on non-RedHat platform.
 
+To build development packages
+```
+$ ./gradlew clean build
+$ ./build_packages.sh
+```
+
+To build release packages
+```
+$ ./gradlew clean build
+$ ./build_release_packages.sh
+```
 
 ## Format license header format
 
@@ -53,6 +62,7 @@ This will add license header to all *.java files.
     $ ./gradlew licenseFormat
 
 ## Using getSecurityServerMetricDataRequest parameters
+
 Using metricdatarequest parameters happens by altering application.properties and for production application-production.properties file. In properties file next line should be edited:
 ```
    xroad-monitor-collector.query-parameters=
