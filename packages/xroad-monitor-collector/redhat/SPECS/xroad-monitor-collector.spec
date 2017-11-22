@@ -36,6 +36,7 @@ cp -p %{src}/../../../build/libs/xroad-monitor-collector.jar %{buildroot}%{jlib}
 cp -p %{src}/SOURCES/%{name} %{buildroot}/usr/share/xroad/bin
 cp -p %{src}/SOURCES/%{name}.service %{buildroot}%{_unitdir}
 cp -p %{src}/SOURCES/%{name}.cron %{buildroot}/etc/cron.d
+cp -p %{src}/../../../src/main/resources/application.properties %{buildroot}/etc/xroad/xroad-monitor-collector
 
 %clean
 rm -rf %{buildroot}
@@ -44,7 +45,8 @@ rm -rf %{buildroot}
 %attr(644,root,root) %{_unitdir}/%{name}.service
 %attr(644,root,root) /etc/cron.d/xroad-monitor-collector.cron
 %attr(744,xroad,xroad) %{jlib}/%{name}.jar
-%attr(744,xroad,xroad) /usr/share/xroad/bin/%{name}
+%attr(744,xroad,xroad) %config /usr/share/xroad/bin/%{name}
+%attr(644,xroad,xroad) %config /etc/xroad/xroad-monitor-collector/application.properties
 
 %pre
 

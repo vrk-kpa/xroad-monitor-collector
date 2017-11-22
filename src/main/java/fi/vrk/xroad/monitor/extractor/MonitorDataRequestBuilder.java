@@ -53,6 +53,7 @@ public class MonitorDataRequestBuilder {
     private final String instance;
     private final String clientMemberClass;
     private final String clientMemberCode;
+    private final String clientSubsystemCode;
     private final String[] queryParameters;
 
     /**
@@ -63,6 +64,7 @@ public class MonitorDataRequestBuilder {
         instance = environment.getProperty(MonitorCollectorPropertyKeys.INSTANCE);
         clientMemberClass = environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_MEMBER_CLASS);
         clientMemberCode = environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_MEMBER_CODE);
+        clientSubsystemCode = environment.getProperty(MonitorCollectorPropertyKeys.CLIENT_SUBSYSTEM);
         queryParameters = environment.getProperty(MonitorCollectorPropertyKeys.QUERY_PARAMETERS).split(",");
     }
 
@@ -99,10 +101,11 @@ public class MonitorDataRequestBuilder {
         Element clientServer = document.createElement("xrd:client");
         headerElement.appendChild(clientServer);
 
-        clientServer.setAttribute("id:objectType", "MEMBER");
+        clientServer.setAttribute("id:objectType", "SUBSYSTEM");
         clientServer.appendChild(createElementWithValue(document, "id:xRoadInstance", instance));
         clientServer.appendChild(createElementWithValue(document, "id:memberClass", clientMemberClass));
         clientServer.appendChild(createElementWithValue(document, "id:memberCode", clientMemberCode));
+        clientServer.appendChild(createElementWithValue(document, "id:subsystemCode", clientSubsystemCode));
 
         Element service = document.createElement("xrd:service");
         headerElement.appendChild(service);

@@ -72,6 +72,7 @@ public class MonitorDataExtractorTest {
             environment.getProperty("xroad-monitor-collector.test1.memberclass"),
             environment.getProperty("xroad-monitor-collector.test1.membercode"));
         String xmlRequest = request.getRequestXML(exampleInfo);
+        log.info("xmlRequest: {}", xmlRequest);
         String xmlResponse = handler.makeRequest(xmlRequest);
         log.info("xmlResponse: {}", xmlResponse);
         String jsonMetrics = response.getMetricInformation(xmlResponse, exampleInfo, "FI");

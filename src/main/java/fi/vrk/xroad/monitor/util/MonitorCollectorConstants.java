@@ -30,6 +30,8 @@ public final class MonitorCollectorConstants {
 
   public static final int SUPERVISOR_MONITOR_DATA_ACTOR_POOL_SIZE = 3;
 
+  public static final int CONNECT_TIMEOUT = 60000;
+
   private MonitorCollectorConstants() { }
 
 }
