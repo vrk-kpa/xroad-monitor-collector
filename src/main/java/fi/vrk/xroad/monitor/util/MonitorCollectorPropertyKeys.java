@@ -34,6 +34,8 @@ public final class MonitorCollectorPropertyKeys {
 
     public static final String CLIENT_MEMBER_CODE = "xroad-monitor-collector-client.client-member-code";
 
+    public static final String CLIENT_SUBSYSTEM = "xroad-monitor-collector-client.client-subsystem";
+
     public static final String INSTANCE = "xroad-monitor-collector-client.instance";
 
     public static final String QUERY_PARAMETERS = "xroad-monitor-collector.query-parameters";

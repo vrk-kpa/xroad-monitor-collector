@@ -16,10 +16,10 @@ To run the application
 Or
 
     $ java -jar build/libs/xroad-monitor-collector.jar
+    
+Run collector with external config (looks for application.properties from /etc/xroad/xroad-monitor-collector/)
 
-Then run the collector with profile production
-
-    $ java -Dspring.profiles.active=production -jar build/libs/xroad-monitor-collector.jar --spring.config.name=application
+    $ java -jar build/libs/xroad-monitor-collector.jar --spring.config.location=/etc/xroad/xroad-monitor-collector/
 
 
 ## Running tests
