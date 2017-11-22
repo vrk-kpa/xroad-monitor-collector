@@ -44,7 +44,7 @@ rm -rf %{buildroot}
 %attr(644,root,root) %{_unitdir}/%{name}.service
 %attr(644,root,root) /etc/cron.d/xroad-monitor-collector.cron
 %attr(744,xroad,xroad) %{jlib}/%{name}.jar
-%attr(744,xroad,xroad) /usr/share/xroad/bin/%{name}
+%attr(744,xroad,xroad) %config /usr/share/xroad/bin/%{name}
 
 %pre
 
