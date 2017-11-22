@@ -23,9 +23,11 @@
 package fi.vrk.xroad.monitor.extractor;
 
 import fi.vrk.xroad.monitor.parser.SecurityServerInfo;
+import fi.vrk.xroad.monitor.util.MonitorCollectorConstants;
 import fi.vrk.xroad.monitor.util.MonitorCollectorPropertyKeys;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.HttpClients;
@@ -85,14 +87,26 @@ public class MonitorDataExtractor {
                     .loadTrustMaterial(truststoreFile, truststorePassword.toCharArray())
                     .build(),
                 NoopHostnameVerifier.INSTANCE);
-            HttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
+            HttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory)
+                .setDefaultRequestConfig(getRequestConfig()).build();
             ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
             rt = new RestTemplate(requestFactory);
         } else {
-            rt = new RestTemplate();
+            HttpClient httpClient = HttpClients.custom().setDefaultRequestConfig(getRequestConfig()).build();
+            ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+            rt = new RestTemplate(requestFactory);
         }
         rt.getMessageConverters().add(new Jaxb2RootElementHttpMessageConverter());
         rt.getMessageConverters().add(new StringHttpMessageConverter());
+    }
+
+    private RequestConfig getRequestConfig() {
+        RequestConfig result = RequestConfig.custom()
+            .setConnectionRequestTimeout(MonitorCollectorConstants.CONNECT_TIMEOUT)
+            .setConnectTimeout(MonitorCollectorConstants.CONNECT_TIMEOUT)
+            .setSocketTimeout(MonitorCollectorConstants.CONNECT_TIMEOUT)
+            .build();
+        return result;
     }
 
     /**
