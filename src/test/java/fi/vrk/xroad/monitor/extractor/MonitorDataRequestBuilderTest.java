@@ -65,9 +65,15 @@ public class MonitorDataRequestBuilderTest {
         // Runtime exceptions (DOMException) are thrown if DOM creation fails.
         String xmlRequest = request.getRequestXML(exampleInfo);
         log.info(xmlRequest);
-        // Assert that request contains member class, member code and server code
+
+        // Assert that request contains consumer security server information
+        assertTrue(xmlRequest.contains(environment.getProperty("xroad-monitor-collector-client.client-member-class")));
+        assertTrue(xmlRequest.contains(environment.getProperty("xroad-monitor-collector-client.client-member-code")));
+        assertTrue(xmlRequest.contains(environment.getProperty("xroad-monitor-collector-client.client-subsystem")));
+
+        // Assert that request contains provider security server information
         assertTrue(xmlRequest.contains(environment.getProperty("xroad-monitor-collector.test1.membercode")));
-        assertTrue(xmlRequest.contains(environment.getProperty("xroad-monitor-collector.test1.membercode")));
+        assertTrue(xmlRequest.contains(environment.getProperty("xroad-monitor-collector.test1.memberclass")));
         assertTrue(xmlRequest.contains(environment.getProperty("xroad-monitor-collector.test1.servercode")));
     }
 
