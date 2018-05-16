@@ -9,40 +9,40 @@ X-Road Monitor Collector is a software that collects monitoring data from X-Road
 
 To compile, run unit tests and integration tests (note that to run the integration tests you need to have Elasticsearch installed and X-Road Monitor Collector configured to use it)
 
-    $ ./gradlew clean build
+    ./gradlew clean build
     
 To compile and run unit tests and no integration tests
 
-    $ ./gradlew clean build -x integrationTest
+    ./gradlew clean build -x integrationTest
 
 ## Run
 
 To run the application
 
-    $ ./gradlew bootRun
+    ./gradlew bootRun
 
 Or
 
-    $ java -jar build/libs/xroad-monitor-collector.jar
+    java -jar build/libs/xroad-monitor-collector.jar
     
 Run collector with external config (looks for application.properties from /etc/xroad/xroad-monitor-collector/)
 
-    $ java -jar build/libs/xroad-monitor-collector.jar --spring.config.location=/etc/xroad/xroad-monitor-collector/
+    java -jar build/libs/xroad-monitor-collector.jar --spring.config.location=/etc/xroad/xroad-monitor-collector/
 
 
 ## Running tests
 
 To run unit tests
 
-    $ ./gradlew clean test
+    ./gradlew clean test
 
 To run integration tests
 
-    $ ./gradlew clean integrationTest
+    ./gradlew clean integrationTest
     
 To and run all tests
 
-    $ ./gradlew clean test integrationTest
+    ./gradlew clean test integrationTest
 
 Integration tests require that you are able to connect to the specified security server and Elasticsearch instance.
 
@@ -51,7 +51,7 @@ Integration tests require that you are able to connect to the specified security
 
 This will add license header to all *.java files.
 
-    $ ./gradlew licenseFormat
+    ./gradlew licenseFormat
 
 ## Build RPM Packages
 
@@ -59,13 +59,13 @@ The packaging uses Docker and the packages can also be built on non-RedHat platf
 
 To build development packages
 
-    $ ./gradlew clean build
-    $ ./build_packages.sh
+    ./gradlew clean build
+    ./build_packages.sh
 
 To build release packages
 
-    $ ./gradlew clean build
-    $ ./build_release_packages.sh
+    ./gradlew clean build
+    ./build_release_packages.sh
 
 ## Installation
 
@@ -73,7 +73,7 @@ The xroad-monitor-collector package built in previous step depends on java-1.8.0
 
 To install OpenJDK
 
-    $ sudo yum install -y java-1.8.0-openjdk
+    sudo yum install -y java-1.8.0-openjdk
 
 
 To make xroad-confclient available you have two options. 
@@ -82,7 +82,7 @@ To make xroad-confclient available you have two options.
 
 Finally install X-Road Monitor Collector with
 
-    $ rpm -i xroad-monitor-collector-1.1.0-0.20171122143212gitb2f4a55.el7.x86_64
+    rpm -i xroad-monitor-collector-1.1.0-0.20171122143212gitb2f4a55.el7.x86_64
 
 Replace the filename with your package name accordingly.
 
@@ -96,11 +96,11 @@ X-Road Monitor Collector is configured with `/etc/xroad/xroad-monitor-collector/
 
 Using metricdatarequest parameters happens by altering application.properties and for production application-production.properties file. In properties file next line should be edited:
 
-    $ xroad-monitor-collector.query-parameters=
+    xroad-monitor-collector.query-parameters=
 
 Line what is shown up will request all metricdata, if only some of metric data is wanted. To that line should be added names of metric data like here:
 
-    $ xroad-monitor-collector.query-parameters=OperatingSystem,Processes
+    xroad-monitor-collector.query-parameters=OperatingSystem,Processes
 
 Names should be seperated with ',' and there should not be any spaces.
 You can find the different monitoring data metric names from the document: [X-Road EnvironmentalMonitoring](https://github.com/vrk-kpa/X-Road/tree/develop/doc/EnvironmentalMonitoring)
@@ -111,11 +111,11 @@ To enable secure HTTPS connection to central monitoring client security server w
 
 Create new keystore and keypair for xroad-monitor-collector
 
-    $ keytool -alias xroad-monitor-collector -genkeypair -keystore /etc/xroad/xroad-monitor-collector/keystore -validity 7300 -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -dname C=FI,CN=xroad-monitor-collector
+    keytool -alias xroad-monitor-collector -genkeypair -keystore /etc/xroad/xroad-monitor-collector/keystore -validity 7300 -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -dname C=FI,CN=xroad-monitor-collector
 
 Export the xroad-monitor-collector certificate to file
 
-    $ keytool -keystore /etc/xroad/xroad-monitor-collector/keystore -exportcert -rfc -alias xroad-monitor-collector > xroad-monitor-collector.cer
+    keytool -keystore /etc/xroad/xroad-monitor-collector/keystore -exportcert -rfc -alias xroad-monitor-collector > xroad-monitor-collector.cer
 
 Using the security server administrator interface configure the security server to use HTTPS connection and import the xroad-monitor-collector certificate from previous step to "Internal servers "- "Internal TLS certificates" list.
 
@@ -123,13 +123,13 @@ From the security server's administrator user interface export the security serv
 
 Create new truststore for xroad-monitor-collector and import the trusted certificate
 
-    $ keytool -import -file myserver.cer -alias myserver -keystore /etc/xroad/xroad-monitor-collector/truststore
+    keytool -import -file myserver.cer -alias myserver -keystore /etc/xroad/xroad-monitor-collector/truststore
 
 By default the xroad-monitor-collector uses the following paths and passwords for the keystore and truststore
 	
-    $ xroad-monitor-collector-client.ssl-keystore=/etc/xroad/xroad-monitor-collector/keystore
-    $ xroad-monitor-collector-client.ssl-keystore-password=secret
-    $ xroad-monitor-collector-client.ssl-truststore=/etc/xroad/xroad-monitor-collector/truststore
-    $ xroad-monitor-collector-client.ssl-truststore-password=secret
+    xroad-monitor-collector-client.ssl-keystore=/etc/xroad/xroad-monitor-collector/keystore
+    xroad-monitor-collector-client.ssl-keystore-password=secret
+    xroad-monitor-collector-client.ssl-truststore=/etc/xroad/xroad-monitor-collector/truststore
+    xroad-monitor-collector-client.ssl-truststore-password=secret
 
 Should you need to modify the default paths or passwords please refer to [Spring Boot external config documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html)
