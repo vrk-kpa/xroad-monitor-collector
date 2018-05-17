@@ -61,8 +61,8 @@ repositories {
 }
 
 dependencies {
-    compile 'org.elasticsearch.client:transport:5.5.1'
-    compile 'org.elasticsearch:elasticsearch:5.5.1'
+    compile 'org.elasticsearch.client:transport:6.2.3'
+    compile 'org.elasticsearch:elasticsearch:6.2.3'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter', version:'1.5.6.RELEASE'
     compile("org.springframework:spring-web")
     compile group: 'com.typesafe.akka', name: 'akka-actor_2.11', version:'2.5.1'
