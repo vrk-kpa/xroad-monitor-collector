@@ -37,7 +37,7 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +74,7 @@ public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
     Settings settings = Settings.builder()
         .put("cluster.name", environment.getProperty("xroad-monitor-collector-elasticsearch.cluster")).build();
     client = new PreBuiltTransportClient(settings)
-        .addTransportAddress(new InetSocketTransportAddress(
+        .addTransportAddress(new TransportAddress(
             InetAddress.getByName(environment.getProperty("xroad-monitor-collector-elasticsearch.host")),
             Integer.parseInt(environment.getProperty("xroad-monitor-collector-elasticsearch.port"))));
   }
