@@ -45,9 +45,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -91,7 +91,7 @@ public class SupervisorTest extends ElasticsearchTestBase {
      */
     @Before
     @After
-    public void cleanup() throws ExecutionException, InterruptedException {
+    public void cleanup() throws IOException {
         removeCurrentIndexAndAlias();
     }
 

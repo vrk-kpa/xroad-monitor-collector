@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.ExecutionException;
+import java.io.IOException;
 
 /**
  * Actor for initializing Elasticsearch index and alias
@@ -50,7 +50,7 @@ public class ElasticsearchInitializerActor extends AbstractActor {
         .build();
   }
 
-  private void handleInitialization(String s) throws ExecutionException, InterruptedException {
+  private void handleInitialization(String s) throws IOException {
     // for tests it is ok for envMonitorDataStorageService to be null
     if (envMonitorDataStorageService != null) {
       log.info("Create index and update alias");

@@ -22,7 +22,7 @@
  */
 package fi.vrk.xroad.monitor.elasticsearch;
 
-import java.util.concurrent.ExecutionException;
+import java.io.IOException;
 
 /**
  * Interface for Elasticsearch data storage service
@@ -33,10 +33,10 @@ public interface EnvMonitorDataStorageService {
    * Save json to Elasticsearch
    * @param json
    */
-  void save(String json) throws ExecutionException, InterruptedException;
+  void save(String json) throws IOException;
 
   /**
    * Update alias
    */
-  void createIndexAndUpdateAlias() throws ExecutionException, InterruptedException;
+  void createIndexAndUpdateAlias() throws IOException;
 }
