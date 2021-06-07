@@ -22,17 +22,13 @@
  */
 package fi.vrk.xroad.monitor.elasticsearch;
 
-import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
-import org.elasticsearch.action.admin.indices.alias.exists.AliasesExistResponse;
-import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
-import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.admin.indices.flush.FlushResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.indices.CreateIndexResponse;
 
-import java.util.concurrent.ExecutionException;
+import java.io.IOException;
 
 /**
  * Interface for loading/saving env monitor data
@@ -42,47 +38,47 @@ public interface EnvMonitorDataStorageDao {
   /**
    * Save data
    */
-  IndexResponse save(String index, String type, String json);
+  IndexResponse save(String index, String type, String json) throws IOException;
 
   /**
    * Load data
    */
-  GetResponse load(String index, String type, String key);
+  GetResponse load(String index, String type, String key) throws IOException;
 
   /**
    * Create alias for given index
    * @param index
    * @param alias
    */
-  IndicesAliasesResponse addIndexToAlias(String index, String alias) throws ExecutionException, InterruptedException;
+  boolean addIndexToAlias(String index, String alias) throws  IOException;
 
   /**
    * Remove all indexes from alias
    * @param alias
    * @return
    */
-  IndicesAliasesResponse removeAllIndexesFromAlias(String alias);
+  boolean removeAllIndexesFromAlias(String alias) throws IOException;
 
   /**
    * Tests if given alias exists
    * @param alias
    * @return
    */
-  AliasesExistResponse aliasExists(String alias) throws ExecutionException, InterruptedException;
+  boolean aliasExists(String alias) throws IOException;
 
   /**
    * Tests if given index exists
    * @param index
    * @return
    */
-  IndicesExistsResponse indexExists(String index);
+  boolean indexExists(String index) throws IOException;
 
   /**
    * Removes given index
    * @param index
    * @return
    */
-  DeleteIndexResponse removeIndex(String index);
+  boolean removeIndex(String index) throws IOException;
 
   /**
    * Find all documents from given index and type
@@ -90,18 +86,18 @@ public interface EnvMonitorDataStorageDao {
    * @param type
    * @return search response
    */
-  SearchResponse findAll(String index, String type);
+  SearchResponse findAll(String index, String type) throws IOException;
 
   /**
    * Flush index operations
    * @return flush response
    */
-  FlushResponse flush() throws ExecutionException, InterruptedException;
+  FlushResponse flush() throws IOException;
 
   /**
    * Create index
    * @return create index response
    */
-  CreateIndexResponse createIndex(String index) throws ExecutionException, InterruptedException;
+  CreateIndexResponse createIndex(String index) throws IOException;
 
 }

@@ -126,8 +126,9 @@ public class MonitorDataExtractor {
      * @param info security server information
      * @return default JSON
      */
-    public String getDefaultJSON(SecurityServerInfo info) {
-        return responseParser.getDefaultJSON(info, environment.getProperty(MonitorCollectorPropertyKeys.INSTANCE));
+    public String getDefaultJSON(SecurityServerInfo info, String errorString) {
+        return responseParser.getDefaultJSON(
+                info, environment.getProperty(MonitorCollectorPropertyKeys.INSTANCE), errorString);
     }
 
     /**

@@ -25,10 +25,10 @@ package fi.vrk.xroad.monitor.elasticsearch;
 import fi.vrk.xroad.monitor.base.ElasticsearchTestBase;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.rest.RestStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +38,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.*;
 
@@ -65,7 +64,7 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
    * Cleanup test data
    */
   @Before
-  public void cleanup() {
+  public void cleanup() throws IOException {
     removeIndex(INDEXTYPE_TWITTER);
     removeIndex(INDEXTYPE_ENVDATA);
     removeIndex(INDEXTYPE_ALIAS);
@@ -77,14 +76,14 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
   }
 
   @Test
-  public void shouldCreateIndex() throws ExecutionException, InterruptedException {
-    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_CREATE).isExists());
+  public void shouldCreateIndex() throws IOException {
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_CREATE));
     envMonitorDataStorageDao.createIndex(INDEXTYPE_CREATE);
-    assertTrue(envMonitorDataStorageDao.indexExists(INDEXTYPE_CREATE).isExists());
+    assertTrue(envMonitorDataStorageDao.indexExists(INDEXTYPE_CREATE));
   }
 
   @Test
-  public void shouldSaveAndLoadJson() {
+  public void shouldSaveAndLoadJson() throws IOException {
     String json = "{"
         + "\"user\":\"kimchy\","
         + "\"postDate\":\"2013-01-30\","
@@ -92,7 +91,7 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
         + "}";
     IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_TWITTER, INDEXTYPE_TWITTER, json);
     log.info("saveAndUpdateAlias: {}", save);
-    assertEquals(save.getResult(), DocWriteResponse.Result.CREATED);
+    assertEquals(save.status(), RestStatus.CREATED);
     GetResponse load = envMonitorDataStorageDao.load(INDEXTYPE_TWITTER, INDEXTYPE_TWITTER, save.getId());
     log.info("load: {}", load);
     assertEquals(load.getId(), save.getId());
@@ -104,7 +103,7 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
       String json = IOUtils.toString(inputStream, Charset.defaultCharset());
       IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_ENVDATA, INDEXTYPE_ENVDATA, json);
       log.info("saveAndUpdateAlias: {}", save);
-      assertEquals(save.getResult(), DocWriteResponse.Result.CREATED);
+      assertEquals(save.status(), RestStatus.CREATED);
       GetResponse load = envMonitorDataStorageDao.load(INDEXTYPE_ENVDATA, INDEXTYPE_ENVDATA, save.getId());
       log.info("load: {}", load);
       assertEquals(load.getId(), save.getId());
@@ -112,7 +111,7 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
   }
 
   @Test
-  public void shouldCreateAndRemoveAlias() throws ExecutionException, InterruptedException {
+  public void shouldCreateAndRemoveAlias() throws IOException {
     final String testAlias = "testAlias";
     String json = "{"
         + "\"user\":\"kimchy\","
@@ -121,29 +120,29 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
         + "}";
     envMonitorDataStorageDao.save(INDEXTYPE_ALIAS, INDEXTYPE_ALIAS, json);
     envMonitorDataStorageDao.addIndexToAlias(INDEXTYPE_ALIAS, testAlias);
-    assertTrue(envMonitorDataStorageDao.aliasExists(testAlias).exists());
+    assertTrue(envMonitorDataStorageDao.aliasExists(testAlias));
     envMonitorDataStorageDao.removeAllIndexesFromAlias(testAlias);
-    assertFalse(envMonitorDataStorageDao.aliasExists(testAlias).exists());
-    assertTrue(envMonitorDataStorageDao.indexExists(INDEXTYPE_ALIAS).isExists());
+    assertFalse(envMonitorDataStorageDao.aliasExists(testAlias));
+    assertTrue(envMonitorDataStorageDao.indexExists(INDEXTYPE_ALIAS));
   }
 
   @Test
-  public void shouldFindExistingIndex() {
-    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ).isExists());
+  public void shouldFindExistingIndex() throws IOException {
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ));
     String json = "{"
         + "\"user\":\"kimchy\","
         + "\"postDate\":\"2013-01-30\","
         + "\"message\":\"trying out Elasticsearch\""
         + "}";
     IndexResponse save = envMonitorDataStorageDao.save(INDEXTYPE_FOOBARBAZ, INDEXTYPE_FOOBARBAZ, json);
-    assertTrue(envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ).isExists());
+    assertTrue(envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ));
     envMonitorDataStorageDao.removeIndex(INDEXTYPE_FOOBARBAZ);
-    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ).isExists());
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_FOOBARBAZ));
   }
 
   @Test
-  public void shouldGetSearchHits() throws ExecutionException, InterruptedException {
-    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_SIMPLESEARCH).isExists());
+  public void shouldGetSearchHits() throws IOException {
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_SIMPLESEARCH));
     String json = "{"
         + "\"user\":\"kimchy\","
         + "\"postDate\":\"2013-01-30\","
@@ -156,9 +155,9 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
   }
 
   @Test
-  public void shouldNotThrowMappingException1() throws IOException, ExecutionException, InterruptedException {
+  public void shouldNotThrowMappingException1() throws IOException {
     final int loopCount = 100;
-    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_MAPPING1).isExists());
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_MAPPING1));
     for (int i = 0; i < loopCount; i++) {
       try (FileInputStream inputStream = new FileInputStream(COMPLEX_JSON_FILE)) {
         String json = IOUtils.toString(inputStream, Charset.defaultCharset());
@@ -175,8 +174,8 @@ public class EnvMonitorDataStorageDaoTest extends ElasticsearchTestBase {
   }
 
   @Test
-  public void shouldNotThrowMappingException2() throws IOException, ExecutionException, InterruptedException {
-    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_MAPPING2).isExists());
+  public void shouldNotThrowMappingException2() throws IOException {
+    assertFalse(envMonitorDataStorageDao.indexExists(INDEXTYPE_MAPPING2));
     final int loopCount = 8;
     for (int i = 0; i < loopCount; i++) {
       String filename = String.format("src/test/resources/test%d.json", i + 1);

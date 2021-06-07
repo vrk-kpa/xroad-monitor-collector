@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ExecutionException;
+import java.io.IOException;
 
 import static fi.vrk.xroad.monitor.util.MonitorCollectorDataUtils.getIndexName;
 
@@ -46,7 +46,7 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
   private Environment environment;
 
   @Override
-  public synchronized void save(String json) throws ExecutionException, InterruptedException {
+  public synchronized void save(String json) throws IOException {
     final String index = getIndexName(environment);
     final String type = environment.getProperty("xroad-monitor-collector-elasticsearch.type");
     log.debug("Store data to index: {}", index);
@@ -55,13 +55,13 @@ public class EnvMonitorDataStorageServiceImpl implements EnvMonitorDataStorageSe
   }
 
   @Override
-  public synchronized void createIndexAndUpdateAlias() throws ExecutionException, InterruptedException {
+  public synchronized void createIndexAndUpdateAlias() throws IOException {
     final String index = getIndexName(environment);
     final String alias = environment.getProperty("xroad-monitor-collector-elasticsearch.alias");
-    if (!envMonitorDataStorageDao.indexExists(index).isExists()) {
+    if (!envMonitorDataStorageDao.indexExists(index)) {
       log.info("Create index {}", index);
       envMonitorDataStorageDao.createIndex(index);
-      if (envMonitorDataStorageDao.aliasExists(alias).exists()) {
+      if (envMonitorDataStorageDao.aliasExists(alias)) {
         log.info("Alias exists, remove all indexes from alias {}", alias);
         envMonitorDataStorageDao.removeAllIndexesFromAlias(alias);
       } else {

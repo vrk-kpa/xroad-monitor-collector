@@ -31,7 +31,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.concurrent.ExecutionException;
+import java.io.IOException;
 
 /**
  * Base class for Elasticsearch tests
@@ -47,19 +47,19 @@ public abstract class ElasticsearchTestBase {
   @Autowired
   protected Environment environment;
 
-  protected void removeIndex(String index) {
-    if (envMonitorDataStorageDao.indexExists(index).isExists()) {
+  protected void removeIndex(String index) throws IOException {
+    if (envMonitorDataStorageDao.indexExists(index)) {
       envMonitorDataStorageDao.removeIndex(index);
     }
   }
 
-  protected void removeCurrentIndexAndAlias() throws ExecutionException, InterruptedException {
+  protected void removeCurrentIndexAndAlias() throws IOException {
     removeAlias(environment.getProperty("xroad-monitor-collector-elasticsearch.alias"));
     removeIndex(MonitorCollectorDataUtils.getIndexName(environment));
   }
 
-  protected void removeAlias(String alias) throws ExecutionException, InterruptedException {
-    if (envMonitorDataStorageDao.aliasExists(alias).isExists()) {
+  protected void removeAlias(String alias) throws IOException {
+    if (envMonitorDataStorageDao.aliasExists(alias)) {
       envMonitorDataStorageDao.removeAllIndexesFromAlias(alias);
     }
   }

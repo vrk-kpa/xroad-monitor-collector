@@ -61,8 +61,10 @@ repositories {
 }
 
 dependencies {
-    compile 'org.elasticsearch.client:transport:6.2.3'
-    compile 'org.elasticsearch:elasticsearch:6.2.3'
+    compile 'org.elasticsearch:elasticsearch:7.13.0'
+    compile 'org.elasticsearch.client:elasticsearch-rest-client:7.13.0'
+    compile 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.13.0'
+    compile 'org.apache.httpcomponents:httpcore:4.4.13' // needs to be explicitly set for the elasticsearch-rest-high-level-client
     compile group: 'org.springframework.boot', name: 'spring-boot-starter', version:'1.5.6.RELEASE'
     compile("org.springframework:spring-web")
     compile group: 'com.typesafe.akka', name: 'akka-actor_2.11', version:'2.5.1'

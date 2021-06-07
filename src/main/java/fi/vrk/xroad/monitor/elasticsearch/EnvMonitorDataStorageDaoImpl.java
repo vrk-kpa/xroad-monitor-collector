@@ -23,32 +23,37 @@
 package fi.vrk.xroad.monitor.elasticsearch;
 
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
-import org.elasticsearch.action.admin.indices.alias.exists.AliasesExistResponse;
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest;
 import org.elasticsearch.action.admin.indices.alias.get.GetAliasesRequest;
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
-import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
-import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.admin.indices.flush.FlushRequest;
 import org.elasticsearch.action.admin.indices.flush.FlushResponse;
+import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.TransportAddress;
+import org.elasticsearch.action.support.master.AcknowledgedResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.CreateIndexRequest;
+import org.elasticsearch.client.indices.CreateIndexResponse;
+import org.elasticsearch.client.indices.DeleteAliasRequest;
+import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.concurrent.ExecutionException;
 
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 
@@ -63,7 +68,7 @@ public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
   @Autowired
   private Environment environment;
 
-  private TransportClient client;
+  private RestHighLevelClient client;
 
   /**
    * Initializes transport client
@@ -71,70 +76,90 @@ public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
    */
   @PostConstruct
   public void init() throws UnknownHostException {
-    Settings settings = Settings.builder()
-        .put("cluster.name", environment.getProperty("xroad-monitor-collector-elasticsearch.cluster")).build();
-    client = new PreBuiltTransportClient(settings)
-        .addTransportAddress(new TransportAddress(
-            InetAddress.getByName(environment.getProperty("xroad-monitor-collector-elasticsearch.host")),
-            Integer.parseInt(environment.getProperty("xroad-monitor-collector-elasticsearch.port"))));
+      client = new RestHighLevelClient(RestClient.builder(new HttpHost(
+          InetAddress.getByName(environment.getProperty("xroad-monitor-collector-elasticsearch.host")),
+          Integer.parseInt(environment.getProperty("xroad-monitor-collector-elasticsearch.port")),
+          environment.getProperty("xroad-monitor-collector-elasticsearch.scheme")
+      )));
   }
 
   @Override
-  public IndexResponse save(String index, String type, String json) {
+  public IndexResponse save(String index, String type, String json) throws IOException {
     log.debug("Elasticsearch data: {}", json);
-    return client.prepareIndex(index, type).setSource(json, XContentType.JSON).get();
+    IndexRequest request = new IndexRequest(index, type);
+    request.source(json, XContentType.JSON);
+    return client.index(request, RequestOptions.DEFAULT);
   }
 
   @Override
-  public GetResponse load(String index, String type, String json) {
-    return client.prepareGet(index, type, json).get();
+  public GetResponse load(String index, String type, String json) throws IOException {
+    GetRequest request = new GetRequest(index, type, json);
+    return client.get(request, RequestOptions.DEFAULT);
   }
 
   @Override
-  public IndicesAliasesResponse addIndexToAlias(String index, String alias) {
-    return client.admin().indices().prepareAliases().addAlias(index, alias).get();
+  public boolean addIndexToAlias(String index, String alias) throws IOException {
+    IndicesAliasesRequest.AliasActions aliasAction = new IndicesAliasesRequest.AliasActions(
+            IndicesAliasesRequest.AliasActions.Type.ADD).index(index).alias(alias);
+    IndicesAliasesRequest request = new IndicesAliasesRequest();
+    request.addAliasAction(aliasAction);
+    AcknowledgedResponse indicesAliasesResponse = client.indices().updateAliases(request, RequestOptions.DEFAULT);
+    return indicesAliasesResponse.isAcknowledged();
   }
 
   @Override
-  public IndicesAliasesResponse removeAllIndexesFromAlias(String alias) {
-    return client.admin().indices().prepareAliases().removeAlias("*", alias).get();
+  public boolean removeAllIndexesFromAlias(String alias) throws IOException {
+    DeleteAliasRequest request = new DeleteAliasRequest("*", alias);
+    org.elasticsearch.client.core.AcknowledgedResponse indicesAliasesResponse =
+            client.indices().deleteAlias(request, RequestOptions.DEFAULT);
+    return indicesAliasesResponse.isAcknowledged();
   }
 
   @Override
-  public AliasesExistResponse aliasExists(String alias) throws ExecutionException, InterruptedException {
-    return client.admin().indices().aliasesExist(new GetAliasesRequest(alias)).get();
+  public boolean aliasExists(String alias) throws IOException {
+    GetAliasesRequest request = new GetAliasesRequest(alias);
+    return client.indices().existsAlias(request, RequestOptions.DEFAULT);
   }
 
   @Override
-  public IndicesExistsResponse indexExists(String index) {
-    return client.admin().indices().prepareExists(index).get();
+  public boolean indexExists(String index) throws IOException {
+    GetIndexRequest request = new GetIndexRequest(index);
+    return client.indices().exists(request, RequestOptions.DEFAULT);
   }
 
   @Override
-  public DeleteIndexResponse removeIndex(String index) {
-    return client.admin().indices().prepareDelete(index).get();
+  public boolean removeIndex(String index) throws IOException {
+    DeleteIndexRequest request = new DeleteIndexRequest(index);
+    AcknowledgedResponse deleteIndexResponse = client.indices().delete(request, RequestOptions.DEFAULT);
+    return deleteIndexResponse.isAcknowledged();
   }
 
   @Override
-  public SearchResponse findAll(String index, String type) {
-    return client.prepareSearch(index).setTypes(type).setQuery(matchAllQuery()).get();
+  public SearchResponse findAll(String index, String type) throws IOException {
+    SearchRequest searchRequest = new SearchRequest(index);
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    searchSourceBuilder.query(matchAllQuery());
+    searchRequest.source(searchSourceBuilder);
+    return client.search(searchRequest, RequestOptions.DEFAULT);
   }
 
   @Override
-  public FlushResponse flush() throws ExecutionException, InterruptedException {
-    return client.admin().indices().flush(new FlushRequest()).get();
+  public FlushResponse flush() throws IOException {
+    FlushRequest request = new FlushRequest();
+    return client.indices().flush(request, RequestOptions.DEFAULT);
   }
 
   @Override
-  public CreateIndexResponse createIndex(String index) throws ExecutionException, InterruptedException {
-    return client.admin().indices().create(new CreateIndexRequest(index)).get();
+  public CreateIndexResponse createIndex(String index) throws IOException {
+    CreateIndexRequest request = new CreateIndexRequest(index);
+    return client.indices().create(request, RequestOptions.DEFAULT);
   }
 
   /**
    * Closes transport client
    */
   @PreDestroy
-  public void shutdown() {
+  public void shutdown() throws IOException {
     client.close();
   }
 }

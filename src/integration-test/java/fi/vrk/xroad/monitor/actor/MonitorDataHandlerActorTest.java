@@ -44,9 +44,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import static fi.vrk.xroad.monitor.util.MonitorCollectorDataUtils.getIndexName;
 import static org.junit.Assert.assertEquals;
@@ -75,7 +75,7 @@ public class MonitorDataHandlerActorTest extends ElasticsearchTestBase {
    */
   @Before
   @After
-  public void cleanup() throws ExecutionException, InterruptedException {
+  public void cleanup() throws IOException {
     removeCurrentIndexAndAlias();
   }
 
@@ -85,7 +85,7 @@ public class MonitorDataHandlerActorTest extends ElasticsearchTestBase {
    * not been received.
    */
   @Test
-  public void testMonitorDataActor() throws ExecutionException, InterruptedException {
+  public void testMonitorDataActor() throws IOException {
 
     // create result collector actor
     final Props resultCollectorActorProps = Props.create(ResultCollectorActor.class);
