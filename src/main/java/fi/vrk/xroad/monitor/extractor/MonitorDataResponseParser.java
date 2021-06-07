@@ -107,7 +107,7 @@ public class MonitorDataResponseParser {
      * @param xroadInstance X-Road instance
      * @return JSON formatted string containing the default data
      */
-    public String getDefaultJSON(SecurityServerInfo info, String xroadInstance) {
+    public String getDefaultJSON(SecurityServerInfo info, String xroadInstance, String errorString) {
         JSONObject json = new JSONObject();
         json.put("serverCode", info.getServerCode());
         json.put("memberCode", info.getMemberCode());
@@ -115,6 +115,7 @@ public class MonitorDataResponseParser {
         json.put("xroadInstance", xroadInstance);
         json.put("name", String.format("SERVER:%s/%s/%s/%s", xroadInstance, info.getMemberClass(),
             info.getMemberCode(), info.getServerCode()));
+        json.put("error", errorString);
         return json.toString();
     }
 

@@ -99,7 +99,7 @@ public class MonitorDataHandlerActor extends AbstractActor {
             // monitoring data was not received from security server or save operation failed
             // store only default data
             log.info("save default data for security server {}", request.getSecurityServerInfo());
-            envMonitorDataStorageService.save(extractor.getDefaultJSON(request.getSecurityServerInfo()));
+            envMonitorDataStorageService.save(extractor.getDefaultJSON(request.getSecurityServerInfo(), errorString));
             resultCollectorActor.tell(ResultCollectorActor.Result.createError(
                 request.getSecurityServerInfo(), errorString), getSelf());
         }
