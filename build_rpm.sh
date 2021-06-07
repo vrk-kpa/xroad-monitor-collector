@@ -20,7 +20,7 @@ rm -rf ${ROOT}/RPMS/*
 rm -rf ${ROOT}/SRPMS/*
 
 rpmbuild \
-    --define "xroad_monitor_collector_version 1.2.2" \
+    --define "xroad_monitor_collector_version 1.2.3" \
     --define "rel $RELEASE" \
     --define "snapshot $SNAPSHOT" \
     --define "_topdir $ROOT" \
