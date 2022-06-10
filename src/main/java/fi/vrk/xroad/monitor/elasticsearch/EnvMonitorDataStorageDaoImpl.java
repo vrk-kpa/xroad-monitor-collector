@@ -109,7 +109,7 @@ public class EnvMonitorDataStorageDaoImpl implements EnvMonitorDataStorageDao {
 
   @Override
   public boolean removeAllIndexesFromAlias(String alias) throws IOException {
-    DeleteAliasRequest request = new DeleteAliasRequest("*", alias);
+    DeleteAliasRequest request = new DeleteAliasRequest("straumurinn-is-*", alias);
     org.elasticsearch.client.core.AcknowledgedResponse indicesAliasesResponse =
             client.indices().deleteAlias(request, RequestOptions.DEFAULT);
     return indicesAliasesResponse.isAcknowledged();
